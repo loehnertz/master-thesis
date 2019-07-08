@@ -1,0 +1,81 @@
+% English
+\usepackage[english]{babel} % English language setting
+\usepackage[utf8]{inputenc} % Unicode text
+\usepackage[T1]{fontenc} % German 'Umlaute'
+\usepackage{textcomp} % Euro
+\usepackage[hyphens]{url}
+\usepackage{amssymb} % Symbols
+\usepackage{emptypage} % Empty pages are now actually empty
+
+% Fonts, with all the options
+\usepackage{mathpazo}
+\usepackage[scaled=.95]{helvet}
+\usepackage{courier}
+\usepackage{microtype}
+
+% Images and listings
+\usepackage{graphicx} % images
+\usepackage{subfig} % sub-figures
+\usepackage{wrapfig} % wrapping figures
+\usepackage{listings} % better source code listings
+\usepackage{tabularx} % better tables
+\usepackage{hhline}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{breakurl}
+\graphicspath{ {figures/} }
+
+% Page layout
+\usepackage[paper=a4paper,width=14cm,left=35mm,height=22cm]{geometry}
+\usepackage{setspace}
+\usepackage[htt]{hyphenat}
+\usepackage{sectsty}
+\linespread{1.5}
+\subsubsectionfont{\large}
+
+% Page markers
+\newcommand{\phv}{\fontfamily{phv}\fontseries{m}\fontsize{10}{12}\selectfont}
+\usepackage{fancyhdr} % nicer header and footer
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\fancyhead[L]{\phv \nouppercase{\leftmark}}
+\fancyhead[R]{\phv \thepage}
+% rather not use anything for the footer
+\fancyfoot[C]{\ } % no page count in the bottom
+%\fancyfoot[R]{\textsf{\small Software Engineering MS}}
+
+% Share the sources
+\usepackage{bibtopic}
+
+% Special packages
+\usepackage{epigraph}
+\setlength{\epigraphrule}{0pt} % no divider
+\usepackage{csquotes}
+
+% Some extra styles
+\usepackage{soul}
+\newcommand*\strikethrough{\st}
+
+% Hyperlink everything
+\usepackage{hyperref}
+\hypersetup{
+    bookmarks=true,
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=black,
+}
+\urlstyle{same}
+
+\newcommand*\rot{\rotatebox{90}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+% Wikipedia-style "citation needed" macro
+\newcommand{\cn}[1][]{\textsuperscript{\color{red} ~[citation needed]~}}
+
+% Code markup
+\newcommand{\code}[1]{\texttt{#1}}
