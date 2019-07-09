@@ -72,7 +72,51 @@ a human software engineer in performing the aforementioned decomposition.
 
 \section{Problem analysis}
 
+Generally speaking, there are two ways to put a microservices-based
+software architecture into place. The greenfield approach, meaning that
+microservices are directly getting built without a preexisting application,
+as well as the transformation of an existing monolithic software solution
+into independent microservices \cite{fowler-break-monolith}.
+However, this thesis focuses solely on the latter approach for a variety of reasons.
 
+Firstly, our work leverages static and dynamic program analysis for solving
+the posed task. Obviously, this is not possible without an already running solution.
+
+Secondly, while there is already some research on this topic \cite{fritzsch2018monolith},
+which is discussed in the \nameref{chap:related} chapter, the notion
+of utilizing the already existing and running application is still underrepresented.
+
+Thirdly, as Martin Fowler remarks, microservices are especially feasible
+with a mature workflow, domain model, operational model, etc. already
+in place \cite{fowler-monolith-first} \cite{fowler-microservices-tradeoffs}
+which favors non-greenfield approaches as well.
+
+The task of getting the boundaries of each microservice right is hard,
+especially when the teams working on the existing software
+are caught up in their mental models of it \cite{latoza2006maintaining},
+as Fritzsch et al. confirm: \textit{"Extracting a domain model from
+an application's code base can be a significant challenge. If incorrectly applied,
+it can lead to architectures that combine the drawbacks of both styles,
+monolithic architectures and Microservices."}\cite{fritzsch2018monolith}
+To prevent such an outcome, we propose a visual approach to assist software engineers
+and architects in decomposing microservices out of an existing monolithic code base.
+This approach has the advantage that the mental models regarding the existing
+solution might be broken apart partially to offer new perspectives onto how
+the current software works, which was already remarked as a positive side effect
+of an assisted microservices decomposition approach \cite{gysel2016service}.
+Thus, the engineers and architects can be assisted in the first step,
+which is likely also the most difficult and time-consuming one due to the possible
+complexity of the system \cite{fritzsch2018monolith} \cite{france2007model},
+when undertaking the operation of transforming their existing
+monolithic solution into microservices.
+
+Additionally, we are certain that the actual decisions should still be made
+by seasoned engineers and architects which is why a visual solution
+was determined as the best option to actually support them in their
+decision making while not taking the decision making away from them
+(i.e. compared to an automated decomposition approach).
+As a consequence, everything mentioned in this section reflects itself in
+the following research questions of this thesis project.
 
 
 \section{Research methods} % TODO: Validate this section
