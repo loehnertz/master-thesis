@@ -70,6 +70,7 @@ Thus, this thesis develops an algorithmic methodology that can assist
 a human software engineer in performing the aforementioned decomposition.
 
 
+
 \section{Problem analysis}
 
 Generally speaking, there are two ways to put a microservices-based
@@ -119,6 +120,7 @@ As a consequence, everything mentioned in this section reflects itself in
 the following research questions of this thesis project.
 
 
+
 \section{Research methods} % TODO: Validate this section
 
 Firstly, the approach for the methodology is developed and validated
@@ -154,6 +156,7 @@ The evaluation as part of chapter \ref{} is conducted using
 a custom set of metrics devised in chapter \ref{}.
 
 
+
 \section{Research questions}
 
 \hangindent=1cm
@@ -185,6 +188,7 @@ refactoring process for existing monolithic applications."}~\cite{fritzsch2018mo
 \end{displayquote}
 This underlines the relevance and importance of this area of research and the
 notion that there is still room for improvement.
+
 
 
 \section{Literature survey} \label{subsect:literature-survey}
@@ -291,24 +295,110 @@ was awarded if the prototype was publicly available (e.g. as open source softwar
 since it is otherwise impossible to assess.
 
 
+
 \section{Topic relations} \label{subsect:topic-relations}
 
+Following the approaches and features extracted in the previous section,
+the methodologies of the works that are the closest to ours are observed with greater detail.
 
+Gysel and K{\"o}lbener \cite{gysel2016service} were the first to release work in
+this area of research that is in the same vein to ours in the sense that a
+complete methodology is developed to convert a certain input to microservice
+recommendations. They initially devised the idea to build a graph out of this
+input that is then clustered using a graph clustering algorithm to create clusters
+that reflect the microservice recommendations.
+Future work in the domain \cite{mazlami2017extraction}\cite{kruidenberg2018monoliths}
+together with ours is following this idea.
+However, not every analyzed work uses this approach.
+Therefore in this subsection, only works that do use it are analyzed in detail
+as they relate closely in topic.
 
 
 \subsection{Analyzed inputs}
 
+Gysel and K{\"o}lbener used \textit{SE model analysis} as their only approach ---
+a type of input that is unlikely to be available or
+can be created with a lot of manual work, as they acknowledge
+themselves in their original work \cite{gysel2016service}.
+This fact decreases the actual usability of the devised methodology and leaves
+room for improvement.
 
+Kruidenberg \cite{kruidenberg2018monoliths} built on top of the work and
+especially the implementation of Gysel and K{\"o}lbener by extending their
+\textit{SE model analysis} input with \textit{Dynamic analysis} input.
+Precisely, they model the input, that the implementation of Gysel and K{\"o}lbener
+requires and generates out of \textit{SE models}, from data retrieved
+out of \textit{Static analysis}, \textit{Dynamic analysis}, and \textit{VCS mining}.
+Consequently, this approach mainly solves the problem that the original approach
+had regarding the availability and respectively the ease of creation
+of supported input formats.
+
+Comparatively, Mazlami \cite{mazlami2017extraction} devised their completely
+custom methodology. The foundation is still based on building and then clustering
+a graph but they chose \textit{Static analysis}, and \textit{VCS mining} as
+their approaches of choice. From within the domain of static program analysis,
+semantically analyzing source code was devised and implemented as input together
+with mining evolutionary data out of version control system logs.
+
+Instead, we utilize three distinct input dimensions for constructing
+a more precise weighted graph which can then be clustered.
 
 
 \subsection{Graph clustering}
 
+Regarding the graph clustering, Gysel and K{\"o}lbener \cite{gysel2016service}
+only utilized two graph clustering algorithms both of which have major
+shortcomings specific to this area of research.
+The Girvan-Newman algorithm \cn requires the amount of clusters beforehand which
+is not ideal for recommending microservice candidates as the software engineers
+prospectively using such a tool can at best estimate that amount.
+Additionally, one advantage of automated microservice decomposition recommendations
+is that the algorithm might give recommendations that a human engineer would
+not have considered which also affects the granularity and therefore the
+amount of services (i.e. clusters).
+The Leung algorithm \cn on the other hand has the disadvantage that it is
+non-deterministic which might cause completely different recommendations with
+every execution.
 
+Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same algorithms
+as his work is an extension of the one of Gysel and K{\"o}lbener.
+
+Mazlami \cite{mazlami2017extraction} leveraged the notion of the
+minimal spanning tree (MST) of the input graph to perform the clustering.
+Thus, their methodology is not based on state-of-the-art graph clustering algorithms
+but a custom approach instead. They implemented an algorithm
+that iteratively calculates the MST and removes the edge with the lowest similarity
+from the graph. However, this approach has the same problem as the
+Girvan-Newman algorithm \cn that Gysel and K{\"o}lbener utilized in the sense
+that it requires the desired amount of services beforehand.
+
+Instead, we show how to leverage heuristic optimization of the clustering and
+therefore the recommendations toward a numeric metric via a fitness function
+while incorporating a large set of state-of-the-art graph clustering algorithms
+to be able to compare them and assess which one performs the best for a given input.
+Thus, this removes the problem of having to define the desired amount of microservices
+a priori.
 
 
 \subsection{Evaluative metrics}
 
+Gysel and K{\"o}lbener \cite{gysel2016service} just evaluated their
+initially set requirements on a custom scale of 1--3 together with a devised
+questionnaire to assess the quality of the recommendations.
+The questionnaire however follows no numeric metrics and just allows answers
+in a boolean manner which makes it more subjective.
 
+Mazlami \cite{mazlami2017extraction} devised a set of six metrics that measure
+the output of their methodology. Although some of them do not have the notion
+of if a higher value is better or worse (e.g. \textit{Average Contributors per Microservice}).
+
+Kruidenberg \cite{kruidenberg2018monoliths} used a combination of metrics from
+the works of Gysel and K{\"o}lbener \cite{gysel2016service} and
+Mazlami \cite{mazlami2017extraction}.
+
+Instead, we devise an extensive set of numeric metrics that offers
+an objective and quantifiable view on the resulting microservice recommendations
+to be able to evaluate not only our methodology but the recommendations them self as well.
 
 
 
