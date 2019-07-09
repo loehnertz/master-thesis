@@ -39,6 +39,35 @@ ABSTRACT
 
 \chapter{Introduction} \label{chap:introduction}
 
+Software engineering develops faster than ever, the amount of novelties in
+platforms, languages, operational strategies and generally the terminology
+around it gets larger and larger every day.
+One of the terms that gained a lot of traction in recent years is \textit{microservices}.
+Many engineers talk about their benefits and challenges but the general notion
+is positive and the buzz is undeniable.
+At the end of the day, microservices are nothing more than an architectural style
+for designing back-end software.
+For those that actually take the step to build and deploy such an application
+landscape, the journey is not always straightforward.
+The idea is still evolving and mandates many new strategies and concepts
+that developers and operations have to deal with
+when choosing to devote their business logic to leverage microservices.
+
+There are many good reasons to employ this pattern nowadays specifically
+when dealing with ever larger growing monolithic applications that try to
+encapsulate their respective business logic without drowning the
+developers and engineers working on it in seemingly endless complexity
+that a single human cannot even fully comprehend anymore at one point.
+
+For many companies, this oftentimes is the status quo and if the decision is
+made to move to a microservices-based architecture, one of the first
+challenges, the decomposition, is already difficult to begin with:\\
+Defining where within the existing application one service should end and the
+next one should begin --- i.e. detecting latent boundaries that partition
+the monolith into many smaller pieces, is a very manual and tedious task.
+
+Thus, this thesis develops an algorithmic methodology that can assist
+a human software engineer in performing the aforementioned decomposition.
 
 
 \section{Problem analysis}
