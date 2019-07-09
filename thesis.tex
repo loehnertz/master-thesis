@@ -1,0 +1,256 @@
+\documentclass[12pt,a4paper]{report}
+
+\include{settings}
+
+\newcommand{\studyprogramme}{Software Engineering}
+\newcommand{\degreetype}{Master of Science}
+\newcommand{\thesistitle}{
+Toward systematic decomposition of monolithic software into microservices
+}
+\newcommand{\thesissubtitle}{
+SUBTITLE
+}
+\newcommand{\thesisauthor}{Jakob L{\"o}hnertz}
+\newcommand{\thesisdate}{31/08/2019}
+\newcommand{\thesislocation}{Amsterdam}
+\newcommand{\firstmarker}{Dr.\ Ana Oprescu}
+\newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
+\newcommand{\hostorganization}{Picnic B.V.}
+
+\begin{document}
+
+
+
+\include{preamble}
+
+
+
+\begin{abstract}
+
+ABSTRACT
+
+\end{abstract}
+
+
+
+\tableofcontents
+
+
+
+\chapter{Introduction} \label{chap:introduction}
+
+
+
+\section{Problem analysis}
+
+
+
+
+\section{Research methods} % TODO: Validate this section
+
+
+
+
+\section{Research questions}
+
+
+
+
+\chapter{Related work} \label{chap:related}
+
+
+
+
+\section{Literature survey} \label{subsect:literature-survey}
+
+
+
+
+\section{Topic relations} \label{subsect:topic-relations}
+
+
+
+
+\subsection{Analyzed inputs}
+
+
+
+
+\subsection{Graph clustering}
+
+
+
+
+\subsection{Evaluative metrics}
+
+
+
+
+
+
+\chapter{Background} \label{chap:background}
+
+
+
+
+
+\section{Software architectures} \label{sect:background-architecture}
+
+
+
+
+\subsection{Monolithic}
+
+
+
+\subsubsection{Advantages}
+
+
+
+\subsubsection{Disadvantages}
+
+
+
+\subsection{Microservices-based}
+
+
+
+\subsubsection{Advantages}
+
+
+
+\subsubsection{Disadvantages}
+
+
+
+
+\section{Software analysis} \label{sect:background-program-analysis}
+
+\subsection{Static program analysis}
+
+\subsection{Dynamic program analysis}
+
+\section{Graph clustering} \label{sect:background-graph-clustering}
+
+\subsection{Renowned algorithms}
+
+\subsection{Available metrics}
+
+
+
+
+\chapter{Mapping microservice requirements to software quality metrics} \label{chap:rationale}
+
+\section{Pillars of microservices}
+
+\section{Selecting and extracting software quality metrics}
+
+
+
+
+\chapter{Extracting coupling information from software}
+
+\section{Dynamic coupling}
+
+\subsection{Profiling-based approach}
+
+\subsection{Instrumentation-based approach}
+
+\section{Semantic coupling}
+
+\subsection{Natural language processing on source code}
+
+\section{Logical coupling}
+
+\subsection{Mining version control system data}
+
+
+
+
+\chapter{Representing software as weighted graphs}
+
+\section{Building a weighted graph for each input dimension}
+
+\section{Merging input dimensional graphs into combined one}
+
+
+
+
+\chapter{Creating microservice recommendations}
+
+\section{Clustering combined weighted graph}
+
+
+
+
+\chapter{Calculating metrics on microservice recommendations}
+
+\section{Input fidelity}
+
+\section{General clustering quality}
+
+\section{Coupling modularity}
+
+
+
+
+\chapter{Visualizing microservice recommendations}
+
+\section{Network-based view}
+
+\section{Tree-based view}
+
+\section{Metrics view}
+
+
+
+
+\chapter{Implementation}
+
+
+
+
+\chapter{Results}
+
+\section{Experimental setup}
+
+
+
+
+\chapter{Discussion} \label{chap:discussion}
+
+\section{Threats to validity} \label{sect:threats-to-validity}
+
+\section{Future work} \label{sect:future-work}
+
+
+
+
+\chapter{Conclusion} \label{chap:conclusion}
+
+
+
+
+
+
+% Source lists
+\newpage
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\newpage
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+\newpage
+\addcontentsline{toc}{chapter}{Bibliography}
+% Separate the sources with 'bibtopic'
+\bibliographystyle{plain}
+\begin{btSect}{references}
+\section*{\huge{References}}
+\btPrintCited
+\end{btSect}
+\begin{btSect}{online}
+\section*{\huge{Online Sources}}
+\btPrintCited
+\end{btSect}
+
+\end{document}
