@@ -168,12 +168,127 @@ for evaluating microservice decomposition methodologies?"}
 
 \chapter{Related work} \label{chap:related}
 
+The described problem of detecting latent boundaries within existing
+application software for the purpose of decomposing it into microservices is
+a sparse research domain, especially when compared to others
+in computer science \cite{fritzsch2018monolith}.
+Nevertheless, the existing research is categorized, rated and analyzed in the
+following \textit{\nameref{subsect:literature-survey}}.
 
+To add to this chapter, Fritzsch et al. conducted a complete literature study titled
+\textit{From Monolith to Microservices: A Classification of Refactoring Approaches} (2019)
+\cite{fritzsch2018monolith} which looked at research in the same domain as ours.
+They conclude their research with:
+\begin{displayquote}
+\emph{"Our literature review has revealed a lack of systematic guidance on the
+refactoring process for existing monolithic applications."}~\cite{fritzsch2018monolith}
+\end{displayquote}
+This underlines the relevance and importance of this area of research and the
+notion that there is still room for improvement.
 
 
 \section{Literature survey} \label{subsect:literature-survey}
 
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|Y||Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
+ \hline
+ \multicolumn{1}{|c||}{~} & \multicolumn{6}{c|}{Approaches} & \multicolumn{4}{c|}{Features}\\
+ \hline\hline
+ \rot{Citations~} & \rot{SE model analysis~} & \rot{Static analysis~} & \rot{Dynamic analysis~} & \rot{Data model analysis~} & \rot{VCS mining~} & \rot{External interface analysis~} &
+ \rot{Evaluation~} & \rot{Evaluation by testing~} & \rot{Evaluation via metrics~} & \rot{(Available) Proof-of-concept~} \\
+ \hline\hline
+ \cite{gysel2016service} & $\oplus$ & ~ & ~ & ~ & ~ & ~ & $\ominus$ & $\oplus$ & ~ & $\oplus$ \\\hline
+ \cite{kruidenberg2018monoliths} & $\odot$ & $\odot$ & $\odot$ & ~ & $\odot$ & ~ & $\odot$ & $\odot$ & $\ominus$ & $\oplus$ \\\hline
+ \cite{mazlami2017extraction} & ~ & $\odot$ & ~ & ~ & $\oplus$ & ~ & $\odot$ & $\oplus$ & $\odot$ & $\oplus$ \\\hline
+ \cite{jin2018functionality} & ~ & ~ & $\oplus$ & ~ & ~ & ~ & $\oplus$ & $\oplus$ & $\oplus$ & $\ominus$ \\\hline
+ \cite{baresi2017microservices} & ~ & ~ & ~ & ~ & ~ & $\oplus$ & $\oplus$ & $\oplus$ & $\odot$ & $\odot$ \\\hline
+ \cite{chen2017monolith} & $\oplus$ & ~ & ~ & ~ & ~ & ~ & $\odot$ & $\odot$ & ~ & $\ominus$ \\\hline
+ \cite{escobar2016towards} & ~ & $\oplus$ & ~ & ~ & ~ & ~ & $\odot$ & $\odot$ & $\odot$ & $\ominus$ \\\hline
+ \cite{levcovitz2016towards} & ~ & $\odot$ & ~ & $\odot$ & ~ & $\odot$ & $\ominus$ & $\ominus$ & ~ & $\ominus$ \\\hline
+ \cite{knoche2018using} & ~ & $\odot$ & ~ & ~ & ~ & ~ & $\ominus$ & $\ominus$ & ~ & $\ominus$ \\\hline
+\end{tabularx}
+\caption{Literature survey matrix}
+\label{table:literature-survey}
+\end{table}
 
+
+The matrix (table \ref{table:literature-survey}) visualizes the
+surveyed literature via classification.
+Six general approaches as well as four features were extracted from the works.
+The approaches were devised by studying the available literature on the subject.
+In summary, other researchers were using one or more of these six approaches
+to answer their research questions regarding microservice decomposition out of an existing monolith.
+Thus, pure greenfield approaches were not targeted in the literature survey.\\
+The signs used in the matrix are defined as follows:
+\begin{itemize}[noitemsep]
+    \item An empty cell depicts that the approach or feature of that column was not utilized
+    by the work cited in that row.
+    \item A circle with a dot ($\odot$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row without any outstanding execution
+    or results in any direction or with results that were difficult to assess.
+    \item A plus sign ($\oplus$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row in a successful way.
+    \item A minus sign ($\ominus$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row in a subpar way.
+\end{itemize}
+Those evaluative signs were assigned via our own intuition of the execution and results
+as well as the evaluation of the works in other analyzed literature.
+The latter approach was especially possible due to
+the existing work by Fritzsch et al. \cite{fritzsch2018monolith}.
+
+
+\subsection*{Approaches}
+
+In the following paragraphs, the approaches used as matrix columns are explained in more detail.
+\paragraph{SE model analysis}
+The term \textit{Software Engineering (SE) models} subsumes non-source code
+artifacts out of the domain of SE.
+For instance, this category includes use case models and entity relationship models (ERM).
+\paragraph{Static analysis}
+Static analysis covers any form of non-runtime analysis of the given code base.
+This includes dependency graphs, class graphs, connection of source code via shared terms
+(i.e. words in the identifier of classes that might tie them together) etc.
+\paragraph{Dynamic analysis}
+Dynamic analysis is about analyzing the existing monolithic software during its execution.
+This covers profiling it, tracing data inside of the application as well as analyzing
+access logs such as web traffic logs.
+\paragraph{Data model analysis}
+Owing to the fact that one pillar of the microservices architecture is about
+separating data stores \cite{ms-microservices}, the approach to analyze
+the data models (e.g. schemes) of existing database tables is, generally speaking,
+an important one. This approach covers direct analysis of database tables
+as well as the analysis of \textit{object relational mappers} (ORM)
+if those were already in use in the existing application.
+\paragraph{VCS mining}
+The repositories of existing solutions are usually part of a
+version control system (VCS) such as Git. Consequently, commits and merges can be analyzed
+to e.g. determine the coupling of certain files, modules, or classes.
+\paragraph{External interface analysis}
+The external interfaces (i.e. the Web-APIs) of existing solutions can be analyzed to get
+a sense of existing modularization and cohesion within the solution.
+
+
+\subsection*{Features}
+
+In the following paragraphs, the features used as matrix columns are explained in more detail.
+\paragraph{Evaluation}
+This column just depicts if the cited source of a row evaluated their work in any form.
+\paragraph{Evaluation by testing}
+Since this literature survey was focused on works that research assisted or semi-automated
+microservice decomposition, theoretically, the works could be evaluated with real-world or
+even artificial data such as large open source projects built with a monolithic architecture.
+\paragraph{Evaluation via metrics}
+Owing to the fact that the area of research of this project is still rather young and sparse
+\cite{jin2018functionality}\cite{fritzsch2018monolith}, custom as well as renowned metrics
+for the evaluation are a welcomed addition to the research in this area.
+Additionally, evaluation via metrics improves the overall credibility of a work.
+\paragraph{(Available) Proof-of-concept}
+This feature is somewhat tied to the \textit{Evaluation by testing} one as oftentimes
+a prototype (i.e. proof-of-concept) is built to actually test the designed
+methodology or algorithm. Moreover, a positive or a negative execution respectively
+was awarded if the prototype was publicly available (e.g. as open source software)
+since it is otherwise impossible to assess.
 
 
 \section{Topic relations} \label{subsect:topic-relations}
