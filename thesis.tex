@@ -405,37 +405,142 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 \chapter{Background} \label{chap:background}
 
-
+Three domains are mainly important for grasping the entirety of this work.
+General computer science knowledge is expected but the following
+three subjects are covered in more detail on top of it:
+\textit{\nameref{sect:background-architecture}},
+\textit{\nameref{sect:background-program-analysis}}, and
+\textit{\nameref{sect:background-graph-clustering}}.
 
 
 
 \section{Software architectures} \label{sect:background-architecture}
 
-
+As seen in the \textit{\nameref{chap:introduction}}, our work revolves around
+the decomposition of monolithic software into microservices.
+Thus, the following subsections focus on these two architectural styles for
+building back-end applications.
 
 
 \subsection{Monolithic}
-
+The term \textit{monolithic} is derived from the Ancient Greek word
+\textit{monólithos} which roughly translates to \textit{single stone} \cite{press2011oxford}.
+This adumbrates already what the word is used for in software engineering,
+where it, specifically regarding enterprise back-end applications,
+describes software that is built, deployed, and executed
+as a single logical unit \cite{ms-fowler}.
+Furthermore, a monolithic application can perform every task of the given functionality
+within the domain of its business logic from beginning to end \cite{monolith}.
+Usually this is implemented in a layered (e.g. UI, business logic, data access)
+and modular manner \cite{ms-fowler} \cite{monolith}.
 
 
 \subsubsection{Advantages}
+Generally, the notion exists that monolithic applications are more natural
+to work with while also being easier to design, build, and deploy specifically
+in the beginning of their life cycle \cite{ms-fowler} \cite{raymond2003unix}.
 
+Tying into this, the operational overhead is small as not much middleware or
+special deployment strategies are necessary \cite{ms-fowler}.
+This becomes specifically apparent when compared to microservices
+in the following subsection.
+
+Finally, the performance is usually better compared to architectures dependent
+on inter-process communication \cite{knoche2016sustaining}.
 
 
 \subsubsection{Disadvantages}
+Even if the monolithic application is built modular and in layers,
+the code base and most likely the complexity can just grow over time.
+The engineer is in the end just fighting against it becoming a
+\textit{big ball of mud} which starts to exceed the mental capabilities of a
+human engineer \cite{newman2015building} \cite{foote1997bigballofmud} \cite{france2007model}.
 
+Moreover, a monolithic application is deployed as a whole which hinders
+independent life cycles regarding the modules within the application \cite{ms-fowler}.
+Specifically in agile software development structures, this can cause immense
+conflicts when trying to release new versions of the application.
+
+Finally, following the last disadvantage, the scalability is also problematic
+as the only option once the application needs to be scaled is to replicate it
+into another instance and balance incoming load onto the instances ---
+even if only a tiny module within the monolith might have needed any scaling
+in the first place \cite{ms-fowler} \cite{newman2015building}.
 
 
 \subsection{Microservices-based}
-
+Microservices are essentially about building an application
+\textit{"as a suite of small services, each running in their own process and
+communicating with lightweight mechanisms, often an HTTP resource API"} \cite{ms-fowler} ---
+a microservice is developed and deployed independently in a distributed manner.
+Each service should be built around one business capability following the
+\textit{single responsibility principle} \cite{newman2015building} \cite{martin2003agile}.
+Furthermore, each microservice should be responsible for the data it governs,
+avoiding any overlaps with other services \cite{ms-fowler}.
 
 
 \subsubsection{Advantages}
+As just mentioned, microservices-based architectures allow for a better
+decoupling of software development life cycles between business capabilities \cite{ms-fowler}.
+This enables different teams or even single developers to work at different
+velocities which is sometimes also dictated by the type and complexity of the
+developed functionality.
 
+Additionally, once the foundation of the architectural design is established,
+it is a lot more effortless to keep functionalities decoupled as
+they are not even part of the same process once running.
+
+Moreover, it is easier to incorporate multiple programming languages into
+the application landscape that fit the tasks the best.
+In the end, each service just offers an external API for the others to use
+and consume which is agnostic of programming language as long as it adheres
+to the contract provided by the interface specification.
+
+Finally, the scalability of microservices is far better compared to monolithic
+applications. When leveraging features of cloud computing, just services
+that are in need of scaling can be scaled instead of the entirety of the application.
 
 
 \subsubsection{Disadvantages}
+In contrast to monolithic applications, microservices introduce a non-negligible
+amount of overhead. Firstly, the architectural style is geared toward
+agile software development which by itself mandates a certain organizational setup.
+Secondly, the development demands other patterns in terms of e.g.
+error-handling and data management compared to a monolithic software design.
+Lastly, the deployment is more fine-grained and usually encompasses a lot of
+cloud computing facilities such as \textit{Infrastructure as a Service} (IaaS)
+together with certain topics completely unheard of in monolithic architectures
+such as \textit{service discovery} which is dealing with the task of each
+service knowing where and how to reach the others \cite{newman2015building}.
 
+Furthermore, the penalty on inter-service communication via a network is almost
+always larger compared to regular function calls, especially when considering
+serialization and deserialization before and after every inter-service call
+\cite{knoche2016sustaining} \cite{newman2015building}.
+
+Additionally, designing microservices, similarly to a modular monolithic design,
+is a grand task. However, the boundaries need to be defined even more strictly
+as migrating certain functionality and data later on has a bigger impact than
+doing the same in a monolithic application, since data can oftentimes
+stay where it is in a monolithic architecture.
+Likewise, the interfaces between services need more care than interfaces in a
+monolithic application due to their distributed nature that can lead to
+performance and fail-over problems a lot faster as a network is acting
+in between.
+Finally, Conway's law \cite{conway1968law} is more important than ever
+in a microservices landscape as overly dependent life cycles between services
+will lead to nothing more than a \textit{distributed monolith} in the long run.
+\newline
+
+
+In summary, the larger and more complicated the underlying business logic
+becomes, the more the application can benefit from a microservices-based architecture.
+Specifically when developing the overarching application in agile teams,
+microservices offer natural boundaries for this organizational structure.
+Furthermore, when looking at the disadvantages of them, the question of where
+to draw the boundaries between microservices is especially difficult,
+yet it is what this thesis revolves around as it can benefit from
+algorithmic assistance to the work of human software engineers a lot.
 
 
 
@@ -527,7 +632,7 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 \chapter{Results}
 
-\section{Experimental setup}
+\section*{Experimental setup}
 
 
 
@@ -548,7 +653,7 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 
 
-% Source lists
+% Reference lists
 \newpage
 \addcontentsline{toc}{chapter}{List of Figures}
 \listoffigures
