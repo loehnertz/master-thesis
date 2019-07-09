@@ -349,19 +349,20 @@ a more precise weighted graph which can then be clustered.
 Regarding the graph clustering, Gysel and K{\"o}lbener \cite{gysel2016service}
 only utilized two graph clustering algorithms both of which have major
 shortcomings specific to this area of research.
-The Girvan-Newman algorithm \cn requires the amount of clusters beforehand which
-is not ideal for recommending microservice candidates as the software engineers
-prospectively using such a tool can at best estimate that amount.
+The Girvan-Newman algorithm \cite{girvan2002community} requires the
+amount of clusters beforehand which is not ideal for recommending
+microservice candidates as the software engineers prospectively using
+such a tool can at best estimate that amount.
 Additionally, one advantage of automated microservice decomposition recommendations
 is that the algorithm might give recommendations that a human engineer would
 not have considered which also affects the granularity and therefore the
 amount of services (i.e. clusters).
-The Leung algorithm \cn on the other hand has the disadvantage that it is
-non-deterministic which might cause completely different recommendations with
-every execution.
+The Leung algorithm \cite{leung2009community} on the other hand has the
+disadvantage that it is non-deterministic which might cause completely
+different recommendations with every execution.
 
-Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same algorithms
-as his work is an extension of the one of Gysel and K{\"o}lbener.
+Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same
+algorithms as his work is an extension of the one of Gysel and K{\"o}lbener.
 
 Mazlami \cite{mazlami2017extraction} leveraged the notion of the
 minimal spanning tree (MST) of the input graph to perform the clustering.
@@ -369,8 +370,8 @@ Thus, their methodology is not based on state-of-the-art graph clustering algori
 but a custom approach instead. They implemented an algorithm
 that iteratively calculates the MST and removes the edge with the lowest similarity
 from the graph. However, this approach has the same problem as the
-Girvan-Newman algorithm \cn that Gysel and K{\"o}lbener utilized in the sense
-that it requires the desired amount of services beforehand.
+Girvan-Newman algorithm \cite{girvan2002community} that Gysel and K{\"o}lbener
+utilized in the sense that it requires the desired amount of services beforehand.
 
 Instead, we show how to leverage heuristic optimization of the clustering and
 therefore the recommendations toward a numeric metric via a fitness function
