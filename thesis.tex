@@ -547,15 +547,71 @@ algorithmic assistance to the work of human software engineers a lot.
 
 \section{Software analysis} \label{sect:background-program-analysis}
 
-\subsection{Static program analysis}
+As no further user input should be required by our methodology,
+it has to gather information out of inputs on its own.
+Thus, various types of program analysis are leveraged to
+algorithmically collect data that can be used as the input for the methodology.
 
-\subsection{Dynamic program analysis}
+
+\subsection{Static program analysis}
+The term \textit{static program analysis} is best defined by comparing it
+to \textit{dynamic program analysis} --- instead of monitoring the program
+as it is running, the code, in many possible facets, is analyzed without
+actually executing it. While static program analysis has many categories
+\cite{woegerer2005static}, the only two sub-categories relevant to this work
+are \textit{call graphs} and \textit{semantic analysis} while the
+latter has its roots in \textit{natural language processing} especially in
+the way that it is utilized in our methodology.
+
+
+\subsubsection{Call graph generation}
+Generally, a call graph is consisting of \textit{"nodes that are the routines
+of the program and directed arcs that represent calls from call sites to
+routines"} \cite{graham1982gprof}. Those graphs can be created via static
+as well as dynamic program analysis, although the latter is covered in
+subsection \ref{subsect:background-dynamic-analysis}.
+In an object-oriented program, the routines would represent methods
+or even whole classes \cite{grove1997callgraph}.
+
+The two basic ways to represent the weight \(W(e_i) \in \mathbb{R}\)
+of a weighted edge \(e_i \in E\) as part of a call graph \(G = (V, E)\)
+are \textit{execution counts} and \textit{execution times} although
+\textit{execution times} are only measurable via
+dynamic program analysis \cite{graham1982gprof}.
+
+However, in our approach, the static program analysis that we employ has
+auxiliary purposes since other types of program analysis, particularly
+dynamic program analysis, will seldom yield a complete graph theoretic
+representation of the analyzed program \cite{graham1982gprof}, such that
+each routine from the input program \(r_i \in R\) is part of the output graph
+\(G = (V, E)\) as a vertex \(\forall r_i \in V\) while each \textit{execution}
+\(x_i \in X\) is an edge \(\forall x_i \in E\) connecting
+two such vertices \(x_i = (r_1, r_2), \enskip r_1 \in V, \enskip r_2 \in V\).
+
+We utilize the static program analysis without \textit{execution counts}
+which does not yield a weighted graph, allows us however to have a more complete
+weighted call graph when merging two or more incomplete call graphs, weighted or not,
+e.g. when another was constructed with dynamic program analysis.
+Precisely, this is discussed in the chapter \nameref{}.
+
+
+\subsubsection{Semantic similarity calculation}
+
+
+
+\subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
+
+
+
+
 
 \section{Graph clustering} \label{sect:background-graph-clustering}
 
 \subsection{Renowned algorithms}
 
 \subsection{Available metrics}
+
+
 
 
 
