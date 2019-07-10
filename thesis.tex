@@ -596,7 +596,188 @@ Precisely, this is discussed in the chapter \nameref{}.
 
 
 \subsubsection{Semantic similarity calculation}
+Calculating the semantic similarity between two documents is a traditional
+discipline in the domain of natural language processing (NLP).
+The similarity value usually ranges from \([0.0, 1.0]\) ---
+a percentage \cite{singhal2001ir}.
 
+As anthropogenic source code is largely consisting of natural language
+e.g. in the form of identifiers, variable names, and comments, it can be
+semantically analyzed as well.
+
+The basic steps to calculate semantic similarity between documents in
+any given corpora (a \textit{corpus} is a collection of \textit{documents})
+as a mathematical process are \cite{singhal2001ir}:
+\begin{enumerate}
+  \item Tokenization
+  \item Stop word filtering
+  \item Normalization
+  \item Vectorization
+  \item (Optional) Relevance weighting
+  \item (Optional) Latent semantic indexing (LSI)
+\end{enumerate}
+
+\paragraph{Similarity calculation}
+All of the abovementioned steps have to be performed for every document
+in the corpus until the resulting vectors can be run through a function that
+calculates their similarity. A common approach for this is the
+\textit{cosine similarity} which calculates the cosine of an angle \(\theta\)
+between two input document vectors that are part of the corpus
+\(\{\vec{\mathbf d_1}, \vec{\mathbf d_2}\} \in C\) \cite{singhal2001ir}:
+\[
+  \cos(\theta) = \frac{
+    \vec{\mathbf d_1} \cdot \vec{\mathbf d_2}
+  }{
+    \|\vec{\mathbf d_1} \|\|\vec{\mathbf d_2} \|
+  }
+\]
+
+\paragraph{Tokenization}
+The goal of the first step is to retrieve a list of terms (i.e. words)
+of a given document in the corpus \(\forall t_i \in D_i, \enskip D_i \in C\).
+Importantly, each document \(D_i\) is a sequence not a set
+(i.e. is allows the repetition of elements), otherwise the 5th step would not
+work as shown later.
+Consequently, punctuation characters are stripped from the document and
+the text get split for instance on spaces \cite{singhal2001ir}.
+
+\paragraph{Stop word filtering}
+Language naturally contains terms that do not carry much information,
+those are called \textit{stop words} \cite{singhal2001ir}.
+Common examples from the English language are words such as:
+\textit{the}, \textit{and}, \textit{or} etc.
+The useful semantics can be found in the words that are left after filtering
+out such \textit{stop words}.
+
+\paragraph{Normalization}
+Both of these terms refer to the process of removing the endings of all terms
+in a given document \(\{t_i \in D_i \mid normalization(t_i)\}\) that is part of
+the corpus \(D_i \in C\) \cite{singhal2001ir}.
+
+The rationale of this step is to normalize the semantics of the terms ---
+\(\{\textit{organization}, \textit{organizer}, \textit{organizing}\}\) essentially
+encapsulate the same semantic meaning of their \textit{lemma}: \textit{organize}.
+Nevertheless, if not normalized, a purely mathematical approach,
+which is utilized here, will not capture the common denominator of those terms.
+Consequently, each term is stripped of its ending. There are two major approaches
+to do so: \textit{lemmatization} and \textit{stemming} \cite{plisson2004lemma}.
+
+The \textit{lemma} of a word is its \textit{canonical form}, its base form \cite{plisson2004lemma}.
+Thus, \textit{lemmatization} describes the process of normalizing words to their
+\textit{lemmata} \cite{plisson2004lemma}.
+
+The other variant, the \textit{stemming}, describes a similar process with the
+same goal that instead just strips common endings in the respective language.
+Therefore, \textit{lemmatization} is objectively the better, albeit more complex,
+approach as it captures the actual base form of a word while also
+being less error-prone. A good example are the English words:
+\(\{\textit{runs}, \textit{running}, \textit{ran}\}\). It becomes apparent that
+in this example, the \textit{stemming} approach would not have correctly
+normalized the word \textit{ran}, compared to the \textit{lemmatization} approach.
+
+Ergo, if possible, \textit{lemmatization} is preferred over \textit{stemming}.
+
+\paragraph{Vectorization}
+Since the described process is mathematical in its core, the sequence of terms
+out of each document of the corpus needs to be converted to
+numerical representations of themselves.
+Precisely, this step involves constructing a term-document matrix
+with the all terms contained in the corpus \(\forall t_i \in \bigcup C\)
+as the rows and all the documents in the corpus \(\forall D_i \in C\)
+as the columns. It is filled with either a \(0\) if a term of a given row
+does not appear in the document of that column or a \(1\) if it does appear:
+\[
+  \begin{matrix}
+    & \textbf d_i \\
+    & \downarrow \\
+    \textbf t_i^{T} \rightarrow &
+    \begin{bmatrix}
+      td_{1,1} & \dots & 1 & \dots & td_{1,n} \\
+      \vdots & \ddots & \vdots & \ddots & \vdots \\
+      1 & \dots & 0 & \dots & 0 \\
+      \vdots & \ddots & \vdots & \ddots & \vdots \\
+      td_{m,1} & \dots & 0 & \dots & td_{m,n} \\
+    \end{bmatrix}
+  \end{matrix}
+\]
+Consequently, this results in a document vector
+\(\vec{\mathbf d_i}\) for every column \(td_{*,n}\)
+of the matrix, which is necessary for the remaining steps.
+
+\paragraph{Relevance weighting}
+Although the resulting document vectors could already be used for the
+\textit{cosine similarity} calculation, the quality of the output
+can still be improved by weighting every term to increase or decrease its value
+in the matrix per document based on its relevance for that document in relation
+to the whole corpus.
+
+A common approach, that we are utilizing,
+is \textit{term frequency–inverse document frequency} (\textit{tf-idf}).
+The idea behind it is to increase the weight of terms that have
+a high \textit{term frequency} and a low \textit{inverse document frequency}.
+This tends to filter out common terms while overall improving the relevance
+of the terms in the corpus \cite{robertson2004tfidf} \cite{singhal2001ir}.
+Theoretically, one can skip the step of \textit{stop word filtering}
+as \textit{tf-idf} in the end achieves a similar goal by not returning
+high values for common terms that might have been considered \textit{stop words}.
+
+It first independently calculates the \textit{term frequency} for each term,
+such that the frequency of a term in a given document is divided by the total
+amount of terms in that document \cite{robertson2004tfidf}.
+The goal is to normalize the importance of a term owing to the fact
+that longer documents have a higher chance of containing the given term
+more often \cite{singhal2001ir}:
+\[tf(t,d) = \frac{f_{t, d}}{\vert d \vert}\]
+
+Next, the \textit{inverse document frequency} is calculated for each term,
+such that the logarithm of the total amount of documents in the corpus
+is divided by the amount of documents containing the term \cite{robertson2004tfidf}.
+This calculation quantifies the importance of a term toward the corpus \cite{singhal2001ir}:
+\[idf(t,C) = \log \left(\frac{\vert C \vert}{\vert \{d \in C \mid t \in d\} \vert}\right)\]
+
+Finally, the functions are combined to calculate the \textit{tf-idf} value
+of each term on a per-document basis \cite{robertson2004tfidf}:
+\[tfidf(t,d,C) = tf(t,d) \times idf(t,C)\]
+
+Applying \textit{tf-idf} changes the values of the elements in the matrix
+from \(\forall td_{m,n} \in \{td \in \mathbb{Z} \mid td \le 0\}\)
+to \(\forall td_{m,n} \in \{td \in \mathbb{R} \mid td \le 0\}\) due to
+the two divisions involved.
+
+\paragraph{Latent semantic indexing (LSI)}
+This last step is optional but oftentimes utilized to further improve the quality
+of the output of this process. \textit{Latent semantic indexing} (LSI) describes
+the process of applying \textit{singular value decomposition} (SVD) to
+the aforementioned term-document matrix \cite{deerwester1990lsi}. % TODO: Should one go into more detail?
+The rationale in the context of the similarity calculation is
+to reduce the matrix with \(m\) rows and \(n\) columns to one with a
+set amount of \(z\) dimensions as the rows.
+This is supposed to get reduce the effects of \textit{synonymy} and
+\textit{polysemy} \cite{deerwester1990lsi}.
+Precisely, \textit{synonymy} describes the phenomenon where different terms describe
+the same idea \cite{press2011oxford} whereas \textit{polysemy} describes the phenomenon
+where same term describes multiple ideas \cite{press2011oxford}.
+After applying \textit{LSI}, each document vector of the corpus \(\vec{\mathbf d_i} \in C\)
+has a magnitude of the previously chosen \(z\) amount of dimensions \(\|\vec{\mathbf d_i}\|\).
+Consequently, the abovementioned \textit{cosine similarity} can be calculated.
+
+\paragraph{Source code processing}
+The main difference when processing natural language as part of source code
+occurs in the first step, the \textit{tokenization}.
+Truly natural language does not use many special characters such as
+braces, semicolons, or ampersands which conversely see heavy usage in
+many programming languages, especially ones with a C-esque syntax.
+As a consequence, the \textit{tokenization} is specific to the respective
+programming language that is getting processed as different languages use a
+different set of control characters together with differing strategies
+for concatenating identifiers and variable names consisting of
+multiple words (e.g. camel case or snake case).
+
+Furthermore, the \textit{stop word filtering}, if employed, has to be tailored
+even more to the programming language getting processed ---
+keywords (e.g. \code{public}, \code{static}, \code{void}) appear in
+every source code document while not adding any meaningful semantic information,
+hence it is useful to filter those out as part of the \textit{stop word filtering}.
 
 
 \subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
