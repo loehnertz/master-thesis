@@ -61,7 +61,8 @@ that a single human cannot even fully comprehend anymore at one point.
 
 For many companies, this oftentimes is the status quo and if the decision is
 made to move to a microservices-based architecture, one of the first
-challenges, the decomposition, is already difficult to begin with:\\
+challenges, the decomposition, is already difficult to begin with:
+
 Defining where within the existing application one service should end and the
 next one should begin --- i.e. detecting latent boundaries that partition
 the monolith into many smaller pieces, is a very manual and tedious task.
@@ -113,11 +114,11 @@ monolithic solution into microservices.
 
 Additionally, we are certain that the actual decisions should still be made
 by seasoned engineers and architects which is why a visual solution
-was determined as the best option to actually support them in their
+was determined as the best option to support them in their
 decision making while not taking the decision making away from them
 (i.e. compared to an automated decomposition approach).
 As a consequence, everything mentioned in this section reflects itself in
-the following research questions of this thesis project.
+the following research questions of this thesis.
 
 
 
@@ -564,7 +565,7 @@ latter has its roots in \textit{natural language processing} especially in
 the way that it is utilized in our methodology.
 
 
-\subsubsection{Call graph generation}
+\subsubsection{Call graph generation} \label{subsubsect:call-graph}
 Generally, a call graph is consisting of \textit{"nodes that are the routines
 of the program and directed arcs that represent calls from call sites to
 routines"} \cite{graham1982gprof}. Those graphs can be created via static
@@ -782,15 +783,41 @@ hence it is useful to filter those out as part of the \textit{stop word filterin
 
 \subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
 
+Next to \textit{static program analysis}, one can also analyze the behavior of
+an application while it is running, this is called
+\textit{dynamic program analysis} \cite{ernst2003static}.
+The reasons to utilize \textit{dynamic program analysis} are manifold,
+to gather information about runtime performance, memory usage,
+or debugging \cite{ernst2003static}.
+Another application is the creation of a call graph as discussed in subsection
+\ref{subsubsect:call-graph}. For the same reasons and a few others on top,
+this the process of generating a \textit{dynamic call graph} are interested to our work.
 
+
+\subsubsection{Call graph generation}
+Additionally to the aforementioned reasons to create a \textit{static call graph},
+a \textit{dynamic call graph} can provide other useful information.
+Precisely, to discover where the most data flows within the monitored application
+is a main application of this process \cite{graham1982gprof}.
+The common approach is to build a weighted and optionally directed graph
+to represent the call graph. The optional directions as the directions the
+routines invoke each other and e.g. \textit{execution counts} or average
+\textit{execution times} as the weighted edges \cite{graham1982gprof}.
+Specifically the latter can only be recorded during the runtime of the application,
+however for our work only \textit{execution counts} are used as the edge weights.
+The general problem with \textit{dynamic program analysis} however is that one
+firstly has to run the application that is to be analyzed and secondly the fact
+that there is generally no guarantee that even every part of the application
+has been invoked even when analyzed for an immense amount of time which will
+then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
 
 
 
 \section{Graph clustering} \label{sect:background-graph-clustering}
 
+
 \subsection{Renowned algorithms}
 
-\subsection{Available metrics}
 
 
 
