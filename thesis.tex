@@ -815,11 +815,217 @@ then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
 
 \section{Graph clustering} \label{sect:background-graph-clustering}
 
+The term \textit{graph clustering}, sometimes also called \textit{community detection},
+describes the process of partitioning a usually undirected
+and unweighted or weighted graph into subgraphs \cite{lancichinetti2009community}.
+Important to our work is that partitions on the input graph are calculated,
+so that the resulting clusters do not overlap although a subset of
+graph clustering algorithms exists that generates overlapping clusters.
+A cluster is typically described as a group of vertices that are densely
+interconnected via their \textit{intra-cluster edges} while being only sparsely
+connected to other vertices outside of their own cluster via
+\textit{inter-cluster edges} \cite{lancichinetti2009community} \cite{newman2004fast}.
+
+\paragraph{Modularity}
+The metric of \textit{modularity} measures the quality of a graph clustering
+by comparing the interconnectedness of intra-cluster vertices to their
+inter-cluster edges. It works on unweighted as well as weighted graphs
+\cite{clauset2004modularity} \cite{blondel2008modularity}
+and was devised in 2004 by Newman \cite{newman2004fast}:
+\[
+  Q =
+  \frac{1}{2m}
+  \sum \limits _{ij}{\bigg[ A_{ij} - \frac{k_i k_j}{2m} \bigg]}
+  \delta (c_i, c_j)
+\]
+where
+\begin{itemize}[noitemsep]
+  \item \(A_{ij}\) is the edge weight between vertices \(i\) and \(j\),
+  \item \(k_i\) and \(k_j\) is the sum of the edge weights attached to
+        the vertices \(i\) and \(j\),
+  \item \(2m\) is the sum of all edge weights,
+  \item \(c_i\) and \(c_j\) represent the clusters of the vertices \(i\) and \(j\),
+  \item \(\delta\) is a delta function
+\end{itemize}
+The metric ranges on a scale from \([0.0, 1.0]\), from no clustering structure
+at all to a perfect clustering. Any given graph has a theoretic maximum in terms
+of the achievable \textit{modularity}. However, it is rarely \(1.0\) and finding
+the global maximum is proven to be an NP-complete optimization problem
+\cite{brandes2006maximizing}. Nevertheless, the notion in literature is that
+values over \(0.4\) already resemble a strong clustering structure
+\cite{newman2004fast} \cite{fortunato2007resolution}.
+
 
 \subsection{Renowned algorithms}
 
+A variety of graph clustering algorithms exists with a variety of different
+goals, mechanisms, and features \cite{lancichinetti2009community}
+\cite{fortunato2010community} \cite{danon2005comparing}.
+Consequently, a dozen renowned graph clustering algorithms were evaluated and
+assessed regarding their usability for our work.
+Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
+were selected to be utilized as part of our work --- they are discussed
+in more detail below and are additionally marked with their
+reference to identify them in table \ref{table:graph-clustering-survey}.
+Finally, the way that we utilize the exhibited graph clustering algorithms
+as part of this work is discussed further in chapter
+\ref{chap:creating-service-recommendations}.
 
+\paragraph{Girvan-Newman \cite{girvan2002community}}
+The \textit{Girvan-Newman} algorithm is seen as one of the earliest successful,
+wide-spread graph clustering algorithms \cite{lancichinetti2009community}.
+It was released by Girvan and Newman as part of their influential 2002 paper:
+\textit{"Community structure in social and biological networks"} \cite{girvan2002community}.
+Regardless of the title, their algorithm is generic and works on any graph network
+as its input \cite{lancichinetti2009community}.
+Their algorithm is performing hierarchical clustering which means that
+every cluster that it creates can have recursive sub-clusters
+again \cite{girvan2002community}.
+Thus, this can alternatively be represented as a dendrogram \cite{newman2004fast}.
 
+It iteratively removes edges with the highest
+\textit{edge betweenness centrality}, which is based on
+\textit{betweenness centrality} defined in 1977 by Freeman as
+a metric that can be calculated for each vertex based on the idea that every
+two vertices of a given graph have a shortest path that connects them,
+the amount of how many of all those shortest paths go through any given vertex
+represents its \textit{betweenness centrality} \cite{freeman1977set}.
+As a consequence, Girvan and Newman adapted the idea for edges and coined it
+\textit{edge betweenness centrality} \cite{girvan2002community}:
+\[
+  c(e) = \sum_{s, t \in V} \frac{\sigma(s, t \mid e)}{\sigma(s,t)}
+\]
+However, owing to the fact that their algorithm works hierarchically,
+in the original implementation, the desired number of clusters has to be set
+beforehand which causes the algorithm to cut edges until the set amount of
+clusters is reached.
+
+\paragraph{MCL \cite{vandongen2000graph}}
+Two years before Girvan and Newman published their work, Van Dongen devised
+the graph clustering algorithm \textit{MCL} \cite{vandongen2000graph}.
+It works via random walks based on Markov chains by alternating two operations
+on the input graph until it reaches a state of convergence regarding its
+clustering structure \cite{vandongen2000graph}. These operations are
+\textit{expansion} and \textit{inflation} \cite{vandongen2000graph}.
+
+The first step of \textit{expansion} computes new probabilities for random walks
+for every vertex pair in the graph. Owning to the fact that random walks within
+clusters are usually of higher length as there are many edges to take, intra-cluster
+vertex pairs usually receive higher probabilities \cite{vandongen2000graph}.
+
+The second step, the \textit{inflation}, then boosts and demotes probabilities
+further which over the course of many iterations will cause inter-cluster walks
+to \textit{dry out} --- Van Dongen uses the terminology of \textit{flow} in fact
+\cite{vandongen2000graph}. Consequently, this process will form a clustering
+over time.
+
+The strength of the \textit{inflation} can be set via an input parameter which
+affects the granularity of the clustering and has therefore a similar problem
+as the \textit{Girvan-Newman} algorithm. A solution to this issue is discussed
+in chapter \ref{chap:creating-service-recommendations}.
+
+\paragraph{Walktrap \cite{pons2005computing}}
+The \textit{Walktrap} algorithm was devised in 2005 by Pons and Latapy
+\cite{pons2005computing} and shares similarities with \textit{MCL}.
+As its name implies, it tries to compute a graph clustering by utilizing short
+Markov chain random walks and the idea that due to existing, albeit latent
+clustering structure of a given graph, those random walks are more likely
+to get \textit{trapped} in said clusters \cite{pons2005computing}.
+
+%TODO: One could describe a little more here, maybe?!
+
+The main improvement over \textit{MCL} is better runtime complexity
+\cite{pons2005computing}.
+
+\paragraph{Clauset-Newman-Moore \cite{clauset2004modularity}}
+Two years after releasing the \textit{Girvan-Newman} algorithm, Newman
+released another graph clustering algorithm \cite{newman2004fast}.
+Its idea is based on maximizing the \textit{modularity} of the clustering.
+However, shortly after, another improved version of his new algorithm
+was published together with Clauset and Moore which is the
+faster and generally improved version \cite{clauset2004modularity}.
+
+As abovementioned, maximizing \textit{modularity} is an NP-complete
+optimization problem which led Clauset et al. to solve it via a greedy heuristic.
+Their algorithm starts off with putting every vertex of the given graph in its
+own cluster, such that \(\{\{v\} \mid v \in V\}\).
+Afterwards, in a maximum of \(\vert V \vert - 1\) iterations, the two clusters
+that share a connection and whose amalgamation increases the \textit{modularity}
+\(Q\) the most, respectively decrease it the least, are merged
+\cite{clauset2004modularity}.
+
+Eventually, this greedy algorithm will converge in a local or even global
+optimum regarding the \textit{modularity} of the computed clustering
+\cite{clauset2004modularity}.
+
+\paragraph{Louvain \cite{blondel2008modularity}}
+The \textit{Louvain} algorithm was devised in 2008 by Blondel et al. and is
+named after their university \cite{blondel2008modularity}.
+It is based on a similar premise to that of \textit{Clauset-Newman-Moore}.
+The algorithm by Blondel et al. consists of two distinct phases.
+
+Before beginning with the first phase, every vertex is placed in their own cluster.
+The first phase then checks for each vertex with which adjacent vertex it can
+merge clusters to reach a maximum increase in \textit{modularity}.
+Compared to \textit{Clauset-Newman-Moore}, only if the \textit{modularity}
+can be actually increased, the clusters are merged \cite{blondel2008modularity}.
+All vertices are iterated over and checked repeatedly until a local optimum
+is reached \cite{blondel2008modularity}.
+
+As part of the second phase then, a new weighted graph is constructed with
+the clusters detected in the first phase as the vertices.
+The weighted edges between the new vertices are the sum of all vertices
+the newly connected vertices are constructed out of.
+Additionally, self-loops are attached to every vertex \cite{blondel2008modularity}.
+
+Finally, the first phase is applied to the newly constructed graph again.
+These two phases are then iteratively alternated until the increase in
+\textit{modularity} ends or reaches a plateau \cite{blondel2008modularity}.
+Hence, the \textit{Louvain} is a heuristic algorithm as well.
+
+Fortunato et al. showed that \textit{modularity} optimization suffers
+the problem of not being able to identify clusters of small sizes, the so called
+\textit{resolution limit problem} \cite{fortunato2007resolution}.
+The main improvements proposed by Blondel et al. specifially compared
+to the algorithm by Clauset et al. are better runtime complexity, and a solution
+to the \textit{resolution limit problem}, that \textit{Clauset-Newman-Moore}
+faces, by leveraging the aforementioned self-loops \cite{blondel2008modularity}.
+
+\paragraph{Infomap \cite{rosvall2008infomap}}
+The \textit{Infomap} algorithm was devised in 2008 by Rosvall and Bergstrom
+\cite{rosvall2008infomap}.
+Its process bears a similarity to the \textit{Louvain} algorithm although
+its core idea is entirely different. The similarity stems from the fact
+that every vertex is also assigned to its own cluster in the beginning and
+that cluster are then iteratively merged when this improves the metric that
+the algorithm optimizes toward. However, compared to the \textit{Louvain}
+algorithm, instead of \textit{modularity}, a \textit{map equation} is minimized.
+
+Precisely, \textit{Infomap} represents the given graph as a random walk encoded
+via Huffman coding \cite{huffman1952coding}.
+Additionally, each cluster receives a prefix so that the codes for the vertices
+can be reused in different clusters which decreases the required amount of bits
+to represent the Huffman coding \cite{rosvall2008infomap}.
+
+%TODO: One could describe a little more here, maybe?!
+
+Finally, the phase that is reiterated over and over eventually tries to
+change the clusters of the vertices such that the \textit{map equation}
+representing the graph clustering is minimized \cite{rosvall2008infomap}.
+
+\paragraph{Chinese Whispers \cite{biemann2006chinese}}
+The \textit{Chinese Whispers} algorithm was released in 2005 by Biemann
+\cite{biemann2006chinese}.
+It mainly consists of an endless loop that is terminated once no better
+clustering can be found anymore (i.e. a local or global optimum is reached)
+or a predefined number of iterations has passed \cite{biemann2006chinese}.
+At first, every vertex of the given graph is put into its own cluster.
+Next, the vertices are iterated over in random order. Each vertex is moved
+to the cluster that is shares the most edges with \cite{biemann2006chinese}.
+
+Owing to the fact, that this algorithm is incorporating randomness,
+it is non-deterministic. Moreover, it yields a flat clustering
+(i.e. non-hierarchical) \cite{biemann2006chinese}.
 
 
 
@@ -861,7 +1067,7 @@ then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
 
 
 
-\chapter{Creating microservice recommendations}
+\chapter{Creating microservice recommendations} \label{chap:creating-service-recommendations}
 
 \section{Clustering combined weighted graph}
 
