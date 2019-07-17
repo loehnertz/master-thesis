@@ -871,9 +871,45 @@ Finally, the way that we utilize the exhibited graph clustering algorithms
 as part of this work is discussed further in chapter
 \ref{chap:creating-service-recommendations}.
 
+\begin{table}[h!]
+\def\arraystretch{1.60}
+\begin{tabularx}{\textwidth}{|Y||p{2.5cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
+ \hline
+ \rot{Citations~} & \rot{Runtime complexity~} & \rot{Implementation available~} & \rot{Does not require amount of clusters~} & \rot{Deterministic~} & \rot{Considers weighted edges~} & \rot{Hard clustering~} & \rot{Hierarchical~} \\
+ \hline\hline
+ \cite{girvan2002community}     & \(\mathcal{O}(n^3)\)          & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{vandongen2000graph}      & \(\mathcal{O}(nk^2)\)         & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{pons2005computing}       & \(\mathcal{O}(mn)\)           & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
+ \cite{clauset2004modularity}   & \(\mathcal{O}(md \log{} n)\)  & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{blondel2008modularity}   & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{rosvall2008infomap}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{biemann2006chinese}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{reichardt2004detecting}  & \(\mathcal{O}(n)\)            & $\oplus$  & $\ominus$  & $\ominus$  & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
+ \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & ~          & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
+\end{tabularx}
+\caption{Graph clustering algorithm survey matrix}
+\label{table:graph-clustering-survey}
+\end{table}
+
+\paragraph{Graph clustering algorithm survey}
+A total of nine renowned graph clustering algorithms were evaluated
+and classified in table \ref{table:graph-clustering-survey}.
+All of the information necessary for the classification including the
+runtime complexity indications are taken out of the original papers of the
+authors which leads to the fact that some information is unknown as
+the authors did not calculate or disclose this information.
+The signs that are used in the matrix correspond to the following meaning:
+\begin{itemize}[noitemsep]
+  \item $\oplus$: The statement of the respective cell is \textit{true}
+  \item $\ominus$: The statement of the respective cell is \textit{false}
+  \item N/A: The statement of the respective cell is \textit{not available}
+\end{itemize}
+The way that classifications are negated or not was chosen so that $\oplus$
+is a positive feature regarding the utilization as part of our work.
+
 \paragraph{Girvan-Newman \cite{girvan2002community}}
-The \textit{Girvan-Newman} algorithm is seen as one of the earliest successful,
-wide-spread graph clustering algorithms \cite{lancichinetti2009community}.
+The \textit{Girvan-Newman} algorithm is seen as one of the earliest, successful,
+wide-spread graph clustering algorithm \cite{lancichinetti2009community}.
 It was released by Girvan and Newman as part of their influential 2002 paper:
 \textit{"Community structure in social and biological networks"} \cite{girvan2002community}.
 Regardless of the title, their algorithm is generic and works on any graph network
@@ -893,8 +929,12 @@ represents its \textit{betweenness centrality} \cite{freeman1977set}.
 As a consequence, Girvan and Newman adapted the idea for edges and coined it
 \textit{edge betweenness centrality} \cite{girvan2002community}:
 \[
-  c(e) = \sum_{s, t \in V} \frac{\sigma(s, t \mid e)}{\sigma(s,t)}
+  c(e) = \sum_{s, t \in V} \frac{\sigma(s, t \mid e)}{\sigma(s, t)}
 \]
+Here, \(\sigma(s, t \mid e)\) resembles the amount of shortest paths
+between \(s\) and \(t\) that pass through \(e\) while \(\sigma(s, t)\)
+is the amount of shortest paths between \(s\) and \(t\).
+
 However, owing to the fact that their algorithm works hierarchically,
 in the original implementation, the desired number of clusters has to be set
 beforehand which causes the algorithm to cut edges until the set amount of
@@ -931,9 +971,7 @@ As its name implies, it tries to compute a graph clustering by utilizing short
 Markov chain random walks and the idea that due to existing, albeit latent
 clustering structure of a given graph, those random walks are more likely
 to get \textit{trapped} in said clusters \cite{pons2005computing}.
-
 %TODO: One could describe a little more here, maybe?!
-
 The main improvement over \textit{MCL} is better runtime complexity
 \cite{pons2005computing}.
 
@@ -951,7 +989,7 @@ Their algorithm starts off with putting every vertex of the given graph in its
 own cluster, such that \(\{\{v\} \mid v \in V\}\).
 Afterwards, in a maximum of \(\vert V \vert - 1\) iterations, the two clusters
 that share a connection and whose amalgamation increases the \textit{modularity}
-\(Q\) the most, respectively decrease it the least, are merged
+\(Q\) the most, respectively decreases it the least, are merged
 \cite{clauset2004modularity}.
 
 Eventually, this greedy algorithm will converge in a local or even global
@@ -1103,7 +1141,7 @@ it is non-deterministic. Moreover, it yields a flat clustering
 
 \chapter{Results}
 
-\section*{Experimental setup}
+\section{Experimental setup}
 
 
 
