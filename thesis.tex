@@ -85,40 +85,54 @@ Firstly, our work leverages static and dynamic program analysis for solving
 the posed task. Obviously, this is not possible without an already running solution.
 
 Secondly, while there is already some research on this topic \cite{fritzsch2018monolith},
-which is discussed in the \nameref{chap:related} chapter, the notion
+which is discussed in the \textit{\nameref{chap:related}} chapter, the notion
 of utilizing the already existing and running application is still underrepresented.
 
 Thirdly, as Martin Fowler remarks, microservices are especially feasible
 with a mature workflow, domain model, operational model, etc. already
-in place \cite{fowler-monolith-first} \cite{fowler-microservices-tradeoffs}
+in place \cite{fowler-monolith-first, fowler-microservices-tradeoffs}
 which favors non-greenfield approaches as well.
 
 The task of getting the boundaries of each microservice right is hard,
 especially when the teams working on the existing software
 are caught up in their mental models of it \cite{latoza2006maintaining},
-as Fritzsch et al. confirm: \textit{"Extracting a domain model from
-an application's code base can be a significant challenge. If incorrectly applied,
+as Fritzsch et al. confirm:
+\begin{displayquote}
+\emph{"Extracting a domain model from an application's code base
+can be a significant challenge. If incorrectly applied,
 it can lead to architectures that combine the drawbacks of both styles,
-monolithic architectures and Microservices."}\cite{fritzsch2018monolith}
-To prevent such an outcome, we propose a visual approach to assist software engineers
-and architects in decomposing microservices out of an existing monolithic code base.
+monolithic architectures and Microservices."}~\cite{fritzsch2018monolith}
+\end{displayquote}
+To prevent such an outcome, we propose a semi-automated approach to assist
+software engineers in decomposing microservices out of an existing monolithic code base.
 This approach has the advantage that the mental models regarding the existing
 solution might be broken apart partially to offer new perspectives onto how
 the current software works, which was already remarked as a positive side effect
 of an assisted microservices decomposition approach \cite{gysel2016service}.
 Thus, the engineers and architects can be assisted in the first step,
 which is likely also the most difficult and time-consuming one due to the possible
-complexity of the system \cite{fritzsch2018monolith} \cite{france2007model},
+complexity of the system \cite{fritzsch2018monolith, france2007model},
 when undertaking the operation of transforming their existing
 monolithic solution into microservices.
 
 Additionally, we are certain that the actual decisions should still be made
-by seasoned engineers and architects which is why a visual solution
+by seasoned engineers and architects which is why a semi-automated solution
 was determined as the best option to support them in their
 decision making while not taking the decision making away from them
 (i.e. compared to an automated decomposition approach).
 As a consequence, everything mentioned in this section reflects itself in
 the following research questions of this thesis.
+
+
+
+\section{Research questions}
+
+\hangindent=1cm
+\noindent Thus, we derived the following research questions:\\
+\textbf{RQ1:} \textit{"How can existing monolithic software be analyzed
+and used to give microservices recommendations based on it?"}\\
+\textbf{RQ2:} \textit{"Which numeric metrics are the most suitable
+for evaluating microservice decomposition methodologies?"}
 
 
 
@@ -144,7 +158,7 @@ proof-of-concept (PoC) are the outputs of this project.
 The latter is introduced in chapter \ref{}.
 The steps that this PoC needs to conduct are derived and tested
 independently via exploratory as well as confirmatory case studies
-in chapter \ref{} to receive substantive, validatable,
+in chapter \ref{} to receive substantive, numeric,
 and separate results \cite{easterbrook2008selecting}.
 Moreover, controlled experiments are not feasible as control results
 with their dependent variables for the outcomes are rare and difficult
@@ -155,252 +169,6 @@ A large-scale code base provided by the company hosting this thesis as well as
 large open source software projects were candidates for this.
 The evaluation as part of chapter \ref{} is conducted using
 a custom set of metrics devised in chapter \ref{}.
-
-
-
-\section{Research questions}
-
-\hangindent=1cm
-\noindent Thus, we derived the following research questions:\\
-\textbf{RQ1:} \textit{"How can existing monolithic software be analyzed
-and used to give microservices recommendations based on it?"}\\
-\textbf{RQ2:} \textit{"Which numeric metrics are the most suitable
-for evaluating microservice decomposition methodologies?"}
-
-
-
-
-\chapter{Related work} \label{chap:related}
-
-The described problem of detecting latent boundaries within existing
-application software for the purpose of decomposing it into microservices is
-a sparse research domain, especially when compared to others
-in computer science \cite{fritzsch2018monolith}.
-Nevertheless, the existing research is categorized, rated and analyzed in the
-following \textit{\nameref{subsect:literature-survey}}.
-
-To add to this chapter, Fritzsch et al. conducted a complete literature study titled
-\textit{From Monolith to Microservices: A Classification of Refactoring Approaches} (2019)
-\cite{fritzsch2018monolith} which looked at research in the same domain as ours.
-They conclude their research with:
-\begin{displayquote}
-\emph{"Our literature review has revealed a lack of systematic guidance on the
-refactoring process for existing monolithic applications."}~\cite{fritzsch2018monolith}
-\end{displayquote}
-This underlines the relevance and importance of this area of research and the
-notion that there is still room for improvement.
-
-
-
-\section{Literature survey} \label{subsect:literature-survey}
-
-\begin{table}[h!]
-\def\arraystretch{1.55}
-\begin{tabularx}{\textwidth}{|Y||Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
- \hline
- \multicolumn{1}{|c||}{~} & \multicolumn{6}{c|}{Approaches} & \multicolumn{4}{c|}{Features}\\
- \hline\hline
- \rot{Citations~} & \rot{SE model analysis~} & \rot{Static analysis~} & \rot{Dynamic analysis~} & \rot{Data model analysis~} & \rot{VCS mining~} & \rot{External interface analysis~} &
- \rot{Evaluation~} & \rot{Evaluation by testing~} & \rot{Evaluation via metrics~} & \rot{(Available) Proof-of-concept~} \\
- \hline\hline
- \cite{gysel2016service} & $\oplus$ & ~ & ~ & ~ & ~ & ~ & $\ominus$ & $\oplus$ & ~ & $\oplus$ \\\hline
- \cite{kruidenberg2018monoliths} & $\odot$ & $\odot$ & $\odot$ & ~ & $\odot$ & ~ & $\odot$ & $\odot$ & $\ominus$ & $\oplus$ \\\hline
- \cite{mazlami2017extraction} & ~ & $\odot$ & ~ & ~ & $\oplus$ & ~ & $\odot$ & $\oplus$ & $\odot$ & $\oplus$ \\\hline
- \cite{jin2018functionality} & ~ & ~ & $\oplus$ & ~ & ~ & ~ & $\oplus$ & $\oplus$ & $\oplus$ & $\ominus$ \\\hline
- \cite{baresi2017microservices} & ~ & ~ & ~ & ~ & ~ & $\oplus$ & $\oplus$ & $\oplus$ & $\odot$ & $\odot$ \\\hline
- \cite{chen2017monolith} & $\oplus$ & ~ & ~ & ~ & ~ & ~ & $\odot$ & $\odot$ & ~ & $\ominus$ \\\hline
- \cite{escobar2016towards} & ~ & $\oplus$ & ~ & ~ & ~ & ~ & $\odot$ & $\odot$ & $\odot$ & $\ominus$ \\\hline
- \cite{levcovitz2016towards} & ~ & $\odot$ & ~ & $\odot$ & ~ & $\odot$ & $\ominus$ & $\ominus$ & ~ & $\ominus$ \\\hline
- \cite{knoche2018using} & ~ & $\odot$ & ~ & ~ & ~ & ~ & $\ominus$ & $\ominus$ & ~ & $\ominus$ \\\hline
-\end{tabularx}
-\caption{Literature survey matrix}
-\label{table:literature-survey}
-\end{table}
-
-
-The matrix (table \ref{table:literature-survey}) visualizes the
-surveyed literature via classification.
-Six general approaches as well as four features were extracted from the works.
-The approaches were devised by studying the available literature on the subject.
-In summary, other researchers were using one or more of these six approaches
-to answer their research questions regarding microservice decomposition out of an existing monolith.
-Thus, pure greenfield approaches were not targeted in the literature survey.\\
-The signs used in the matrix are defined as follows:
-\begin{itemize}[noitemsep]
-    \item An empty cell depicts that the approach or feature of that column was not utilized
-    by the work cited in that row.
-    \item A circle with a dot ($\odot$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row without any outstanding execution
-    or results in any direction or with results that were difficult to assess.
-    \item A plus sign ($\oplus$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row in a successful way.
-    \item A minus sign ($\ominus$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row in a subpar way.
-\end{itemize}
-Those evaluative signs were assigned via our own intuition of the execution and results
-as well as the evaluation of the works in other analyzed literature.
-The latter approach was especially possible due to
-the existing work by Fritzsch et al. \cite{fritzsch2018monolith}.
-
-
-\subsection*{Approaches}
-
-In the following paragraphs, the approaches used as matrix columns are explained in more detail.
-\paragraph{SE model analysis}
-The term \textit{Software Engineering (SE) models} subsumes non-source code
-artifacts out of the domain of SE.
-For instance, this category includes use case models and entity relationship models (ERM).
-\paragraph{Static analysis}
-Static analysis covers any form of non-runtime analysis of the given code base.
-This includes dependency graphs, class graphs, connection of source code via shared terms
-(i.e. words in the identifier of classes that might tie them together) etc.
-\paragraph{Dynamic analysis}
-Dynamic analysis is about analyzing the existing monolithic software during its execution.
-This covers profiling it, tracing data inside of the application as well as analyzing
-access logs such as web traffic logs.
-\paragraph{Data model analysis}
-Owing to the fact that one pillar of the microservices architecture is about
-separating data stores \cite{ms-microservices}, the approach to analyze
-the data models (e.g. schemes) of existing database tables is, generally speaking,
-an important one. This approach covers direct analysis of database tables
-as well as the analysis of \textit{object relational mappers} (ORM)
-if those were already in use in the existing application.
-\paragraph{VCS mining}
-The repositories of existing solutions are usually part of a
-version control system (VCS) such as Git. Consequently, commits and merges can be analyzed
-to e.g. determine the coupling of certain files, modules, or classes.
-\paragraph{External interface analysis}
-The external interfaces (i.e. the Web-APIs) of existing solutions can be analyzed to get
-a sense of existing modularization and cohesion within the solution.
-
-
-\subsection*{Features}
-
-In the following paragraphs, the features used as matrix columns are explained in more detail.
-\paragraph{Evaluation}
-This column just depicts if the cited source of a row evaluated their work in any form.
-\paragraph{Evaluation by testing}
-Since this literature survey was focused on works that research assisted or semi-automated
-microservice decomposition, theoretically, the works could be evaluated with real-world or
-even artificial data such as large open source projects built with a monolithic architecture.
-\paragraph{Evaluation via metrics}
-Owing to the fact that the area of research of this project is still rather young and sparse
-\cite{jin2018functionality}\cite{fritzsch2018monolith}, custom as well as renowned metrics
-for the evaluation are a welcomed addition to the research in this area.
-Additionally, evaluation via metrics improves the overall credibility of a work.
-\paragraph{(Available) Proof-of-concept}
-This feature is somewhat tied to the \textit{Evaluation by testing} one as oftentimes
-a prototype (i.e. proof-of-concept) is built to actually test the designed
-methodology or algorithm. Moreover, a positive or a negative execution respectively
-was awarded if the prototype was publicly available (e.g. as open source software)
-since it is otherwise impossible to assess.
-
-
-
-\section{Topic relations} \label{subsect:topic-relations}
-
-Following the approaches and features extracted in the previous section,
-the methodologies of the works that are the closest to ours are observed with greater detail.
-
-Gysel and K{\"o}lbener \cite{gysel2016service} were the first to release work in
-this area of research that is in the same vein to ours in the sense that a
-complete methodology is developed to convert a certain input to microservice
-recommendations. They initially devised the idea to build a graph out of this
-input that is then clustered using a graph clustering algorithm to create clusters
-that reflect the microservice recommendations.
-Future work in the domain \cite{mazlami2017extraction}\cite{kruidenberg2018monoliths}
-together with ours is following this idea.
-However, not every analyzed work uses this approach.
-Therefore in this subsection, only works that do use it are analyzed in detail
-as they relate closely in topic.
-
-
-\subsection{Analyzed inputs}
-
-Gysel and K{\"o}lbener used \textit{SE model analysis} as their only approach ---
-a type of input that is unlikely to be available or
-can be created with a lot of manual work, as they acknowledge
-themselves in their original work \cite{gysel2016service}.
-This fact decreases the actual usability of the devised methodology and leaves
-room for improvement.
-
-Kruidenberg \cite{kruidenberg2018monoliths} built on top of the work and
-especially the implementation of Gysel and K{\"o}lbener by extending their
-\textit{SE model analysis} input with \textit{Dynamic analysis} input.
-Precisely, they model the input, that the implementation of Gysel and K{\"o}lbener
-requires and generates out of \textit{SE models}, from data retrieved
-out of \textit{Static analysis}, \textit{Dynamic analysis}, and \textit{VCS mining}.
-Consequently, this approach mainly solves the problem that the original approach
-had regarding the availability and respectively the ease of creation
-of supported input formats.
-
-Comparatively, Mazlami \cite{mazlami2017extraction} devised their completely
-custom methodology. The foundation is still based on building and then clustering
-a graph but they chose \textit{Static analysis}, and \textit{VCS mining} as
-their approaches of choice. From within the domain of static program analysis,
-semantically analyzing source code was devised and implemented as input together
-with mining evolutionary data out of version control system logs.
-
-Instead, we utilize three distinct input dimensions for constructing
-a more precise weighted graph which can then be clustered.
-
-
-\subsection{Graph clustering}
-
-Regarding the graph clustering, Gysel and K{\"o}lbener \cite{gysel2016service}
-only utilized two graph clustering algorithms both of which have major
-shortcomings specific to this area of research.
-The Girvan-Newman algorithm \cite{girvan2002community} requires the
-amount of clusters beforehand which is not ideal for recommending
-microservice candidates as the software engineers prospectively using
-such a tool can at best estimate that amount.
-Additionally, one advantage of automated microservice decomposition recommendations
-is that the algorithm might give recommendations that a human engineer would
-not have considered which also affects the granularity and therefore the
-amount of services (i.e. clusters).
-The Leung algorithm \cite{leung2009community} on the other hand has the
-disadvantage that it is non-deterministic which might cause completely
-different recommendations with every execution.
-
-Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same
-algorithms as his work is an extension of the one of Gysel and K{\"o}lbener.
-
-Mazlami \cite{mazlami2017extraction} leveraged the notion of the
-minimal spanning tree (MST) of the input graph to perform the clustering.
-Thus, their methodology is not based on state-of-the-art graph clustering algorithms
-but a custom approach instead. They implemented an algorithm
-that iteratively calculates the MST and removes the edge with the lowest similarity
-from the graph. However, this approach has the same problem as the
-Girvan-Newman algorithm \cite{girvan2002community} that Gysel and K{\"o}lbener
-utilized in the sense that it requires the desired amount of services beforehand.
-
-Instead, we show how to leverage heuristic optimization of the clustering and
-therefore the recommendations toward a numeric metric via a fitness function
-while incorporating a large set of state-of-the-art graph clustering algorithms
-to be able to compare them and assess which one performs the best for a given input.
-Thus, this removes the problem of having to define the desired amount of microservices
-a priori.
-
-
-\subsection{Evaluative metrics}
-
-Gysel and K{\"o}lbener \cite{gysel2016service} just evaluated their
-initially set requirements on a custom scale of 1--3 together with a devised
-questionnaire to assess the quality of the recommendations.
-The questionnaire however follows no numeric metrics and just allows answers
-in a boolean manner which makes it more subjective.
-
-Mazlami \cite{mazlami2017extraction} devised a set of six metrics that measure
-the output of their methodology. Although some of them do not have the notion
-of if a higher value is better or worse (e.g. \textit{Average Contributors per Microservice}).
-
-Kruidenberg \cite{kruidenberg2018monoliths} used a combination of metrics from
-the works of Gysel and K{\"o}lbener \cite{gysel2016service} and
-Mazlami \cite{mazlami2017extraction}.
-
-Instead, we devise an extensive set of numeric metrics that offers
-an objective and quantifiable view on the resulting microservice recommendations
-to be able to evaluate not only our methodology but the recommendations them self as well.
 
 
 
@@ -434,13 +202,13 @@ as a single logical unit \cite{ms-fowler}.
 Furthermore, a monolithic application can perform every task of the given functionality
 within the domain of its business logic from beginning to end \cite{monolith}.
 Usually this is implemented in a layered (e.g. UI, business logic, data access)
-and modular manner \cite{ms-fowler} \cite{monolith}.
+and modular manner \cite{ms-fowler, monolith}.
 
 
 \subsubsection{Advantages}
 Generally, the notion exists that monolithic applications are more natural
 to work with while also being easier to design, build, and deploy specifically
-in the beginning of their life cycle \cite{ms-fowler} \cite{raymond2003unix}.
+in the beginning of their life cycle \cite{ms-fowler, raymond2003unix}.
 
 Tying into this, the operational overhead is small as not much middleware or
 special deployment strategies are necessary \cite{ms-fowler}.
@@ -456,7 +224,7 @@ Even if the monolithic application is built modular and in layers,
 the code base and most likely the complexity can just grow over time.
 The engineer is in the end just fighting against it becoming a
 \textit{big ball of mud} which starts to exceed the mental capabilities of a
-human engineer \cite{newman2015building} \cite{foote1997bigballofmud} \cite{france2007model}.
+human engineer \cite{newman2015building, foote1997bigballofmud, france2007model}.
 
 Moreover, a monolithic application is deployed as a whole which hinders
 independent life cycles regarding the modules within the application \cite{ms-fowler}.
@@ -467,7 +235,7 @@ Finally, following the last disadvantage, the scalability is also problematic
 as the only option once the application needs to be scaled is to replicate it
 into another instance and balance incoming load onto the instances ---
 even if only a tiny module within the monolith might have needed any scaling
-in the first place \cite{ms-fowler} \cite{newman2015building}.
+in the first place \cite{ms-fowler, newman2015building}.
 
 
 \subsection{Microservices-based}
@@ -476,7 +244,7 @@ Microservices are essentially about building an application
 communicating with lightweight mechanisms, often an HTTP resource API"} \cite{ms-fowler} ---
 a microservice is developed and deployed independently in a distributed manner.
 Each service should be built around one business capability following the
-\textit{single responsibility principle} \cite{newman2015building} \cite{martin2003agile}.
+\textit{single responsibility principle} \cite{newman2015building, martin2003agile}.
 Furthermore, each microservice should be responsible for the data it governs,
 avoiding any overlaps with other services \cite{ms-fowler}.
 
@@ -518,7 +286,7 @@ service knowing where and how to reach the others \cite{newman2015building}.
 Furthermore, the penalty on inter-service communication via a network is almost
 always larger compared to regular function calls, especially when considering
 serialization and deserialization before and after every inter-service call
-\cite{knoche2016sustaining} \cite{newman2015building}.
+\cite{knoche2016sustaining, newman2015building}.
 
 Additionally, designing microservices, similarly to a modular monolithic design,
 is a grand task. However, the boundaries need to be defined even more strictly
@@ -693,11 +461,11 @@ does not appear in the document of that column or a \(1\) if it does appear:
     & \downarrow \\
     \textbf t_i^{T} \rightarrow &
     \begin{bmatrix}
-      td_{1,1} & \dots & 1 & \dots & td_{1,n} \\
-      \vdots & \ddots & \vdots & \ddots & \vdots \\
-      1 & \dots & 0 & \dots & 0 \\
-      \vdots & \ddots & \vdots & \ddots & \vdots \\
-      td_{m,1} & \dots & 0 & \dots & td_{m,n} \\
+      td_{1,1}  & \dots   & 1       & \dots   & td_{1,n}  \\
+      \vdots    & \ddots  & \vdots  & \ddots  & \vdots    \\
+      1         & \dots   & 0       & \dots   & 0         \\
+      \vdots    & \ddots  & \vdots  & \ddots  & \vdots    \\
+      td_{m,1}  & \dots   & 0       & \dots   & td_{m,n}  \\
     \end{bmatrix}
   \end{matrix}
 \]
@@ -717,7 +485,7 @@ is \textit{term frequency–inverse document frequency} (\textit{tf-idf}).
 The idea behind it is to increase the weight of terms that have
 a high \textit{term frequency} and a low \textit{inverse document frequency}.
 This tends to filter out common terms while overall improving the relevance
-of the terms in the corpus \cite{robertson2004tfidf} \cite{singhal2001ir}.
+of the terms in the corpus \cite{robertson2004tfidf, singhal2001ir}.
 Theoretically, one can skip the step of \textit{stop word filtering}
 as \textit{tf-idf} in the end achieves a similar goal by not returning
 high values for common terms that might have been considered \textit{stop words}.
@@ -824,13 +592,13 @@ graph clustering algorithms exists that generates overlapping clusters.
 A cluster is typically described as a group of vertices that are densely
 interconnected via their \textit{intra-cluster edges} while being only sparsely
 connected to other vertices outside of their own cluster via
-\textit{inter-cluster edges} \cite{lancichinetti2009community} \cite{newman2004fast}.
+\textit{inter-cluster edges} \cite{lancichinetti2009community, newman2004fast}.
 
 \paragraph{Modularity}
 The metric of \textit{modularity} measures the quality of a graph clustering
 by comparing the interconnectedness of intra-cluster vertices to their
 inter-cluster edges. It works on unweighted as well as weighted graphs
-\cite{clauset2004modularity} \cite{blondel2008modularity}
+\cite{clauset2004modularity, blondel2008modularity}
 and was devised in 2004 by Newman \cite{newman2004fast}:
 \[
   Q =
@@ -853,14 +621,14 @@ of the achievable \textit{modularity}. However, it is rarely \(1.0\) and finding
 the global maximum is proven to be an NP-complete optimization problem
 \cite{brandes2006maximizing}. Nevertheless, the notion in literature is that
 values over \(0.4\) already resemble a strong clustering structure
-\cite{newman2004fast} \cite{fortunato2007resolution}.
+\cite{newman2004fast, fortunato2007resolution}.
 
 
 \subsection{Renowned algorithms}
 
 A variety of graph clustering algorithms exists with a variety of different
-goals, mechanisms, and features \cite{lancichinetti2009community}
-\cite{fortunato2010community} \cite{danon2005comparing}.
+goals, mechanisms, and features
+\cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
 Consequently, a dozen renowned graph clustering algorithms were evaluated and
 assessed regarding their usability for our work.
 Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
@@ -1068,7 +836,249 @@ it is non-deterministic. Moreover, it yields a flat clustering
 
 
 
+\chapter{Related work} \label{chap:related}
+
+The described problem of detecting latent boundaries within existing
+application software for the purpose of decomposing it into microservices is
+a sparse research domain, especially when compared to others
+in computer science \cite{fritzsch2018monolith}.
+Nevertheless, the existing research is categorized, rated and analyzed in the
+following \textit{\nameref{subsect:literature-survey}}.
+
+To add to this chapter, Fritzsch et al. conducted a complete literature study titled
+\textit{From Monolith to Microservices: A Classification of Refactoring Approaches} (2019)
+\cite{fritzsch2018monolith} which looked at research in the same domain as ours.
+They conclude their research with:
+\begin{displayquote}
+\emph{"Our literature review has revealed a lack of systematic guidance on the
+refactoring process for existing monolithic applications."}~\cite{fritzsch2018monolith}
+\end{displayquote}
+This underlines the relevance and importance of this area of research and the
+notion that there is still room for improvement.
+
+
+
+\section{Literature survey} \label{subsect:literature-survey}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|Y||Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
+ \hline
+ \multicolumn{1}{|c||}{~} & \multicolumn{6}{c|}{Approaches} & \multicolumn{4}{c|}{Features}\\
+ \hline\hline
+ \rot{Citations~} & \rot{SE model analysis~} & \rot{Static analysis~} & \rot{Dynamic analysis~} & \rot{Data model analysis~} & \rot{VCS mining~} & \rot{External interface analysis~} &
+ \rot{Evaluation~} & \rot{Evaluation by testing~} & \rot{Evaluation via metrics~} & \rot{(Available) Proof-of-concept~} \\
+ \hline\hline
+ \cite{gysel2016service}          & $\oplus$  & ~         & ~         & ~       & ~         & ~         & $\ominus$ & $\oplus$  & ~         & $\oplus$  \\\hline
+ \cite{kruidenberg2018monoliths}  & $\odot$   & $\odot$   & $\odot$   & ~       & $\odot$   & ~         & $\odot$   & $\odot$   & $\ominus$ & $\oplus$  \\\hline
+ \cite{mazlami2017extraction}     & ~         & $\odot$   & ~         & ~       & $\oplus$  & ~         & $\odot$   & $\oplus$  & $\odot$   & $\oplus$  \\\hline
+ \cite{jin2018functionality}      & ~         & ~         & $\oplus$  & ~       & ~         & ~         & $\oplus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{baresi2017microservices}   & ~         & ~         & ~         & ~       & ~         & $\oplus$  & $\oplus$  & $\oplus$  & $\odot$   & $\odot$   \\\hline
+ \cite{chen2017monolith}          & $\oplus$  & ~         & ~         & ~       & ~         & ~         & $\odot$   & $\odot$   & ~         & $\ominus$ \\\hline
+ \cite{escobar2016towards}        & ~         & $\oplus$  & ~         & ~       & ~         & ~         & $\odot$   & $\odot$   & $\odot$   & $\ominus$ \\\hline
+ \cite{levcovitz2016towards}      & ~         & $\odot$   & ~         & $\odot$ & ~         & $\odot$   & $\ominus$ & $\ominus$ & ~         & $\ominus$ \\\hline
+ \cite{knoche2018using}           & ~         & $\odot$   & ~         & ~       & ~         & ~         & $\ominus$ & $\ominus$ & ~         & $\ominus$ \\\hline
+\end{tabularx}
+\caption{Literature survey matrix}
+\label{table:literature-survey}
+\end{table}
+
+
+The matrix (table \ref{table:literature-survey}) visualizes the
+surveyed literature via classification.
+Six general approaches as well as four features were extracted from the works.
+The approaches were devised by studying the available literature on the subject.
+In summary, other researchers were using one or more of these six approaches
+to answer their research questions regarding microservice decomposition out of an existing monolith.
+Thus, pure greenfield approaches were not targeted in the literature survey.\\
+The signs used in the matrix are defined as follows:
+\begin{itemize}[noitemsep]
+    \item An empty cell depicts that the approach or feature of that column was not utilized
+    by the work cited in that row.
+    \item A circle with a dot ($\odot$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row without any outstanding execution
+    or results in any direction or with results that were difficult to assess.
+    \item A plus sign ($\oplus$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row in a successful way.
+    \item A minus sign ($\ominus$) depicts that the approach or feature
+    of that column was utilized by the work cited in that row in a subpar way.
+\end{itemize}
+Those evaluative signs were assigned via our own intuition of the execution and results
+as well as the evaluation of the works in other analyzed literature.
+The latter approach was especially possible due to
+the existing work by Fritzsch et al. \cite{fritzsch2018monolith}.
+
+
+\subsection*{Approaches}
+
+In the following paragraphs, the approaches used as matrix columns are explained in more detail.
+\paragraph{SE model analysis}
+The term \textit{Software Engineering (SE) models} subsumes non-source code
+artifacts out of the domain of SE.
+For instance, this category includes use case models and entity relationship models (ERM).
+\paragraph{Static analysis}
+Static analysis covers any form of non-runtime analysis of the given code base.
+This includes dependency graphs, class graphs, connection of source code via shared terms
+(i.e. words in the identifier of classes that might tie them together) etc.
+\paragraph{Dynamic analysis}
+Dynamic analysis is about analyzing the existing monolithic software during its execution.
+This covers profiling it, tracing data inside of the application as well as analyzing
+access logs such as web traffic logs.
+\paragraph{Data model analysis}
+Owing to the fact that one pillar of the microservices architecture is about
+separating data stores \cite{ms-microservices}, the approach to analyze
+the data models (e.g. schemes) of existing database tables is, generally speaking,
+an important one. This approach covers direct analysis of database tables
+as well as the analysis of \textit{object relational mappers} (ORM)
+if those were already in use in the existing application.
+\paragraph{VCS mining}
+The repositories of existing solutions are usually part of a
+version control system (VCS) such as Git. Consequently, commits and merges can be analyzed
+to e.g. determine the coupling of certain files, modules, or classes.
+\paragraph{External interface analysis}
+The external interfaces (i.e. the Web-APIs) of existing solutions can be analyzed to get
+a sense of existing modularization and cohesion within the solution.
+
+
+\subsection*{Features}
+
+In the following paragraphs, the features used as matrix columns are explained in more detail.
+\paragraph{Evaluation}
+This column just depicts if the cited source of a row evaluated their work in any form.
+\paragraph{Evaluation by testing}
+Since this literature survey was focused on works that research assisted or semi-automated
+microservice decomposition, theoretically, the works could be evaluated with real-world or
+even artificial data such as large open source projects built with a monolithic architecture.
+\paragraph{Evaluation via metrics}
+Owing to the fact that the area of research of this project is still rather young and sparse
+\cite{jin2018functionality}\cite{fritzsch2018monolith}, custom as well as renowned metrics
+for the evaluation are a welcomed addition to the research in this area.
+Additionally, evaluation via metrics improves the overall credibility of a work.
+\paragraph{(Available) Proof-of-concept}
+This feature is somewhat tied to the \textit{Evaluation by testing} one as oftentimes
+a prototype (i.e. proof-of-concept) is built to actually test the designed
+methodology or algorithm. Moreover, a positive or a negative execution respectively
+was awarded if the prototype was publicly available (e.g. as open source software)
+since it is otherwise impossible to assess.
+
+
+
+\section{Topic relations} \label{subsect:topic-relations}
+
+Following the approaches and features extracted in the previous section,
+the methodologies of the works that are the closest to ours are observed with greater detail.
+
+Gysel and K{\"o}lbener \cite{gysel2016service} were the first to release work in
+this area of research that is in the same vein to ours in the sense that a
+complete methodology is developed to convert a certain input to microservice
+recommendations. They initially devised the idea to build a graph out of this
+input that is then clustered using a graph clustering algorithm to create clusters
+that reflect the microservice recommendations.
+Future work in the domain \cite{mazlami2017extraction}\cite{kruidenberg2018monoliths}
+together with ours is following this idea.
+However, not every analyzed work uses this approach.
+Therefore in this subsection, only works that do use it are analyzed in detail
+as they relate closely in topic.
+
+
+\subsection{Analyzed inputs}
+
+Gysel and K{\"o}lbener used \textit{SE model analysis} as their only approach ---
+a type of input that is unlikely to be available or
+can be created with a lot of manual work, as they acknowledge
+themselves in their original work \cite{gysel2016service}.
+This fact decreases the actual usability of the devised methodology and leaves
+room for improvement.
+
+Kruidenberg \cite{kruidenberg2018monoliths} built on top of the work and
+especially the implementation of Gysel and K{\"o}lbener by extending their
+\textit{SE model analysis} input with \textit{Dynamic analysis} input.
+Precisely, they model the input, that the implementation of Gysel and K{\"o}lbener
+requires and generates out of \textit{SE models}, from data retrieved
+out of \textit{Static analysis}, \textit{Dynamic analysis}, and \textit{VCS mining}.
+Consequently, this approach mainly solves the problem that the original approach
+had regarding the availability and respectively the ease of creation
+of supported input formats.
+
+Comparatively, Mazlami \cite{mazlami2017extraction} devised their completely
+custom methodology. The foundation is still based on building and then clustering
+a graph but they chose \textit{Static analysis}, and \textit{VCS mining} as
+their approaches of choice. From within the domain of static program analysis,
+semantically analyzing source code was devised and implemented as input together
+with mining evolutionary data out of version control system logs.
+
+Instead, we utilize three distinct input dimensions for constructing
+a more precise weighted graph which can then be clustered.
+
+
+\subsection{Graph clustering}
+
+Regarding the graph clustering, Gysel and K{\"o}lbener \cite{gysel2016service}
+only utilized two graph clustering algorithms both of which have major
+shortcomings specific to this area of research.
+The Girvan-Newman algorithm \cite{girvan2002community} requires the
+amount of clusters beforehand which is not ideal for recommending
+microservice candidates as the software engineers prospectively using
+such a tool can at best estimate that amount.
+Additionally, one advantage of automated microservice decomposition recommendations
+is that the algorithm might give recommendations that a human engineer would
+not have considered which also affects the granularity and therefore the
+amount of services (i.e. clusters).
+The Leung algorithm \cite{leung2009community} on the other hand has the
+disadvantage that it is non-deterministic which might cause completely
+different recommendations with every execution.
+
+Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same
+algorithms as his work is an extension of the one of Gysel and K{\"o}lbener.
+
+Mazlami \cite{mazlami2017extraction} leveraged the notion of the
+minimal spanning tree (MST) of the input graph to perform the clustering.
+Thus, their methodology is not based on state-of-the-art graph clustering algorithms
+but a custom approach instead. They implemented an algorithm
+that iteratively calculates the MST and removes the edge with the lowest similarity
+from the graph. However, this approach has the same problem as the
+Girvan-Newman algorithm \cite{girvan2002community} that Gysel and K{\"o}lbener
+utilized in the sense that it requires the desired amount of services beforehand.
+
+Instead, we show how to leverage heuristic optimization of the clustering and
+therefore the recommendations toward a numeric metric via a fitness function
+while incorporating a large set of state-of-the-art graph clustering algorithms
+to be able to compare them and assess which one performs the best for a given input.
+Thus, this removes the problem of having to define the desired amount of microservices
+a priori.
+
+
+\subsection{Evaluative metrics}
+
+Gysel and K{\"o}lbener \cite{gysel2016service} just evaluated their
+initially set requirements on a custom scale of 1--3 together with a devised
+questionnaire to assess the quality of the recommendations.
+The questionnaire however follows no numeric metrics and just allows answers
+in a boolean manner which makes it more subjective.
+
+Mazlami \cite{mazlami2017extraction} devised a set of six metrics that measure
+the output of their methodology. Although some of them do not have the notion
+of if a higher value is better or worse (e.g. \textit{Average Contributors per Microservice}).
+
+Kruidenberg \cite{kruidenberg2018monoliths} used a combination of metrics from
+the works of Gysel and K{\"o}lbener \cite{gysel2016service} and
+Mazlami \cite{mazlami2017extraction}.
+
+Instead, we devise an extensive set of numeric metrics that offers
+an objective and quantifiable view on the resulting microservice recommendations
+to be able to evaluate not only our methodology but the recommendations them self as well.
+
+
+
+
 \chapter{Mapping microservice requirements to software quality metrics} \label{chap:rationale}
+
+As the focal point of our work is to construct a graph-theoretic representation
+of the input monolithic application, a rationale how the measured dimensions of
+the input map to the output is deemed necessary to corroborate our research.
+Thus, said rationale was devised using
+
+
 
 \section{Pillars of microservices}
 
