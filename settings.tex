@@ -7,6 +7,17 @@
 \usepackage{amsmath} % Advanced mathematical notation
 \usepackage{amssymb} % Symbols
 \usepackage{emptypage} % Empty pages are now actually empty
+\usepackage{caption} % Better image and table captions
+\usepackage{varwidth} % Used for the custom captions
+\DeclareCaptionFormat{centered}{%
+  % #1: label (e.g. "Table 1")
+  % #2: separator (e.g. ": ")
+  % #3: caption text
+  \begin{varwidth}{\linewidth}
+    #1#2#3%
+  \end{varwidth}
+}
+\captionsetup{format=centered} % Global activation of the custom captions
 
 % Fonts, with all the options
 \usepackage{mathpazo}

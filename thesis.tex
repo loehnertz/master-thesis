@@ -631,6 +631,8 @@ goals, mechanisms, and features
 \cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
 Consequently, a dozen renowned graph clustering algorithms were evaluated and
 assessed regarding their usability for our work.
+A total of nine renowned graph clustering algorithms were evaluated
+and classified in table \ref{table:graph-clustering-survey}.
 Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
 were selected to be utilized as part of our work --- they are discussed
 in more detail below and are additionally marked with their
@@ -656,24 +658,22 @@ as part of this work is discussed further in chapter
  \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & ~          & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
 \end{tabularx}
 \caption{Graph clustering algorithm survey matrix}
+\caption*{
+  All of the information necessary for the classification including the
+  runtime complexity indications are taken out of the original papers of the
+  authors which leads to the fact that some information is unknown as
+  the authors did not calculate or disclose this information.
+  The signs that are used in the matrix correspond to the following meaning:
+  \begin{itemize}[noitemsep]
+    \item $\oplus$: The statement of the respective cell is \textit{true}
+    \item $\ominus$: The statement of the respective cell is \textit{false}
+    \item N/A: The statement of the respective cell is \textit{not available}
+  \end{itemize}
+  The way that classifications are negated or not was chosen so that $\oplus$
+  is a positive feature regarding the utilization as part of our work.
+}
 \label{table:graph-clustering-survey}
 \end{table}
-
-\paragraph{Graph clustering algorithm survey}
-A total of nine renowned graph clustering algorithms were evaluated
-and classified in table \ref{table:graph-clustering-survey}.
-All of the information necessary for the classification including the
-runtime complexity indications are taken out of the original papers of the
-authors which leads to the fact that some information is unknown as
-the authors did not calculate or disclose this information.
-The signs that are used in the matrix correspond to the following meaning:
-\begin{itemize}[noitemsep]
-  \item $\oplus$: The statement of the respective cell is \textit{true}
-  \item $\ominus$: The statement of the respective cell is \textit{false}
-  \item N/A: The statement of the respective cell is \textit{not available}
-\end{itemize}
-The way that classifications are negated or not was chosen so that $\oplus$
-is a positive feature regarding the utilization as part of our work.
 
 \paragraph{Girvan-Newman \cite{girvan2002community}}
 The \textit{Girvan-Newman} algorithm is seen as one of the earliest, successful,
@@ -855,6 +855,7 @@ refactoring process for existing monolithic applications."}~\cite{fritzsch2018mo
 \end{displayquote}
 This underlines the relevance and importance of this area of research and the
 notion that there is still room for improvement.
+\newpage
 
 
 
@@ -880,31 +881,34 @@ notion that there is still room for improvement.
  \cite{knoche2018using}           & ~         & $\odot$   & ~         & ~       & ~         & ~         & $\ominus$ & $\ominus$ & ~         & $\ominus$ \\\hline
 \end{tabularx}
 \caption{Literature survey matrix}
+\caption*{
+  The signs used in the matrix  are defined as follows:
+  \begin{itemize}[noitemsep]
+      \item An empty cell depicts that the approach or feature of that column was not utilized
+      by the work cited in that row.
+      \item A circle with a dot ($\odot$) depicts that the approach or feature
+      of that column was utilized by the work cited in that row without any outstanding execution
+      or results in any direction or with results that were difficult to assess.
+      \item A plus sign ($\oplus$) depicts that the approach or feature
+      of that column was utilized by the work cited in that row in a successful way.
+      \item A minus sign ($\ominus$) depicts that the approach or feature
+      of that column was utilized by the work cited in that row in a subpar way.
+  \end{itemize}
+}
 \label{table:literature-survey}
 \end{table}
 
-
-The matrix (table \ref{table:literature-survey}) visualizes the
-surveyed literature via classification.
-Six general approaches as well as four features were extracted from the works.
-The approaches were devised by studying the available literature on the subject.
+The matrix \ref{table:literature-survey} visualizes the surveyed literature
+via classification. Six general approaches as well as four features were
+extracted from the works. The approaches were devised by studying the
+available literature on the subject.
 In summary, other researchers were using one or more of these six approaches
-to answer their research questions regarding microservice decomposition out of an existing monolith.
-Thus, pure greenfield approaches were not targeted in the literature survey.\\
-The signs used in the matrix are defined as follows:
-\begin{itemize}[noitemsep]
-    \item An empty cell depicts that the approach or feature of that column was not utilized
-    by the work cited in that row.
-    \item A circle with a dot ($\odot$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row without any outstanding execution
-    or results in any direction or with results that were difficult to assess.
-    \item A plus sign ($\oplus$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row in a successful way.
-    \item A minus sign ($\ominus$) depicts that the approach or feature
-    of that column was utilized by the work cited in that row in a subpar way.
-\end{itemize}
-Those evaluative signs were assigned via our own intuition of the execution and results
-as well as the evaluation of the works in other analyzed literature.
+to answer their research questions regarding microservice decomposition
+out of an existing monolith. Thus, pure greenfield approaches were
+not targeted in the literature survey.
+
+The evaluative signs were assigned via our own intuition of the execution
+and results as well as the evaluation of the works in other analyzed literature.
 The latter approach was especially possible due to
 the existing work by Fritzsch et al. \cite{fritzsch2018monolith}.
 
@@ -1073,10 +1077,7 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 \chapter{Mapping microservice requirements to software quality metrics} \label{chap:rationale}
 
-As the focal point of our work is to construct a graph-theoretic representation
-of the input monolithic application, a rationale how the measured dimensions of
-the input map to the output is deemed necessary to corroborate our research.
-Thus, said rationale was devised using
+
 
 
 
