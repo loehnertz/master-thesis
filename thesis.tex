@@ -323,6 +323,7 @@ algorithmically collect data that can be used as the input for the methodology.
 
 
 \subsection{Static program analysis}
+
 The term \textit{static program analysis} is best defined by comparing it
 to \textit{dynamic program analysis} --- instead of monitoring the program
 as it is running, the code, in many possible facets, is analyzed without
@@ -333,7 +334,7 @@ latter has its roots in \textit{natural language processing} especially in
 the way that it is utilized in our methodology.
 
 
-\subsubsection{Call graph generation} \label{subsubsect:call-graph}
+\subsubsection{Call graph generation} \label{subsubsect:call-graph-static}
 Generally, a call graph is consisting of \textit{"nodes that are the routines
 of the program and directed arcs that represent calls from call sites to
 routines"} \cite{graham1982gprof}. Those graphs can be created via static
@@ -364,7 +365,39 @@ e.g. when another was constructed with dynamic program analysis.
 Precisely, this is discussed in the chapter \nameref{}.
 
 
-\subsubsection{Semantic similarity calculation}
+\subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
+
+Next to \textit{static program analysis}, one can also analyze the behavior of
+an application while it is running, this is called
+\textit{dynamic program analysis} \cite{ernst2003static}.
+The reasons to utilize \textit{dynamic program analysis} are manifold,
+to gather information about runtime performance, memory usage,
+or debugging \cite{ernst2003static}.
+Another application is the creation of a call graph as discussed in subsection
+\ref{subsubsect:call-graph-static}. For the same reasons and a few others on top,
+this the process of generating a \textit{dynamic call graph} are interested to our work.
+
+
+\subsubsection{Call graph generation} \label{subsubsect:call-graph-dynamic}
+Additionally to the aforementioned reasons to create a \textit{static call graph},
+a \textit{dynamic call graph} can provide other useful information.
+Precisely, to discover where the most data flows within the monitored application
+is a main application of this process \cite{graham1982gprof}.
+The common approach is to build a weighted and optionally directed graph
+to represent the call graph. The optional directions as the directions the
+routines invoke each other and e.g. \textit{execution counts} or average
+\textit{execution times} as the weighted edges \cite{graham1982gprof}.
+Specifically the latter can only be recorded during the runtime of the application,
+however for our work only \textit{execution counts} are used as the edge weights.
+The general problem with \textit{dynamic program analysis} however is that one
+firstly has to run the application that is to be analyzed and secondly the fact
+that there is generally no guarantee that even every part of the application
+has been invoked even when analyzed for an immense amount of time which will
+then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
+
+
+\subsection{Semantic similarity calculation}
+
 Calculating the semantic similarity between two documents is a traditional
 discipline in the domain of natural language processing (NLP).
 The similarity value usually ranges from \([0.0, 1.0]\) ---
@@ -386,7 +419,8 @@ as a mathematical process are \cite{singhal2001ir}:
   \item (Optional) Latent semantic indexing (LSI)
 \end{enumerate}
 
-\paragraph{Similarity calculation}
+
+\subsubsection{Similarity calculation}
 All of the abovementioned steps have to be performed for every document
 in the corpus until the resulting vectors can be run through a function that
 calculates their similarity. A common approach for this is the
@@ -401,7 +435,8 @@ between two input document vectors that are part of the corpus
   }
 \]
 
-\paragraph{Tokenization}
+
+\subsubsection{Tokenization}
 The goal of the first step is to retrieve a list of terms (i.e. words)
 of a given document in the corpus \(\forall t_i \in D_i, \enskip D_i \in C\).
 Importantly, each document \(D_i\) is a sequence not a set
@@ -410,7 +445,8 @@ work as shown later.
 Consequently, punctuation characters are stripped from the document and
 the text get split for instance on spaces \cite{singhal2001ir}.
 
-\paragraph{Stop word filtering}
+
+\subsubsection{Stop word filtering}
 Language naturally contains terms that do not carry much information,
 those are called \textit{stop words} \cite{singhal2001ir}.
 Common examples from the English language are words such as:
@@ -418,7 +454,8 @@ Common examples from the English language are words such as:
 The useful semantics can be found in the words that are left after filtering
 out such \textit{stop words}.
 
-\paragraph{Normalization}
+
+\subsubsection{Normalization}
 Both of these terms refer to the process of removing the endings of all terms
 in a given document \(\{t_i \in D_i \mid normalization(t_i)\}\) that is part of
 the corpus \(D_i \in C\) \cite{singhal2001ir}.
@@ -446,7 +483,8 @@ normalized the word \textit{ran}, compared to the \textit{lemmatization} approac
 
 Ergo, if possible, \textit{lemmatization} is preferred over \textit{stemming}.
 
-\paragraph{Vectorization}
+
+\subsubsection{Vectorization}
 Since the described process is mathematical in its core, the sequence of terms
 out of each document of the corpus needs to be converted to
 numerical representations of themselves.
@@ -473,7 +511,8 @@ Consequently, this results in a document vector
 \(\vec{\mathbf d_i}\) for every column \(td_{*,n}\)
 of the matrix, which is necessary for the remaining steps.
 
-\paragraph{Relevance weighting}
+
+\subsubsection{Relevance weighting}
 Although the resulting document vectors could already be used for the
 \textit{cosine similarity} calculation, the quality of the output
 can still be improved by weighting every term to increase or decrease its value
@@ -513,7 +552,8 @@ from \(\forall td_{m,n} \in \{td \in \mathbb{Z} \mid td \le 0\}\)
 to \(\forall td_{m,n} \in \{td \in \mathbb{R} \mid td \le 0\}\) due to
 the two divisions involved.
 
-\paragraph{Latent semantic indexing (LSI)}
+
+\subsubsection{Latent semantic indexing (LSI)}
 This last step is optional but oftentimes utilized to further improve the quality
 of the output of this process. \textit{Latent semantic indexing} (LSI) describes
 the process of applying \textit{singular value decomposition} (SVD) to
@@ -521,7 +561,7 @@ the aforementioned term-document matrix \cite{deerwester1990lsi}. % TODO: Should
 The rationale in the context of the similarity calculation is
 to reduce the matrix with \(m\) rows and \(n\) columns to one with a
 set amount of \(z\) dimensions as the rows.
-This is supposed to get reduce the effects of \textit{synonymy} and
+This is supposed to reduce the effects of \textit{synonymy} and
 \textit{polysemy} \cite{deerwester1990lsi}.
 Precisely, \textit{synonymy} describes the phenomenon where different terms describe
 the same idea \cite{press2011oxford} whereas \textit{polysemy} describes the phenomenon
@@ -530,7 +570,8 @@ After applying \textit{LSI}, each document vector of the corpus \(\vec{\mathbf d
 has a magnitude of the previously chosen \(z\) amount of dimensions \(\|\vec{\mathbf d_i}\|\).
 Consequently, the abovementioned \textit{cosine similarity} can be calculated.
 
-\paragraph{Source code processing}
+
+\subsubsection{Source code processing}
 The main difference when processing natural language as part of source code
 occurs in the first step, the \textit{tokenization}.
 Truly natural language does not use many special characters such as
@@ -549,35 +590,9 @@ every source code document while not adding any meaningful semantic information,
 hence it is useful to filter those out as part of the \textit{stop word filtering}.
 
 
-\subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
-
-Next to \textit{static program analysis}, one can also analyze the behavior of
-an application while it is running, this is called
-\textit{dynamic program analysis} \cite{ernst2003static}.
-The reasons to utilize \textit{dynamic program analysis} are manifold,
-to gather information about runtime performance, memory usage,
-or debugging \cite{ernst2003static}.
-Another application is the creation of a call graph as discussed in subsection
-\ref{subsubsect:call-graph}. For the same reasons and a few others on top,
-this the process of generating a \textit{dynamic call graph} are interested to our work.
+\subsection{Evolutionary similarity calculation} \label{subsect:evolutionary-similarity}
 
 
-\subsubsection{Call graph generation}
-Additionally to the aforementioned reasons to create a \textit{static call graph},
-a \textit{dynamic call graph} can provide other useful information.
-Precisely, to discover where the most data flows within the monitored application
-is a main application of this process \cite{graham1982gprof}.
-The common approach is to build a weighted and optionally directed graph
-to represent the call graph. The optional directions as the directions the
-routines invoke each other and e.g. \textit{execution counts} or average
-\textit{execution times} as the weighted edges \cite{graham1982gprof}.
-Specifically the latter can only be recorded during the runtime of the application,
-however for our work only \textit{execution counts} are used as the edge weights.
-The general problem with \textit{dynamic program analysis} however is that one
-firstly has to run the application that is to be analyzed and secondly the fact
-that there is generally no guarantee that even every part of the application
-has been invoked even when analyzed for an immense amount of time which will
-then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
 
 
 
@@ -929,7 +944,7 @@ Dynamic analysis is about analyzing the existing monolithic software during its 
 This covers profiling it, tracing data inside of the application as well as analyzing
 access logs such as web traffic logs.
 \paragraph{Data model analysis}
-Owing to the fact that one pillar of the microservices architecture is about
+Owing to the fact that one principle of the microservices architecture is about
 separating data stores \cite{ms-microservices}, the approach to analyze
 the data models (e.g. schemes) of existing database tables is, generally speaking,
 an important one. This approach covers direct analysis of database tables
@@ -1075,20 +1090,222 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 
 
-\chapter{Mapping microservice requirements to software quality metrics} \label{chap:rationale}
+\chapter{Mapping microservice metrics to software quality metrics} \label{chap:rationale}
+
+As the focal point of our work is to construct a graph-theoretic representation
+of the input monolithic application to cluster it afterwards,
+a rationale how the measured dimensions of the input map to the output
+is deemed necessary to corroborate our research.
 
 
 
+\section{Design principles of microservices}
+
+Thus, said rationale was devised leveraging a few \textit{design principles}
+of microservices \cite{ms-design-principles, ms-fowler, newman2015building}.
+We looked at what we deemed to be the three most important ones:
+\begin{enumerate}
+  \item Services should keep inter-service communication to a minimum
+  \item One service should only handle one task
+  \item The services should have independent software development life cycles
+\end{enumerate}
+Following this, these three items are referred to via their number in the
+above enumeration. Moreover, every item is discussed in more detail below.
 
 
-\section{Pillars of microservices}
+\subsection{Principle 1}
+As Newman and others lay out \cite{newman2015building, alshuqayran2016systematic},
+very \textit{chatty} microservices are not desired due to three reasons.
+
+Firstly, it can mean that the two services are too tightly coupled with
+the solution that it might have been better to merge them together into one
+for instance \cite{newman2015building}.
+
+Secondly, the stability is generally worse as the architecture becomes
+more brittle since it always has to be assumed that inter-service communication
+via a network just fails due to erroneous configuration, a temporary downtime,
+or congestion \cite{newman2015building, alshuqayran2016systematic}.
+
+Thirdly, the performance suffers compared to native method invocations e.g.
+as part of a monolithic application. Communication over a network always
+involves latency and the serialization and deserialization
+of each request and response (i.e. when utilizing HTTP) is a costly action
+in terms of runtime \cite{newman2015building}.
+
+
+\subsection{Principle 2}
+The second principle is ambiguous without any further elaboration owing to
+the fact that the term \textit{task} has no notion of size or complexity
+attached to it.
+
+Nevertheless, this idea can be seen as the focal point of the whole microservices
+architecture style due to the term itself --- \textit{micro} to begin with
+is vague, as Fowler discusses:
+\begin{displayquote}
+\emph{"[...] its name does lead to an unfortunate focus on the size of service,
+and arguments about what constitutes “micro”.
+In our conversations with microservice practitioners,
+we see a range of sizes of services."}~\cite{ms-fowler}
+\end{displayquote}
+To make it entirely clear, the objective size of a microservice is not very
+important regarding the second principle. Instead, the idea of the
+\textit{bounded context}, introduced by Evans in his influential 2004 book
+\textit{Domain Driven Design} \cite{evans2004ddd}, is widely accepted as
+a helpful methodology to devise the boundaries of each microservice
+in a given application \cite{newman2015building, ms-fowler}.
+
+Thus, a \textit{task} has no distinct upper limit regarding its size.
+One service should encapsulate one \textit{bounded context} while trying to
+keep them as small as reasonable possible to still satisfy the idea of having
+\textit{microservices} so that size, complexity, and maintenance stay manageable
+\cite{newman2015building, ms-fowler}.
+
+\paragraph{Bounded contexts}
+As mentioned, Evans created the idea of the \textit{bounded context} defining
+it as follows:
+\begin{displayquote}
+\emph{"A description of a boundary
+(typically a subsystem, or the work of a particular team)
+within which a particular model is defined and applicable."}~\cite{evans2014ddd}
+\end{displayquote}
+while he defines \textit{model} as:
+\begin{displayquote}
+\emph{"A system of abstractions that describes selected aspects of a domain
+and can be used to solve problems related to that domain."}~\cite{evans2014ddd}
+\end{displayquote}
+Precisely, the idea of the \textit{bounded context} is about what parts of the
+domain \textit{model} are independent enough to be \textit{bounded contexts},
+while it is even more important to define a clear interface regarding
+which parts of the \textit{model} should not leave the \textit{bounded context}
+and which parts have to be shared externally for the application to function
+and properly mirror its domain \cite{newman2015building}.
+
+
+\subsection{Principle 3}
+Since microservices are attributed to \textit{Conway's law}
+\cite{ms-fowler, dragoni2017microservices, conway1968law}
+in the sense that this architectural style lends itself well to letting
+separate teams handle one or multiple microservices \cite{newman2015building},
+it keeps the services decoupled apart from data and interfaces by having
+independent software development life cycle.
+
+The more dependent the life cycles are, the more coupled the services become
+and hence the longer it will take to apply feature additions, changes,
+or bug fixes which can hinder the development progress.
+
+As long as the interfaces of the services are well designed,
+as long as they do not change, other developers in other teams do not have
+to worry much that services they maintain get incompatible with other services
+if they or the other services change internal logic --- it is in its core
+nothing more than the notion of proper \textit{encapsulation} \cite{ms-fowler}.
+
+
 
 \section{Selecting and extracting software quality metrics}
 
+All of the aforementioned principles will be violated if the boundaries of the
+microservices are chosen poorly. Thus, we propose a semi-automated methodology
+that extracts information out of the given monolithic application and devises
+a \textit{good} decomposition regarding those boundaries.
+
+Following this, we decided to map the \textit{principles of microservices} to
+dimensions of the input into our devised methodology.
+This gives a rationale for how the eventual output of our methodology can
+be qualitative based on the fact that the input dimensions were carefully
+chosen based on what literature defines as \textit{good} based on the principles.
+Essentially, the input is mapped to microservices architecture best practices
+which allows us to reason about how and why the output of our methodology
+makes any sense, all based on the fact that it processes input mapped to said
+best practices.
+
+Eventually, we found that three main types of coupling in software systems map
+to the abovementioned principles:
+\begin{enumerate}
+  \item Dynamic coupling
+  \item Semantic coupling
+  \item Evolutionary coupling
+\end{enumerate}
+The term \textit{coupling} is defined as:
+\begin{displayquote}
+\emph{"A measure of how closely connected two routines or modules are;
+the strength of the relationships between them."}~\cite{swebok}
+\end{displayquote}
+Precisely, the three types of coupling above are subcategories of the notion of
+\textit{coupling}. Moreover, these types as well as how they map to the
+\textit{principles of microservices} are showcased in figure
+\ref{fig:principles-of-microservices} and the subsections below.
+Furthermore, the details of the utilization
+of this mapping as part of our methodology are discussed in chapters
+\ref{chap:extracting-coupling} and \ref{chap:software-as-weighted-graph}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.90\textwidth]{principles-of-microservices}
+\caption{The mapping of the principles of microservices to coupling types}
+\label{fig:principles-of-microservices}
+\end{figure}
+
+
+\subsection{Dynamic coupling}
+
+The term refers to any metric of coupling that measures how coupled
+components are during their runtime hence it is recorded during the execution
+of a given application which ties it to \textit{dynamic program analysis}.
+
+For instance, counting how often a certain component calls or accesses another
+one is a metric described and covered in \ref{subsubsect:call-graph-dynamic}
+as dynamic call graph generation based on \textit{execution counts}.
+To clarify, a weighted and directed graph can be constructed when gathering
+this \textit{dynamic coupling} metric for every single \textit{execution count}.
+Hence, the weighted edges of the graph symbolize the \textit{execution counts}.
+
+However, we opted not to make the constructed graph directed as graph clustering
+is usually not applied to directed graphs \cite{lancichinetti2009community}.
+Moreover, the other coupling types also only yield undirected graphs which
+would make a combined analysis on all of them non-functional.
+
+Finally, the first principle maps to this type of coupling due to the fact that
+the \textit{dynamic coupling} information can be utilized to keep
+communicative components from being spread over multiple microservices
+(i.e. being clustered together), which would otherwise violate the first principle.
+
+
+\subsection{Semantic coupling}
+
+Just like with the \textit{dynamic coupling}, an undirected and weighted graph
+is constructed out of \textit{semantic coupling} information.
+Precisely, it is measured how semantically similar two components are which
+causes the weighted edge in the resulting graph that connects their vertices
+to hold this similarity value.
+
+Finally, the second principle maps to this type of coupling due to the fact that
+the \textit{semantic coupling} information can be utilized to keep
+components that cover a similar (or the same) task from being spread over
+multiple microservices (i.e. being clustered together),
+which would otherwise violate the second principle.
+
+
+\subsection{Evolutionary coupling}
+
+Again, an undirected and weighted graph can be constructed out of the
+\textit{evolutionary coupling} information.
+To be more precise, if two components change together more often it can be
+inferred that their life cycles are more or less coupled.
+To quantify this, the approach described in \ref{subsect:evolutionary-similarity}
+is leveraged to precisely calculate how \textit{evolutionary coupled} components
+are (i.e. how much their life cycles overlap) which is then represented
+by the edge weights in the resulting weighted graph.
+
+Finally, the third principle maps to this type of coupling due to the fact that
+the \textit{evolutionary coupling} information can be utilized to keep
+components that currently share the same software development life cycle
+from being spread over multiple microservices (i.e. being clustered together),
+which would otherwise violate the third principle.
 
 
 
-\chapter{Extracting coupling information from software}
+
+\chapter{Extracting coupling information from software} \label{chap:extracting-coupling}
 
 \section{Dynamic coupling}
 
@@ -1107,7 +1324,7 @@ to be able to evaluate not only our methodology but the recommendations them sel
 
 
 
-\chapter{Representing software as weighted graphs}
+\chapter{Representing software as weighted graphs} \label{chap:software-as-weighted-graph}
 
 \section{Building a weighted graph for each input dimension}
 
