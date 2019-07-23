@@ -572,11 +572,11 @@ Consequently, the abovementioned \textit{cosine similarity} can be calculated.
 
 
 \subsubsection{Source code processing}
-The main difference when processing natural language as part of source code
-occurs in the first step, the \textit{tokenization}.
+The main difference when processing source code occurs in the first step,
+the \textit{tokenization}.
 Truly natural language does not use many special characters such as
 braces, semicolons, or ampersands which conversely see heavy usage in
-many programming languages, especially ones with a C-esque syntax.
+many programming languages.
 As a consequence, the \textit{tokenization} is specific to the respective
 programming language that is getting processed as different languages use a
 different set of control characters together with differing strategies
@@ -592,7 +592,70 @@ hence it is useful to filter those out as part of the \textit{stop word filterin
 
 \subsection{Evolutionary similarity calculation} \label{subsect:evolutionary-similarity}
 
+Similarly to the \textit{semantic similarity}, it can be measured how much the
+software development life cycles of two entities (e.g. classes) do overlap.
+Precisely, every entity in an application has a life cycle regarding
+its creation, modifications (i.e. maintenance), and eventual deletion.
+For instance, entities that fulfill a similar functionality or have some
+interfaces toward each other have a high likelihood of having
+\textit{evolutionary similarity} owing to the fact that the functionality
+they encompass is spread over multiple entities and maintenance oftentimes
+incorporates changes in multiple ones as well.
 
+The goal again is to get a percentage that resembles how similar the life cycles
+of two given entities are, in the same vein to the \textit{semantic similarity}.
+Compared to the previously exhibited \textit{semantic similarity} however,
+the \textit{evolutionary similarity} has the downside of not having a renowned
+or standard approach to retrieve the abovementioned percentage.
+We chose a generally applicable approach based on the work by Tornhill
+on \textit{evolutionary similarity} \cite{tornhill2015crimescene}.
+
+Essentially, this approach is based on mining information out of
+version control system (VCS) data such as a Git log.
+The listing \ref{git-log} depicts this with one example commit entry
+out of a large Git log of a real application. However, multiple of those
+commit entries would be analyzed to calculate \textit{evolutionary similarity}.
+
+Precisely, over the duration of a certain time period \([t_1, t_2]\)
+or the entirety of the log \([t_{min}, t_{max}]\), every commit \(c \in C\)
+contains at least one entity (i.e. file) out of the code base at that point
+in time \(\exists e \in c, e \in E\) that was modified
+(including creation and deletion) as part of the commit.
+Over the course of all the commits \(\forall c \in C\) in a given time period
+\([t_1, t_2]\), the commits where an entity \(e_1 \in E\) changed together
+with another entity \(e_2 \in E\) are gathered:
+\[
+  C' = \{ c \in \{ c \in C \mid c \in [t_1, t_2] \} \mid e_1 \in c \land e_2 \in c \}
+\]
+Furthermore, the ratio of how many of the total commits that modified
+the entity \(e_1\) is calculated to obtain a percentage:
+\[
+  \frac{\vert C' \vert}{\{ c \in \{ c \in C \mid c \in [t_1, t_2] \} \mid e_1 \in c \}}
+\]
+As a consequence, the time interval \([t_1, t_2]\) covering the commits can be
+shifted such that either every commit is evaluated on its own or that multiple
+are evaluated at a time.
+
+Additionally, a threshold can be applied to filter out noise such that only
+after a certain amount of shared commits of two entities \(e_1 \in E, e_2 \in E\),
+the commits are added to the shared commits \(C'\) to increase the relevance
+of this \textit{evolutionary similarity} measurement \cite{tornhill2015crimescene}.
+
+The details of the utilization of this approach as part of our devised methodology
+is explained in chapters \ref{chap:rationale} and \ref{chap:extracting-coupling}.
+\newline
+
+\begin{lstlisting}[caption=Example Git log, label=git-log, breaklines=true]
+commit 7fa508ea483d45b037ee9507a6e92e5bb2118418
+Author: Jakob Loehnertz <mail@jakob.codes>
+Date:   Tue Jun 18 11:23:33 2019 +0200
+
+    Add the average coupling modularity to the selectable ones
+
+2   0   ../controller/analysis/metrics/clustering/ClusteringQualityAnalyzer.kt
+1   0   ../model/metrics/ClusteringQuality.kt
+6   3   ../frontend/src/App.vue
+\end{lstlisting}
 
 
 
@@ -712,7 +775,7 @@ represents its \textit{betweenness centrality} \cite{freeman1977set}.
 As a consequence, Girvan and Newman adapted the idea for edges and coined it
 \textit{edge betweenness centrality} \cite{girvan2002community}:
 \[
-  c(e) = \sum_{s, t \in V} \frac{\sigma(s, t \mid e)}{\sigma(s, t)}
+  C(e) = \sum_{s, t \in V} \frac{\sigma(s, t \mid e)}{\sigma(s, t)}
 \]
 Here, \(\sigma(s, t \mid e)\) resembles the amount of shortest paths
 between \(s\) and \(t\) that pass through \(e\) while \(\sigma(s, t)\)
