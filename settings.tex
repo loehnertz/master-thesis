@@ -82,14 +82,14 @@
 \usepackage{subfig} % sub-figures
 \usepackage{wrapfig} % wrapping figures
 \usepackage{listings} % better source code listings
+\usepackage[algoruled,lined,linesnumbered,commentsnumbered]{algorithm2e} % algorithms
 \usepackage{tabularx} % better tables
+\usepackage{diagbox} % diagonally split table cells
 \usepackage{hhline}
 \usepackage{enumitem}
 \usepackage{array}
-\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{booktabs}
 \usepackage{url}
-\usepackage{breakurl}
 \graphicspath{ {figures/} }
 
 % Page layout
@@ -134,6 +134,9 @@
     urlcolor=black,
 }
 \urlstyle{same}
+
+% Hyphenations
+\hyphenation{non-neg-li-gi-ble}
 
 \newcommand*\rot{\rotatebox{90}}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}

@@ -21,7 +21,9 @@ SUBTITLE
 
 
 
+
 \include{preamble}
+
 
 
 
@@ -33,7 +35,9 @@ ABSTRACT
 
 
 
+
 \tableofcontents
+
 
 
 
@@ -60,7 +64,7 @@ developers and engineers working on it in seemingly endless complexity
 that a single human cannot even fully comprehend anymore at one point.
 
 For many companies, this oftentimes is the status quo and if the decision is
-made to move to a microservices-based architecture, one of the first
+made to move to a microservices\hyp based architecture, one of the first
 challenges, the decomposition, is already difficult to begin with:
 
 Defining where within the existing application one service should end and the
@@ -74,7 +78,7 @@ a human software engineer in performing the aforementioned decomposition.
 
 \section{Problem analysis}
 
-Generally speaking, there are two ways to put a microservices-based
+Generally speaking, there are two ways to put a microservices\hyp based
 software architecture into place. The greenfield approach, meaning that
 microservices are directly getting built without a preexisting application,
 as well as the transformation of an existing monolithic software solution
@@ -91,7 +95,7 @@ of utilizing the already existing and running application is still underrepresen
 Thirdly, as Martin Fowler remarks, microservices are especially feasible
 with a mature workflow, domain model, operational model, etc. already
 in place \cite{fowler-monolith-first, fowler-microservices-tradeoffs}
-which favors non-greenfield approaches as well.
+which favors non\hyp greenfield approaches as well.
 
 The task of getting the boundaries of each microservice right is hard,
 especially when the teams working on the existing software
@@ -140,7 +144,7 @@ for evaluating microservice decomposition methodologies?"}
 
 Firstly, the approach for the methodology is developed and validated
 for feasibility especially regarding its implementation.
-Apart from its general description in the \nameref{chap:related} chapter,
+Apart from its general description in the \textit{\nameref{chap:related}} chapter,
 the approach itself is explained and devised in chapters \ref{} to \ref{}.
 
 Secondly, the foundation for the rationale behind the methodology is worked out
@@ -193,6 +197,7 @@ building back-end applications.
 
 
 \subsection{Monolithic}
+
 The term \textit{monolithic} is derived from the Ancient Greek word
 \textit{monólithos} which roughly translates to \textit{single stone} \cite{press2011oxford}.
 This adumbrates already what the word is used for in software engineering,
@@ -238,11 +243,13 @@ even if only a tiny module within the monolith might have needed any scaling
 in the first place \cite{ms-fowler, newman2015building}.
 
 
-\subsection{Microservices-based}
+\subsection{Microservices\hyp based}
+
 Microservices are essentially about building an application
 \textit{"as a suite of small services, each running in their own process and
-communicating with lightweight mechanisms, often an HTTP resource API"} \cite{ms-fowler} ---
-a microservice is developed and deployed independently in a distributed manner.
+communicating with lightweight mechanisms, often an HTTP resource API"}
+\cite{ms-fowler} --- a microservice is developed and deployed independently
+in a distributed manner.
 Each service should be built around one business capability following the
 \textit{single responsibility principle} \cite{newman2015building, martin2003agile}.
 Furthermore, each microservice should be responsible for the data it governs,
@@ -250,7 +257,7 @@ avoiding any overlaps with other services \cite{ms-fowler}.
 
 
 \subsubsection{Advantages}
-As just mentioned, microservices-based architectures allow for a better
+As just mentioned, microservices\hyp based architectures allow for a better
 decoupling of software development life cycles between business capabilities \cite{ms-fowler}.
 This enables different teams or even single developers to work at different
 velocities which is sometimes also dictated by the type and complexity of the
@@ -272,7 +279,7 @@ that are in need of scaling can be scaled instead of the entirety of the applica
 
 
 \subsubsection{Disadvantages}
-In contrast to monolithic applications, microservices introduce a non-negligible
+In contrast to monolithic applications, microservices introduce a non\hyp negligible
 amount of overhead. Firstly, the architectural style is geared toward
 agile software development which by itself mandates a certain organizational setup.
 Secondly, the development demands other patterns in terms of e.g.
@@ -304,7 +311,7 @@ will lead to nothing more than a \textit{distributed monolith} in the long run.
 
 
 In summary, the larger and more complicated the underlying business logic
-becomes, the more the application can benefit from a microservices-based architecture.
+becomes, the more the application can benefit from a microservices\hyp based architecture.
 Specifically when developing the overarching application in agile teams,
 microservices offer natural boundaries for this organizational structure.
 Furthermore, when looking at the disadvantages of them, the question of where
@@ -360,9 +367,9 @@ two such vertices \(x_i = (r_1, r_2), \enskip r_1 \in V, \enskip r_2 \in V\).
 
 We utilize the static program analysis without \textit{execution counts}
 which does not yield a weighted graph, allows us however to have a more complete
-weighted call graph when merging two or more incomplete call graphs, weighted or not,
-e.g. when another was constructed with dynamic program analysis.
-Precisely, this is discussed in the chapter \nameref{}.
+weighted call graph when merging two or more incomplete call graphs,
+weighted or not, e.g. when another was constructed with dynamic program analysis.
+Precisely, this is discussed in the chapter \textit{\nameref{chap:extracting-coupling}}.
 
 
 \subsection{Dynamic program analysis} \label{subsect:background-dynamic-analysis}
@@ -396,7 +403,7 @@ has been invoked even when analyzed for an immense amount of time which will
 then lead to an incomplete \textit{dynamic call graph} \cite{graham1982gprof}.
 
 
-\subsection{Semantic similarity calculation}
+\subsection{Semantic similarity calculation} \label{subsect:semantic-similarity}
 
 Calculating the semantic similarity between two documents is a traditional
 discipline in the domain of natural language processing (NLP).
@@ -612,39 +619,39 @@ on \textit{evolutionary similarity} \cite{tornhill2015crimescene}.
 
 Essentially, this approach is based on mining information out of
 version control system (VCS) data such as a Git log.
-The listing \ref{git-log} depicts this with one example commit entry
+The listing \ref{git-log} depicts this with one example revision entry
 out of a large Git log of a real application. However, multiple of those
-commit entries would be analyzed to calculate \textit{evolutionary similarity}.
+revision entries would be analyzed to calculate \textit{evolutionary similarity}.
 
 Precisely, over the duration of a certain time period \([t_1, t_2]\)
-or the entirety of the log \([t_{min}, t_{max}]\), every commit \(c \in C\)
+or the entirety of the log \([t_{min}, t_{max}]\), every revision \(r \in R\)
 contains at least one entity (i.e. file) out of the code base at that point
-in time \(\exists e \in c, e \in E\) that was modified
-(including creation and deletion) as part of the commit.
-Over the course of all the commits \(\forall c \in C\) in a given time period
-\([t_1, t_2]\), the commits where an entity \(e_1 \in E\) changed together
+in time \(\exists e \in r, e \in E\) that was modified
+(including creation and deletion) as part of the revision.
+Over the course of all the revisions \(\forall r \in R\) in a given time period
+\([t_1, t_2]\), the revisions where an entity \(e_1 \in E\) changed together
 with another entity \(e_2 \in E\) are gathered:
 \[
-  C' = \{ c \in \{ c \in C \mid c \in [t_1, t_2] \} \mid e_1 \in c \land e_2 \in c \}
+  R' = \{ r' \in \{ r \in R \mid r \in [t_1, t_2] \} \mid e_1 \in r' \land e_2 \in r' \}
 \]
-Furthermore, the ratio of how many of the total commits that modified
+Furthermore, the ratio of how many of the total revisions that modified
 the entity \(e_1\) is calculated to obtain a percentage:
 \[
-  \frac{\vert C' \vert}{\{ c \in \{ c \in C \mid c \in [t_1, t_2] \} \mid e_1 \in c \}}
+  \frac{\vert R' \vert}{\{ r' \in \{ r \in R \mid r \in [t_1, t_2] \} \mid e_1 \in r' \}}
 \]
-As a consequence, the time interval \([t_1, t_2]\) covering the commits can be
-shifted such that either every commit is evaluated on its own or that multiple
+As a consequence, the time interval \([t_1, t_2]\) covering the vs can be
+shifted such that either every revision is evaluated on its own or that multiple
 are evaluated at a time.
 
 Additionally, a threshold can be applied to filter out noise such that only
-after a certain amount of shared commits of two entities \(e_1 \in E, e_2 \in E\),
-the commits are added to the shared commits \(C'\) to increase the relevance
+after a certain amount of shared revisions of two entities \(e_1 \in E, e_2 \in E\),
+the revisions are added to the shared revisions \(R'\) to increase the relevance
 of this \textit{evolutionary similarity} measurement \cite{tornhill2015crimescene}.
 
 The details of the utilization of this approach as part of our devised methodology
 is explained in chapters \ref{chap:rationale} and \ref{chap:extracting-coupling}.
-\newline
 
+\smaller
 \begin{lstlisting}[caption=Example Git log, label=git-log, breaklines=true]
 commit 7fa508ea483d45b037ee9507a6e92e5bb2118418
 Author: Jakob Loehnertz <mail@jakob.codes>
@@ -656,6 +663,7 @@ Date:   Tue Jun 18 11:23:33 2019 +0200
 1   0   ../model/metrics/ClusteringQuality.kt
 6   3   ../frontend/src/App.vue
 \end{lstlisting}
+\normalsize
 
 
 
@@ -719,7 +727,7 @@ Finally, the way that we utilize the exhibited graph clustering algorithms
 as part of this work is discussed further in chapter
 \ref{chap:creating-service-recommendations}.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \def\arraystretch{1.60}
 \begin{tabularx}{\textwidth}{|Y||p{2.5cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
  \hline
@@ -908,8 +916,8 @@ Next, the vertices are iterated over in random order. Each vertex is moved
 to the cluster that is shares the most edges with \cite{biemann2006chinese}.
 
 Owing to the fact, that this algorithm is incorporating randomness,
-it is non-deterministic. Moreover, it yields a flat clustering
-(i.e. non-hierarchical) \cite{biemann2006chinese}.
+it is non\hyp deterministic. Moreover, it yields a flat clustering
+(i.e. non\hyp hierarchical) \cite{biemann2006chinese}.
 
 
 
@@ -939,7 +947,7 @@ notion that there is still room for improvement.
 
 \section{Literature survey} \label{subsect:literature-survey}
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \def\arraystretch{1.55}
 \begin{tabularx}{\textwidth}{|Y||Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
  \hline
@@ -995,11 +1003,11 @@ the existing work by Fritzsch et al. \cite{fritzsch2018monolith}.
 
 In the following paragraphs, the approaches used as matrix columns are explained in more detail.
 \paragraph{SE model analysis}
-The term \textit{Software Engineering (SE) models} subsumes non-source code
+The term \textit{Software Engineering (SE) models} subsumes non\hyp source code
 artifacts out of the domain of SE.
 For instance, this category includes use case models and entity relationship models (ERM).
 \paragraph{Static analysis}
-Static analysis covers any form of non-runtime analysis of the given code base.
+Static analysis covers any form of non\hyp runtime analysis of the given code base.
 This includes dependency graphs, class graphs, connection of source code via shared terms
 (i.e. words in the identifier of classes that might tie them together) etc.
 \paragraph{Dynamic analysis}
@@ -1015,8 +1023,8 @@ as well as the analysis of \textit{object relational mappers} (ORM)
 if those were already in use in the existing application.
 \paragraph{VCS mining}
 The repositories of existing solutions are usually part of a
-version control system (VCS) such as Git. Consequently, commits and merges can be analyzed
-to e.g. determine the coupling of certain files, modules, or classes.
+version control system (VCS) such as Git. Consequently, revisions and merges
+can be analyzed to e.g. determine the coupling of certain files, modules, or classes.
 \paragraph{External interface analysis}
 The external interfaces (i.e. the Web-APIs) of existing solutions can be analyzed to get
 a sense of existing modularization and cohesion within the solution.
@@ -1107,7 +1115,7 @@ is that the algorithm might give recommendations that a human engineer would
 not have considered which also affects the granularity and therefore the
 amount of services (i.e. clusters).
 The Leung algorithm \cite{leung2009community} on the other hand has the
-disadvantage that it is non-deterministic which might cause completely
+disadvantage that it is non\hyp deterministic which might cause completely
 different recommendations with every execution.
 
 Consequently, Kruidenberg \cite{kruidenberg2018monoliths} uses the same
@@ -1298,13 +1306,17 @@ Precisely, the three types of coupling above are subcategories of the notion of
 \textit{principles of microservices} are showcased in figure
 \ref{fig:principles-of-microservices} and the subsections below.
 Furthermore, the details of the utilization
-of this mapping as part of our methodology are discussed in chapters
-\ref{chap:extracting-coupling} and \ref{chap:software-as-weighted-graph}.
+of this mapping as part of our methodology are discussed in chapter
+\ref{chap:extracting-coupling}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.90\textwidth]{principles-of-microservices}
-\caption{The mapping of the principles of microservices to coupling types}
+\caption{Mapping design principles of microservices to coupling types}
+\caption*{
+  We detected that three of the most important design principles of the
+  microservices paradigm maps directly to three main types of coupling.
+}
 \label{fig:principles-of-microservices}
 \end{figure}
 
@@ -1325,7 +1337,7 @@ Hence, the weighted edges of the graph symbolize the \textit{execution counts}.
 However, we opted not to make the constructed graph directed as graph clustering
 is usually not applied to directed graphs \cite{lancichinetti2009community}.
 Moreover, the other coupling types also only yield undirected graphs which
-would make a combined analysis on all of them non-functional.
+would make a combined analysis on all of them non\hyp functional.
 
 Finally, the first principle maps to this type of coupling due to the fact that
 the \textit{dynamic coupling} information can be utilized to keep
@@ -1370,35 +1382,394 @@ which would otherwise violate the third principle.
 
 \chapter{Extracting coupling information from software} \label{chap:extracting-coupling}
 
-\section{Dynamic coupling}
+An important argument of our approach is that the coupling information
+exhibited in chapter \ref{chap:rationale} are extracted out of the input
+monolithic application automatically without any further user input.
+In this chapter it is detailed which inputs need to be supplied and
+how the three types of coupling are extracted out of them. Additionally,
+a static program analysis is conducted as covered in this chapter.
 
-\subsection{Profiling-based approach}
+Sometimes it is not possible to provide every of the four inputs which is why
+at least any three out of the four have to be provided while our devised
+methodology can still conduct its analysis.
 
-\subsection{Instrumentation-based approach}
+Finally, our methodology is focused on object-oriented programming,
+hence we will from now on use the term \textit{class} instead of \textit{entity}
+for describing the vertices of the constructed weighted graphs.
+Moreover, the following descriptions are on the example of Java applications,
+however in chapter \ref{chap:implementation} we exhibit how other
+languages and platforms can be added to the implementation.
 
-\section{Semantic coupling}
+
+
+\section{Static coupling extraction} \label{sect:static-coupling-extraction}
+
+As discussed in more detail in chapter \ref{chap:software-as-weighted-graph},
+we opt for also constructing a full static call graph which is covered
+in subsection \ref{subsubsect:call-graph-static}.
+
+
+\subsection{Walk\hyp based approach}
+
+We utilize an approach that starts with the \code{main} method or methods of
+the given application and then recursively walks down the classes and their
+methods that are instantiated or invoked. Consequently, a graph with
+possible cycles is built.
+Both, class instantiations as well as method invocations can be registered
+although as part of our methodology, both  will result in an edge connecting
+the instantiating or invoking class vertex to the one it is instantiating
+or invoking --- the algorithm \ref{algo:class-walk} depicts this process.
+
+\begin{algorithm}[ht]
+\caption{Recursive walk trough classes and methods}
+\label{algo:class-walk}
+  \BlankLine
+  \KwData{
+    The source code or compiled code of an application
+  }
+  \KwResult{
+    A graph with the classes as vertices and their instantiations and
+    invocations toward others as the edges
+  }
+  \BlankLine
+  $cg$ $\leftarrow$ empty list of pairs of classes representing the call graph\;
+  $av$ $\leftarrow$ empty set for classes that have already been visited\;
+  $cq$ $\leftarrow$ empty queue for classes that should be visited\;
+  \BlankLine
+  push the \code{main} methods of the application onto queue $cq$\;
+  \BlankLine
+  \While{class queue $cq$ is not empty}{
+    $vc$ $\leftarrow$ pop class to visit next from queue $cq$\;
+    \ForEach{method $vm$ of class $vc$}{
+      \ForEach{class $ic$ instantiated or invoked from method $vm$}{
+        add pair of $vc$ and $ic$ to call graph list $cg$\;
+        \If{$ic$ is not in set of already visited classes $av$}{
+          push class $ic$ onto class queue $cq$\;
+          add class $ic$ to set of already visited classes $av$\;
+        }
+      }
+    }
+  }
+  \BlankLine
+  \Return{call graph list $cq$}\;
+\end{algorithm}
+
+For Java applications, both source code as well as compiled bytecode can
+be utilized as the input to algorithm \ref{algo:class-walk}.
+For both approaches, libraries exist that can access and iterate over
+the classes and methods as detailed in chapter \ref{chap:implementation}.
+
+The resulting static call graph is theoretically directed in the manner that it
+gets constructed in algorithm \ref{algo:class-walk}, the first class in the class
+pairs that are getting returned by it is the vertex the edge is pointing away from.
+Furthermore, it would be possible to count how often a class instantiates or
+invokes another and accumulate this value as a weighted edge.
+
+However, we opted to utilize neither directions nor weights
+and instead to construct a regular undirected, unweighted graph.
+Owing to the fact that the graphs resulting from the the other coupling types
+are not directed, using a directed graph for this coupling type makes no sense.
+Moreover, the weights associated with a \textit{static coupling} graph
+do not have much meaning since the range of the weights is not very significant
+as certain algorithms may instantiate a lot of other classes,
+yet this does not strictly increase their coupling.
+Specifically when compared to the other coupling types, potential edge weights
+on the \textit{static coupling} graph are not very relevant, thus this graph
+is plainly used for being able to obtain a final graph that covers the
+entirety of the input monolithic application, as mentioned earlier.
+
+
+
+\section{Dynamic coupling extraction}
+
+To extract the \textit{dynamic coupling} information, two general approaches
+were detected and evaluated. Both have advantages and disadvantages which
+are discussed in the following subsections. However, for both approaches,
+the application has to be executed which involves a lot more overhead compared
+to the previously exhibited \textit{static coupling} graph construction.
+
+As part of our methodology, we decided that the user can choose which option
+they want to use:
+\begin{itemize}[noitemsep]
+  \item The \textit{sampling\hyp based} approach has lower fidelity but
+        also less impact on the runtime
+  \item The \textit{instrumentation\hyp based} approach has high fidelity but
+        also a large impact on the runtime
+\end{itemize}
+Our methodology works with both approaches with the difference that the results
+with an \textit{instrumentation\hyp based} input are of better quality due to the
+higher input fidelity. This is further detailed in the chapter on
+\textit{\nameref{chap:implementation}}.
+
+
+\subsection{Sampling\hyp based approach}
+
+The first approach is more concerned with observing (i.e. monitoring)
+the running application from the outside. The typical method to do so is
+a \textit{sampling\hyp based} application profiling. This means that with a preset
+frequency, every \(n\) milliseconds, a sample is recorded regarding what the
+application is currently doing. This concerns actions such as
+the memory usage, thread usage, which method is invoked how often, etc.
+
+Focusing on the \textit{Java Virtual Machine} (JVM) as we target it with our
+implementation, it ships with a built-in profiler,
+called \textit{Java Flight Recorder} (JFR).
+The JFR is a \textit{sampling\hyp based} profiler that is shipped
+with \textit{OpenJDK} versions starting from 11 \cite{openjdk-jfr}.
+For other platforms and languages, different profilers are available or built-in,
+yet the idea to record profiling data at a certain sampling rate
+stays the same, implementation details however differ from runtime to runtime.
+
+The advantage of this approach is that the overhead on the runtime is kept to
+a minimum. It is highly dependent on the implementation but in the example of
+the JVM, the JFR only has a claimed overhead of about 1\% \cite{openjdk-jfr}.
+
+The downside is that the fidelity of the recordings is highly dependent on the
+sampling rate. The lower the sampling rate, the more likely it just misses
+certain events (e.g. method invocations) which leads to the situation that
+there is no certainty how much it actually recorded --- yet, this is true
+for every \textit{sampling\hyp based} approach and an inherent problem of them.
+However, the higher the sampling rate gets, the higher is the overhead for
+recording sampling more while still not eliminating said inherent problem.
+
+
+\subsection{Instrumentation\hyp based approach}
+
+Compared to the \textit{sampling\hyp based} approach described above,
+an \textit{instrumentation\hyp based} approach can reach complete coverage of
+theoretically every event happening during the runtime.
+We are only concerned with method invocations, thus an
+\textit{instrumentation\hyp based} approach in that case encompasses logging
+every single method entry together with which method invoked it.
+
+The disadvantage of this approach is that the impact on the runtime performance
+is immense owing to the fact that every single method invocation is logged.
+
+Generally, there are multiple ways how to implement
+\textit{instrumentation\hyp based} profiling however the most common way
+is some form of aspect-oriented programming (AOP) \cite{kiczales1997aop}.
+
+The idea of AOP is to essentially inject extra functionality for
+\textit{cross-cutting concerns}, which describes operations that are not
+necessarily limited to a certain feature, such as logging \cite{kiczales1997aop}.
+The idea itself is simple however, first the user defines \textit{cutting points},
+which behave like patterns that are being matched on the source code,
+for instance: \textit{at every method entry}.
+They define where in the code base the extra functionality should be injected.
+In the next step, the user defines source code that is then injected at every
+\textit{cutting point} either in a static way at compile time or,
+in the case of bytecode\hyp based languages, in the moment the bytecode is loaded
+into the runtime environment \cite{kiczales1997aop}.
+At runtime, at every \textit{cutting point}, method entries in our case,
+the injected piece of logging code is executed just as the rest of the code
+\cite{kiczales1997aop}.
+
+
+
+\section{Semantic coupling extraction}
+
+Similarly to the \textit{static coupling} again, the \textit{semantic coupling}
+extraction only needs the source code itself. Importantly, human-readable,
+not yet compiled source code is necessary as the semantics are lost in compiled
+code since it is not human-readable anymore.
+We implemented an approach from scratch that conducts the  steps regarding
+semantic similarity calculation from subsection \ref{subsect:semantic-similarity}:
+\begin{enumerate}[noitemsep]
+  \item Tokenization
+  \item Stop word filtering
+  \item Normalization
+  \item Vectorization
+  \item Relevance weighted via \textit{tf-idf}
+  \item Latent semantic indexing (LSI)
+\end{enumerate}
+As detailed in subsection \ref{subsect:semantic-similarity},
+specifically the first two steps are different when analyzing source code
+compared to traditional natural language.
+
 
 \subsection{Natural language processing on source code}
 
-\section{Logical coupling}
+Just as the other input dimensions, we implemented our devised methodology
+on the example of Java applications, hence this subsection will focus on
+Java source code. Other rules would apply to other languages although
+the general concept remains the same.
+
+Regarding the first step, the \textit{tokenization}, an important difference to
+the \textit{tokenization} of truly natural language is encountered.
+Owing to the fact that line breaks are an important tool of syntactic separation
+in programming, they are treated separately, this becomes apparent with an example.
+Java source code as well as many other higher level programming languages have
+the notion of recursive packages and importing them or parts of them into the
+source code of other packages.
+Consequently, source code such as the following example \ref{packages-and-imports}
+would include package paths in the term list of the respective document
+which would distort the result of the \textit{semantic coupling} analysis.
+Thus, every line is parsed separately and language-specific keywords such as
+\code{package} or \code{import} trigger that the line get discarded.
+
+\smaller
+\begin{lstlisting}[caption=Packages and imports in Java, label=packages-and-imports, language=Java, breaklines=true]
+package codes.jakob.semanticcoupling.parsing
+
+import codes.jakob.semanticcoupling.model.Document
+import codes.jakob.semanticcoupling.model.NaturalLanguage
+import codes.jakob.semanticcoupling.model.ProgrammingLanguage
+import codes.jakob.semanticcoupling.model.Term
+import codes.jakob.semanticcoupling.normalization.Lemmatizer
+import codes.jakob.semanticcoupling.normalization.Normalizer
+import codes.jakob.semanticcoupling.normalization.Stemmer
+\end{lstlisting}
+\normalsize
+
+Next, every line of the source code is stripped of non\hyp word characters
+(i.e. \code{W} from regular expressions) which is every character
+but a-z, A-Z, 0-9, and the underscore character \cite{ieee1992posix}.
+Before that step, explicit strings (i.e. text in double quotes) are separately
+saved so they do not lose their meaning when stripping the double quotes.
+Additionally, the explicit strings as well as every other text that is still
+left then and matches a camel-case pattern is split into a new term at every
+\textit{camel hump}. Moreover, numeric characters as well as single characters
+are filtered out, as both provide no relevant semantic meaning.
+
+Furthermore, as part of the second step, the \textit{stop word filtering},
+a list with stop words specific to the Java language is used to filter out
+terms that are contained in the list. The list was crafted by us in line with
+the official Java language specification \cite{oracle-java11}.
+Examples for terms that are classified as stop words include:
+\begin{itemize}[noitemsep]
+  \item \code{class}
+  \item \code{public}
+  \item \code{static}
+  \item \code{void}
+\end{itemize}
+
+Finally, everything that was not filtered out until this point is split
+at white space characters (i.e. \code{t} from regular expressions)
+\cite{ieee1992posix}.
+Additionally, every resulting term is converted to lower case so that
+the subsequent steps handle the same term in different cases as
+semantically indifferent.
+
+The rest of the steps is conducted just as described in subsection
+\ref{subsect:semantic-similarity} since after the second step,
+the following steps work on term lists as part of documents of the corpus
+\(t_i \in d_i, d_i \in C\), which, at that point, are regular natural language.
+
+
+
+\section{Evolutionary coupling extraction} \label{sect:evolutionary-coupling-extraction}
+
+The last input dimension, the \textit{evolutionary coupling}, needs different
+input. Instead of the application code itself, a log file generated by the
+utilized version control system (VCS) is required.
+This mandates that a VCS is used during the development of the input application.
+
 
 \subsection{Mining version control system data}
+
+The approach leveraged to mine VCS data is modeled after the methodology of
+Tornhill \cite{tornhill2015crimescene} which is exhibited in subsection
+\ref{subsect:evolutionary-similarity}.
+
+Theoretically, every VCS that has the notion of revisions that include files
+and that is able to generate a log file which details past revisions together
+with the files involved, can be used to extract \textit{evolutionary coupling}
+information. A few example VCS that we also support as part of our implemented
+methodology detailed in chapter \ref{chap:implementation}:
+\begin{itemize}[noitemsep]
+  \item \textit{Git}
+  \item \textit{Subversion}
+  \item \textit{Mercurial}
+  \item \textit{Perforce}
+  \item \textit{Team Foundation Server}
+\end{itemize}
+All of the above also support to only generate a partial log for a certain
+time period. However, \textit{Perforce} and \textit{Team Foundation Server}
+only support to log the last \(n\) revisions compared to a time\hyp based range
+\cite{perforce, team-foundation-server}.
+
+A caveat with this approach is that by default, the log files will only
+include files. Owing to the fact that in applications written in Java,
+one file is also equivalent to one class, we can generate the coupling graph
+without any changes to the log format. Nevertheless, it would be possible
+to extend the \textit{evolutionary coupling} information extraction to support
+languages that might keep multiple entities (i.e. the vertices in the graph)
+in the same file by generating more detailed log files on a line level within
+the files. However, this is not covered by our work as we focus on
+Java applications for our initial implementation.
+
+After parsing the input log file, differing based on the utilized VCS,
+the process described in subsection \ref{subsect:evolutionary-similarity}
+generates the weighted \textit{evolutionary coupling} graph with the same
+structure as the other ones such that the vertices \(v_i \in V\) are the classes
+extracted from the VCS log file while the edges \(e_i \in E\) are resembling
+that two classes have overlapping software development life cycles.
+The weight of the edges is a percentage that indicates how much the
+life cycles overlap \(W(e_i) \in [0.0, 1.0]\).
+
+Finally, as discussed in subsection \ref{subsect:evolutionary-similarity},
+we use a threshold for this extraction step to filter out noise.
+The values are constants that can be changed while the defaults that we employ are:
+\begin{itemize}[noitemsep]
+  \item Minimum shared revisions between entities: 1
+  \item Time period \([t_1, t_2]\): Every day from \([00:00, \ 23:59]\)
+\end{itemize}
+For clarification, figure \ref{fig:vcs-log-timeline} depicts an example
+timeline to show how the \textit{evolutionary coupling} is calculated
+via a given a VCS log.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{vcs-log-timeline}
+\caption{An example timeline of a VCS log}
+\caption*{
+  A textual VCS log is mined for \textit{evolutionary coupling} information
+  by analyzing how many percent of the shared revisions of two entities
+  do overlap. The figure specifically depicts the usage of time ranges
+  and thresholds to obtain sound data.
+  The solid lines are depicting revisions.
+  The dotted lines are depicting midnight in between two days on the timeline.
+  In the example, according to our explanation in
+  \ref{sect:evolutionary-coupling-extraction}, the \textit{evolutionary coupling}
+  values would be as follows (the values are rounded down):
+  \begin{center}
+  \begin{tabular}{|c|c|c|c|}\hline
+    \backslashbox{To}{From}
+    ~   & A     & B     & C     \\\hline
+    A   & ~     & 0.55  & 0.50  \\\hline
+    B   & 0.83  & ~     & 0.87  \\\hline
+    C   & 0.66  & 0.77  & ~     \\\hline
+  \end{tabular}
+  \end{center}
+}
+\label{fig:vcs-log-timeline}
+\end{figure}
 
 
 
 
 \chapter{Representing software as weighted graphs} \label{chap:software-as-weighted-graph}
 
+
+
+
+
 \section{Building a weighted graph for each input dimension}
+
+
+
+
 
 \section{Merging input dimensional graphs into combined one}
 
 
 
 
+
+
 \chapter{Creating microservice recommendations} \label{chap:creating-service-recommendations}
 
-\section{Clustering combined weighted graph}
+\section{Clustering the combined weighted graph}
 
 
 
@@ -1416,16 +1787,22 @@ which would otherwise violate the third principle.
 
 \chapter{Visualizing microservice recommendations}
 
-\section{Network-based view}
+\section{Network view}
 
-\section{Tree-based view}
+\section{Textual view}
 
 \section{Metrics view}
 
 
 
 
-\chapter{Implementation}
+\chapter{Implementation} \label{chap:implementation}
+
+\section{Database} \label{sect:implementation-database}
+
+\section{Back-end} \label{sect:implementation-back-end}
+
+\section{Front-end} \label{sect:implementation-front-end}
 
 
 
