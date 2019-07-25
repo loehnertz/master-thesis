@@ -1750,19 +1750,103 @@ via a given a VCS log.
 
 \chapter{Representing software as weighted graphs} \label{chap:software-as-weighted-graph}
 
-
+Our methodology works by clustering a weighted graph hence we need to construct
+it first. As discussed in chapter \ref{chap:rationale}, three general
+coupling types were chosen to be leveraged for devising the microservice
+candidates recommendations.
+Precisely, the input monolithic application gets analyzed from the view of
+each of these coupling types, called dimensions from now on.
 
 
 
 \section{Building a weighted graph for each input dimension}
 
+Out of each of the input dimensions, a weighted graph is built with the classes
+as the vertices \(v_i \in V\) and the coupling values between the classes
+as the weighted edges \(e_i \in E\) representing a percentage
+\(W(e_i) \in [0.0, 1.0]\) --- resulting in a weighted graph \(G = (V, E)\).
+Consequently, we receive three separate weighted graphs with the different
+input dimensions as the edge weights.
 
+However, the other extraction methods (i.e. dimensions) covered in the
+sections below entail one problem that would would discredit
+our whole methodology --- they oftentimes do not cover the entirety of the
+input monolithic application in regard to featuring every class of it
+as vertices in the resulting weighted graph.
+As a consequence, it is possible that all three weighted graphs constructed
+out of the three coupling types are not complete in the sense that they cover
+the entirety of the input application. As this would defeat the purpose of
+our approach, an additional static call graph is constructed to be certain
+that the final graph covers the whole application.
 
 
 
 \section{Merging input dimensional graphs into combined one}
 
+Finally, four graphs are constructed out of the four input dimensions
+that need to merged into a combined one so that it can be clustered eventually.
+Essentially, this step encompasses a set-theoretic union
+of the four graph tuples \(G_i = (V, E)\) such that:
+\[
+  G_{combined} = G_{static} \cup G_{dynamic} \cup G_{semantic} \cup G_{evolutionary}
+\]
+Importantly, this step utilizes unions owing to the fact
+that all four input dimensions have downsides in producing a graph
+that covers the whole application.
+Nevertheless, they complement each other since they cover separate important
+aspects of detecting the distinct types of coupling.
 
+Static program analysis has the shortcoming that certain aspects of a written
+application are only known at runtime such as the usage of
+\textit{reflection} \cite{landman2017reflection}.
+On the other hand, dynamic program analysis entails the problem that
+it is by no means guaranteed that every class of the executed application
+is called or even instantiated --- the resulting graph is highly dependent
+on the workload while the dynamic analysis is conducted.
+A similar argument is true for the last two input dimensions.
+Oftentimes, not the entire application is covered due to thresholds that
+are introduced to filter out noise, which is discussed in subsection
+\ref{subsect:evolutionary-similarity}.
+
+Consequently, unions ensure that the entirety of the given
+monolithic application is covered as part of the graph-theoretic representation.
+Precisely, all vertices from each of the four graphs are added to the combined one:
+\[
+  V_{combined} = V_{static} \cup V_{dynamic} \cup V_{semantic} \cup V_{evolutionary}
+\]
+For the edges, the merging is twofold. The edges themselves can just be all
+added to the combined graph to connect the vertices \(V_{combined}\) according
+to the four input graphs:
+\[
+  E_{combined} = E_{static} \cup E_{dynamic} \cup E_{semantic} \cup E_{evolutionary}
+\]
+However, the edge weights should not just be added up as all of them resemble
+percentages. Instead, we use a modifiable \textit{edge weighting formula} which
+is defining factors for each input dimension to increase or decrease its importance
+in calculating the combined weight of each edge \(\forall e_i in E_{combined}\)
+in the combined graph \(G_{combined}\). Owing to the fact, that the
+\textit{static coupling} dimension yields not edge weights as covered in section
+\ref{sect:static-coupling-extraction}, it is excluded from
+the \textit{edge weighting formula}:
+\small
+\begin{equation*}
+\begin{split}
+  W_{combined}(wf_{dynamic}, wf_{semantic}, wf_{evolutionary}) = \\
+  \frac{
+    wf_{dynamic} \times W(e_{dynamic}) +
+    wf_{semantic} \times W(e_{semantic}) +
+    wf_{evolutionary} \times W(e_{evolutionary})
+  }{
+    wf_{dynamic} +
+    wf_{semantic} +
+    wf_{evolutionary}
+  }
+\end{split}
+\end{equation*}
+\normalsize
+In the above formula, the weight factors \(w_x\) can then be substituted
+with custom factors. Our default setting is a simple average with all the
+weight factors being \(1\).
 
 
 
