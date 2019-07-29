@@ -710,56 +710,15 @@ values over \(0.4\) already resemble a strong clustering structure
 \cite{newman2004fast, fortunato2007resolution}.
 
 
-\subsection{Renowned algorithms}
+\subsection{Renowned graph clustering algorithms} \label{subsect:renowned-graph-clustering-algorithms}
 
-A variety of graph clustering algorithms exists with a variety of different
-goals, mechanisms, and features
+There are many graph clustering algorithms that were devised in this century
+and are considered as state-of-the-art
 \cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
-Consequently, a dozen renowned graph clustering algorithms were evaluated and
-assessed regarding their usability for our work.
-A total of nine renowned graph clustering algorithms were evaluated
-and classified in table \ref{table:graph-clustering-survey}.
-Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
-were selected to be utilized as part of our work --- they are discussed
-in more detail below and are additionally marked with their
-reference to identify them in table \ref{table:graph-clustering-survey}.
-Finally, the way that we utilize the exhibited graph clustering algorithms
+Thus, in this subsection we discuss renowned graph clustering algorithms.
+Furthermore, the way that we utilize the exhibited graph clustering algorithms
 as part of this work is discussed further in chapter
 \ref{chap:creating-service-recommendations}.
-
-\begin{table}[ht!]
-\def\arraystretch{1.60}
-\begin{tabularx}{\textwidth}{|Y||p{2.5cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
- \hline
- \rot{Citations~} & \rot{Runtime complexity~} & \rot{Implementation available~} & \rot{Does not require amount of clusters~} & \rot{Deterministic~} & \rot{Considers weighted edges~} & \rot{Hard clustering~} & \rot{Hierarchical~} \\
- \hline\hline
- \cite{girvan2002community}     & \(\mathcal{O}(n^3)\)          & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
- \cite{vandongen2000graph}      & \(\mathcal{O}(nk^2)\)         & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
- \cite{pons2005computing}       & \(\mathcal{O}(mn)\)           & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
- \cite{clauset2004modularity}   & \(\mathcal{O}(md \log{} n)\)  & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
- \cite{blondel2008modularity}   & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
- \cite{rosvall2008infomap}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
- \cite{biemann2006chinese}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
- \cite{reichardt2004detecting}  & \(\mathcal{O}(n)\)            & $\oplus$  & $\ominus$  & $\ominus$  & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
- \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & ~          & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
-\end{tabularx}
-\caption{Graph clustering algorithm survey matrix}
-\caption*{
-  All of the information necessary for the classification including the
-  runtime complexity indications are taken out of the original papers of the
-  authors which leads to the fact that some information is unknown as
-  the authors did not calculate or disclose this information.
-  The signs that are used in the matrix correspond to the following meaning:
-  \begin{itemize}[noitemsep]
-    \item $\oplus$: The statement of the respective cell is \textit{true}
-    \item $\ominus$: The statement of the respective cell is \textit{false}
-    \item N/A: The statement of the respective cell is \textit{not available}
-  \end{itemize}
-  The way that classifications are negated or not was chosen so that $\oplus$
-  is a positive feature regarding the utilization as part of our work.
-}
-\label{table:graph-clustering-survey}
-\end{table}
 
 \paragraph{Girvan-Newman \cite{girvan2002community}}
 The \textit{Girvan-Newman} algorithm is seen as one of the earliest, successful,
@@ -931,7 +890,7 @@ in computer science \cite{fritzsch2018monolith}.
 Nevertheless, the existing research is categorized, rated and analyzed in the
 following \textit{\nameref{subsect:literature-survey}}.
 
-To add to this chapter, Fritzsch et al. conducted a complete literature study titled
+To add to this chapter, Fritzsch et al. conducted a literature study titled
 \textit{From Monolith to Microservices: A Classification of Refactoring Approaches} (2019)
 \cite{fritzsch2018monolith} which looked at research in the same domain as ours.
 They conclude their research with:
@@ -1190,7 +1149,7 @@ very \textit{chatty} microservices are not desired due to three reasons.
 
 Firstly, it can mean that the two services are too tightly coupled with
 the solution that it might have been better to merge them together into one
-for instance \cite{newman2015building}.
+\cite{newman2015building}.
 
 Secondly, the stability is generally worse as the architecture becomes
 more brittle since it always has to be assumed that inter-service communication
@@ -1204,7 +1163,7 @@ of each request and response (i.e. when utilizing HTTP) is a costly action
 in terms of runtime \cite{newman2015building}.
 
 
-\subsection{Principle 2}
+\subsection{Principle 2} \label{subsect:ms-principle-2}
 The second principle is ambiguous without any further elaboration owing to
 the fact that the term \textit{task} has no notion of size or complexity
 attached to it.
@@ -1736,9 +1695,9 @@ via a given a VCS log.
   \begin{tabular}{|c|c|c|c|}\hline
     \backslashbox{To}{From}
     ~   & A     & B     & C     \\\hline
-    A   & ~     & 0.55  & 0.50  \\\hline
-    B   & 0.83  & ~     & 0.87  \\\hline
-    C   & 0.66  & 0.77  & ~     \\\hline
+    A   & --    & 0.55  & 0.50  \\\hline
+    B   & 0.83  & --    & 0.87  \\\hline
+    C   & 0.66  & 0.77  & --    \\\hline
   \end{tabular}
   \end{center}
 }
@@ -1823,7 +1782,7 @@ to the four input graphs:
 However, the edge weights should not just be added up as all of them resemble
 percentages. Instead, we use a modifiable \textit{edge weighting formula} which
 is defining factors for each input dimension to increase or decrease its importance
-in calculating the combined weight of each edge \(\forall e_i in E_{combined}\)
+in calculating the combined weight of each edge \(\forall e_i \in E_{combined}\)
 in the combined graph \(G_{combined}\). Owing to the fact, that the
 \textit{static coupling} dimension yields not edge weights as covered in section
 \ref{sect:static-coupling-extraction}, it is excluded from
@@ -1845,7 +1804,7 @@ the \textit{edge weighting formula}:
 \end{equation*}
 \normalsize
 In the above formula, the weight factors \(w_x\) can then be substituted
-with custom factors. Our default setting is a simple average with all the
+with custom factors. Our default setting is an average with all the
 weight factors being \(1\).
 
 
@@ -1853,29 +1812,240 @@ weight factors being \(1\).
 
 \chapter{Creating microservice recommendations} \label{chap:creating-service-recommendations}
 
+Once the combined graph \(G_{combined}\) has been constructed, the next step is
+to apply graph clustering to it such that groups of vertices that have strong
+coupling, resembled by the combined edge weights
+\(W_{combined}(wf_{dynamic}, wf_{semantic}, wf_{evolutionary})\) in between them,
+are more likely to end up in the same cluster.
+These clusters would then mirror the notion of the \textit{bounded contexts},
+introduced in subsection \ref{subsect:ms-principle-2}.
+Thus, each cluster would then resemble one microservice candidate recommendation.
+
+Consequently, the question arises which approach to take in clustering the
+constructed graph \(G_{combined}\) at hand, respectively which graph clustering
+algorithm to choose, to as optimally as possible devise the recommendations.
+
+
+
+\section{Survey of graph clustering algorithms}
+
+The idea of graph clustering was exhibited in the \textit{\nameref{chap:background}}
+chapter together with a range of available, renowned algorithms.
+A variety of graph clustering algorithms exists with a variety of different
+goals, mechanisms, and features
+\cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
+Consequently, a dozen renowned graph clustering algorithms were evaluated and
+assessed regarding their usability for our work.
+A total of nine renowned graph clustering algorithms were chosen and classified
+in table \ref{table:graph-clustering-survey}.
+The way that classifications are negated was chosen so that $\oplus$
+is a positive feature regarding the utilization as part of our work.
+
+Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
+were selected to be utilized as part of our work --- they are discussed
+in more detail in the \textit{\nameref{chap:background}} subsection regarding
+\textit{\nameref{subsect:renowned-graph-clustering-algorithms}}.
+The citation numbers in the table are also referenced there.
+
+\begin{table}[ht!]
+\def\arraystretch{1.60}
+\begin{tabularx}{\textwidth}{|Y||p{2.5cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
+ \hline
+ \rot{Citations~} & \rot{Runtime complexity~} & \rot{Implementation available~} & \rot{Does not require amount of clusters~} & \rot{Deterministic~} & \rot{Considers weighted edges~} & \rot{Hard clustering~} & \rot{Hierarchical~} \\
+ \hline\hline
+ \cite{girvan2002community}     & \(\mathcal{O}(n^3)\)          & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{vandongen2000graph}      & \(\mathcal{O}(nk^2)\)         & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{pons2005computing}       & \(\mathcal{O}(mn)\)           & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
+ \cite{clauset2004modularity}   & \(\mathcal{O}(md \log{n})\)   & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{blondel2008modularity}   & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{rosvall2008infomap}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{biemann2006chinese}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{reichardt2004detecting}  & \(\mathcal{O}(n)\)            & $\oplus$  & $\ominus$  & $\ominus$  & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
+ \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & ~          & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
+\end{tabularx}
+\caption{Graph clustering algorithm survey matrix}
+\caption*{
+  All of the information necessary for the classification including the
+  runtime complexity indications are taken out of the original papers of the
+  authors which leads to the fact that some information is unknown as
+  the authors did not calculate or disclose this information.
+  The signs that are used in the matrix correspond to the following meaning:
+  \begin{itemize}[noitemsep]
+    \item $\oplus$: The statement of the respective cell is \textit{true}
+    \item $\ominus$: The statement of the respective cell is \textit{false}
+    \item N/A: The statement of the respective cell is \textit{not available}
+  \end{itemize}
+  The way that classifications are negated was chosen so that $\oplus$
+  is a positive feature regarding the utilization as part of our work.
+  % The citation numbers stand for the following algorithms:
+  % \begin{itemize}[noitemsep]
+  %   \item \cite{girvan2002community}: Girvan-Newman
+  %   \item \cite{vandongen2000graph}: MCL
+  %   \item \cite{pons2005computing}: Walktrap
+  %   \item \cite{clauset2004modularity}: Clauset-Newman-Moore
+  %   \item \cite{blondel2008modularity}: Louvain
+  %   \item \cite{rosvall2008infomap}: Infomap
+  %   \item \cite{biemann2006chinese}: Chinese Whispers
+  %   \item \cite{reichardt2004detecting}: Spinglass
+  %   \item \cite{donetti2004detecting}: Commfind
+  % \end{itemize}
+}
+\label{table:graph-clustering-survey}
+\end{table}
+
+The characteristics chosen for the survey are discussed in the following paragraphs.
+
+\paragraph{Runtime complexity}
+The runtime complexity of a graph clustering algorithm is not overly
+important for our methodology and definitely does not eliminate a given algorithm,
+nevertheless, it is interesting to include this metric in the conducted survey.
+
+\paragraph{Implementation available}
+This characteristic is the first rated one as it is the most important for our
+methodology in the sense that the utilization of an algorithm as part of
+the implementation of our methodology is only possible when an implementation
+of said algorithm is available.
+
+\paragraph{Does not require amount of clusters}
+For our devised methodology, it is beneficial if the utilized graph clustering
+algorithm does not require a desired amount of clusters a priori owing to
+the fact that this number can only be estimated at best by a software engineer
+using our implementation.
+Nevertheless, some algorithms, and more importantly even some of the selected ones,
+require said amount of clusters as an input parameter.
+To circumvent this problem we came up with the solution to execute the affected
+algorithms multiple times with the same input and differing cluster amounts
+for a fixed number of iterations. Afterwards, the run that produced the highest
+scoring metric is selected in place where other algorithms that are not affected
+would have yielded one output in the first place.
+This may sound like a very ineffective solution but due to the fact that
+a single run of any graph clustering algorithm is completely isolated from
+another one, this process can be run concurrently with ease.
+How exactly this is implemented is discussed in chapter \ref{chap:implementation}.
+
+\paragraph{Deterministic}
+A non\hyp deterministic graph clustering algorithm might produce different
+results over the course of multiple executions. This effect is not a desired
+characteristic regarding our devised methodology but it can be mitigated
+with the solution discussed in the previous paragraph again.
+
+\paragraph{Considers weighted edges}
+This characteristic is of great importance for us since the input graphs
+will always be weighted. Furthermore, the whole idea of our methodology
+is to cluster similar vertices where the similarity is resembled via the edge weights.
+
+\paragraph{Hard clustering}
+The term \textit{hard clustering} describes that the output clustering
+of a given graph clustering algorithm assigns one and only one cluster
+to each vertex of the graph. Comparatively, \textit{soft clustering} or
+\textit{fuzzy clustering} can assign a vertex to multiple clusters which
+produces overlapping clusters \cite{lancichinetti2009community}.
+Similarly to the previous characteristic, this is not desired regarding our
+devised methodology as every vertex can only belong to one microservice
+which requires \textit{hard clustering} (i.e. a partitioning).
+
+\paragraph{Hierarchical}
+The last characteristic is not directly important for our methodology
+as we are only interested in the final output of the clusters as partitions.
+Nevertheless, as discussed in section \ref{sect:future-work},
+this property of graph clustering algorithms could be leveraged for future features.
+\newline
+
+The reason that the first seven from table \ref{table:graph-clustering-survey}
+were selected is that specifically the characteristics
+\textit{Considers weighted edges} and \textit{Hard clustering} are mandatory
+for our devised methodology to function.
+
+
+
 \section{Clustering the combined weighted graph}
 
+Regardless of which of the first nine graph clustering algorithms out of
+table \ref{table:graph-clustering-survey} is chosen, the input and output
+is the same in its core.
+Although the exact input and output formats differ between the algorithms,
+it always boils down to passing a list of edges to the algorithm ---
+listing \ref{graph-clustering-algorithm-input} depicts this kind of input format.
+In this example input, the format follows a tuple of three items (i.e. a triple),
+namely a vertex, another vertex it is connected to, and the edge weight of the
+edge connecting them:
+\[
+  I_i = (v_1, \ v_2, \ W(e_{(1,2)}))
+\]
+such that \(v_1, v_2 \in V, \ e_{(1,2)} \in E, \ G = (V, \ E)\) while
+\(e_{(1,2)}\) is the edge connecting the vertices \(v_1\) and \(v_2\).
+
+\begin{lstlisting}[caption=Example graph clustering algorithm input, label=graph-clustering-algorithm-input, breaklines=true]
+1 2 0.50
+4 5 0.11
+5 6 0.55
+6 5 0.60
+3 2 0.19
+\end{lstlisting}
+
+In this format, the entire input graph is serialized while each line resembles
+a single edge. The integers used for the vertices are their identifiers,
+some algorithms require identifiers from \([1, n] \in \mathbb{Z}\) where \(n\)
+is the number of edges, others also work with arbitrary strings as identifiers.
+This fact is discussed in more detail in chapter \ref{chap:implementation}.
+
+After serializing the input graph, the chosen algorithm clusters the graph
+and returns the clustering as its output. The inner workings of the chosen
+algorithm are assumed as a black-box function at this point since this was
+already discussed in subsection \ref{subsect:renowned-graph-clustering-algorithms}
+and as it is not important for the understanding of this current section.
+
+Similarly to the input, the output of the selected algorithms also shares
+a common notion regarding the format. This example output format is depicted
+in listing \ref{graph-clustering-algorithm-output}.
+In contrast to the input format, the output contains vertices compared to edges
+and the cluster identifier of each vertex compared to edge weights,
+as pairs this time:
+\[
+  O_i = (v_i, \ c_i)
+\]
+such that \(v_i \in V, \ G = (V, \ E)\) while \(c_i \in C\) resembles the
+cluster that was assigned to the respective vertex by the graph clustering
+algorithm. The cluster identifiers commonly range from \([1, n] \in \mathbb{Z}\)
+where \(n\) is the amount of clusters. Moreover, they can be duplicated
+which signifies that vertices were put into the same cluster.
+
+\begin{lstlisting}[caption=Example graph clustering algorithm output, label=graph-clustering-algorithm-output, breaklines=true]
+1 1
+2 1
+3 1
+4 2
+5 3
+6 3
+\end{lstlisting}
+
+Finally, we deserialize the output into a Java object so it can be used to
+calculate metrics and render the clustered weighted graph for the user.
 
 
 
-\chapter{Calculating metrics on microservice recommendations}
+
+\chapter{Calculating metrics on microservice recommendations} \label{chap:metrics}
+
+
+
+
 
 \section{Input fidelity}
 
+
+
+
+
 \section{General clustering quality}
+
+
+
+
 
 \section{Coupling modularity}
 
 
-
-
-\chapter{Visualizing microservice recommendations}
-
-\section{Network view}
-
-\section{Textual view}
-
-\section{Metrics view}
 
 
 
@@ -1888,12 +2058,24 @@ weight factors being \(1\).
 
 \section{Front-end} \label{sect:implementation-front-end}
 
+\subsection{Visualizing microservice recommendations}
+
+\subsubsection{Network view}
+
+\subsubsection{Textual view}
+
+\subsubsection{Metrics view}
 
 
 
-\chapter{Results}
+
+
+
+\chapter{Results} \label{chap:results}
 
 \section{Experimental setup}
+
+\section{Evaluation}
 
 
 
@@ -1904,10 +2086,7 @@ weight factors being \(1\).
 
 \section{Future work} \label{sect:future-work}
 
-
-
-
-\chapter{Conclusion} \label{chap:conclusion}
+\section{Conclusion} \label{sect:conclusion}
 
 
 
