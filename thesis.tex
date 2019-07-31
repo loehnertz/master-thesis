@@ -515,8 +515,8 @@ does not appear in the document of that column or a \(1\) if it does appear:
   \end{matrix}
 \]
 Consequently, this results in a document vector
-\(\vec{\mathbf d_i}\) for every column \(td_{*,n}\)
-of the matrix, which is necessary for the remaining steps.
+\(\vec{\mathbf d_i}\) for every column \(td_{*,n}\) of the matrix,
+which is required for the remaining steps.
 
 
 \subsubsection{Relevance weighting}
@@ -1125,7 +1125,7 @@ to be able to evaluate not only our methodology but the recommendations them sel
 As the focal point of our work is to construct a graph-theoretic representation
 of the input monolithic application to cluster it afterwards,
 a rationale how the measured dimensions of the input map to the output
-is deemed necessary to corroborate our research.
+is deemed necessary to corroborate our research and to answer \textit{RQ1}.
 
 
 
@@ -1439,7 +1439,7 @@ entirety of the input monolithic application, as mentioned earlier.
 
 
 
-\section{Dynamic coupling extraction}
+\section{Dynamic coupling extraction} \label{sect:dynamic-coupling-extraction}
 
 To extract the \textit{dynamic coupling} information, two general approaches
 were detected and evaluated. Both have advantages and disadvantages which
@@ -1744,13 +1744,13 @@ that the final graph covers the whole application.
 
 Finally, four graphs are constructed out of the four input dimensions
 that need to merged into a combined one so that it can be clustered eventually.
-Essentially, this step encompasses a set-theoretic union
-of the four graph tuples \(G_i = (V, E)\) such that:
+Essentially, this encompasses a two step process with the first being
+a set-theoretic union of the two first graph tuples \(G_i = (V, E)\) such that:
 \[
-  G_{combined} = G_{static} \cup G_{dynamic} \cup G_{semantic} \cup G_{evolutionary}
+  G_{combined} = G_{static} \cup G_{dynamic}
 \]
-Importantly, this step utilizes unions owing to the fact
-that all four input dimensions have downsides in producing a graph
+Importantly, this step utilizes a union owing to the fact
+that the first two input dimensions have downsides in producing a graph
 that covers the whole application.
 Nevertheless, they complement each other since they cover separate important
 aspects of detecting the distinct types of coupling.
@@ -1762,22 +1762,35 @@ On the other hand, dynamic program analysis entails the problem that
 it is by no means guaranteed that every class of the executed application
 is called or even instantiated --- the resulting graph is highly dependent
 on the workload while the dynamic analysis is conducted.
-A similar argument is true for the last two input dimensions.
-Oftentimes, not the entire application is covered due to thresholds that
-are introduced to filter out noise, which is discussed in subsection
-\ref{subsect:evolutionary-similarity}.
+
+In the second step, the two remaining input dimensional graphs are merged into
+the combined graph \(G_{combined}\):
+\[
+  G_{combined} = G_{combined} \cap G_{semantic} \cap G_{evolutionary}
+\]
+As part of this step, set-theoretic intersections are used instead as the
+combined graph resulting out of the merger of the static and the dynamic
+program analysis acts as a single source of truth --- classes that are not
+connected in there are not able to instantiate or invoke each other in the
+given application hence intersections are utilized to keep this single source
+of truth.
+Specifically regarding the \textit{semantic coupling} graph, the semantic
+similarity can be calculated for any two given classes regardless of their
+connection in the input application code base.
 
 Consequently, unions ensure that the entirety of the given
-monolithic application is covered as part of the graph-theoretic representation.
-Precisely, all vertices from each of the four graphs are added to the combined one:
+monolithic application is covered as part of the graph-theoretic representation
+while intersections add more information to the existing combined graph.
+Precisely, all vertices from the first two graphs are added to the combined one:
 \[
-  V_{combined} = V_{static} \cup V_{dynamic} \cup V_{semantic} \cup V_{evolutionary}
+  V_{combined} = V_{static} \cup V_{dynamic}
 \]
-For the edges, the merging is twofold. The edges themselves can just be all
-added to the combined graph to connect the vertices \(V_{combined}\) according
-to the four input graphs:
+For the edges, the merging is twofold. The edges themselves are only getting
+sourced from the first two input graphs to connect the vertices \(V_{combined}\)
+while the other two input graphs do not add new edges but just enrich the
+information of existing ones:
 \[
-  E_{combined} = E_{static} \cup E_{dynamic} \cup E_{semantic} \cup E_{evolutionary}
+  E_{combined} = E_{static} \cup E_{dynamic} \cap E_{semantic} \cap E_{evolutionary}
 \]
 However, the edge weights should not just be added up as all of them resemble
 percentages. Instead, we use a modifiable \textit{edge weighting formula} which
@@ -2027,25 +2040,195 @@ calculate metrics and render the clustered weighted graph for the user.
 
 \chapter{Calculating metrics on microservice recommendations} \label{chap:metrics}
 
+As laid out in chapter \ref{chap:rationale}, we aimed for an objective
+mapping of the input monolithic application to its graph-theoretic representation
+and the clustered output respectively.
+Thus, it was important to us to also devise objective metrics numeric in nature
+to be able to evaluate the results of our methodology and to answer \textit{RQ2}.
 
+In total, we devised a total of 12 metrics that can be ordered into three sets ---
+some of them being more general and overarching while others are more specific
+to the problem at hand at give a direct order of magnitude regarding the
+quality of the produced output. The three sets of metrics are covered
+in the following sections while the devised metrics are the following:
+\begin{itemize}
+  \item Dynamic analysis input fidelity
+  \item Semantic analysis input fidelity
+  \item Evolutionary analysis input fidelity
+  \item Amount of clusters
+  \item Amount of inter-cluster edges
+  \item Ratio of inter-cluster edge weight
+  \item Mean cluster size
+  \item Dynamic coupling modularity
+  \item Semantic coupling modularity
+  \item Evolutionary coupling modularity
+  \item Average coupling modularity
+  \item Total coupling modularity
+\end{itemize}
 
 
 
 \section{Input fidelity}
 
+The first set of metrics is not directly answering \textit{RQ2} but nevertheless,
+it is interesting to look at as the \textit{input fidelity} as it holds
+implications on the eventual quality of the clustering.
+The term \textit{input fidelity}, that we devised, describes how many percent
+of the classes of the entire application a given input covers which gives us
+three different \textit{input fidelity} metrics:
+\begin{itemize}[noitemsep]
+  \item Dynamic analysis input fidelity
+  \item Semantic analysis input fidelity
+  \item Evolutionary analysis input fidelity
+\end{itemize}
 
+Precisely, this measures how many percent of the edges of a certain input graph
+are also part of the combined graph \(G_{combined}\) covered in chapter
+\ref{chap:software-as-weighted-graph}:
+\[
+  IF(G_{input}, G_{combined}) = \frac{\vert E(G_{input}) \vert}{\vert E(G_{combined}) \vert}
+\]
+The higher this percentage is, the better as it increases the confidence
+that the results are actually resembling the quality that was calculated for them.
+Comparatively, if all of the inputs have low \textit{input fidelities},
+our methodology still produces output but the confidence that it is any good is low.
+
+There is no threshold of the \textit{input fidelity} being too low,
+we instead devised it as a supporting measurement to corroborate the outputs
+of our methodology. All three of the input dimensions have different
+considerations in regard to achieving a high \textit{input fidelity} value.
+
+\paragraph{Dynamic coupling}
+The \textit{dynamic coupling} has the main problem that the \textit{input fidelity}
+is highly dependent on the workload that was executed during runtime when the
+dynamic program analysis was conducted. Ideally, every edge of the combined graph
+should also be part of the \textit{dynamic coupling} graph as it can be
+theoretically executed, however in reality this is not often the case.
+Specifically when utilizing a \textit{sampling\hyp based} profiler,
+as discussed in section \ref{sect:dynamic-coupling-extraction},
+the likelihood of reaching \(100\%\) \textit{input fidelity} is very low ---
+and even with an \textit{instrumentation\hyp based} profiler,
+every single possible branch of the program at hand actually needs to be
+executed during the recording which is unlikely with non\hyp synthetic workloads
+which are preferred since the generated microservice candidate recommendations
+should not be based on synthetic workloads as they would skew the results.
+
+\paragraph{Semantic coupling}
+On the other hand, the \textit{semantic coupling} graphs should reach an
+\textit{input fidelity} of \(100\%\) since a percentage of how semantically
+similar two classes in a code base are can always be calculated,
+even if they are not similar at all, \(0\%\) similarity will still
+count toward the \textit{input fidelity}.
+
+\paragraph{Evolutionary coupling}
+Similarly to the \textit{dynamic coupling}, the \textit{evolutionary coupling}
+graphs are nearly never reaching full \textit{input fidelity}.
+The \textit{evolutionary coupling} graph is affected by the threshold introduced
+to filter out noise that were covered in subsection \ref{subsect:evolutionary-similarity}.
+These thresholds will lead to certain edges not being part of the
+\textit{evolutionary coupling} graph which will lower the \textit{input fidelity}
+as a result.
 
 
 
 \section{General clustering quality}
 
+The second set of metrics now answers \textit{RQ2} but was given its own set
+owing to the fact that for all four metrics in this set it can not be strictly
+defined if low value are better or worse. This reason becomes apparent when
+looking at the actual metrics:
+\begin{itemize}[noitemsep]
+  \item Amount of clusters
+  \item Amount of inter-cluster edges
+  \item Ratio of inter-cluster edge weight
+  \item Mean cluster size
+\end{itemize}
 
+\paragraph{Amount of clusters}
+For instance, for the first one in this set it cannot be said that lower or
+higher values are better or worse. With the \textit{amount of clusters},
+\(\vert C \vert\) one wants a value in the middle without knowing where
+the middle exactly lies --- more clusters convert to more microservice
+candidate recommendations which is not necessarily better.
+Nevertheless, in this case the metric offers an insight regarding the question
+of granularity of the produced output.
+
+\paragraph{Amount of inter-cluster edges}
+This metric is calculated by counting the amount of edges in the combined graph
+\(G_{combined}\) that are in between vertices that do not belong to the same cluster:
+\[
+  \vert E_{inter}(G_{combined}) \vert =
+  \vert \{ e_i(v_j, \ v_k) \in E(G_{combined}) \mid C(v_j) \neq C(v_k) \} \vert
+\]
+The smaller this value is the less interfaces the microservice candidate
+recommendations will have thus it is generally preferred for this metric to be
+low however it is not desirable to achieve the lowest as possible as this
+might sacrifice other metrics such as the \textit{coupling modularity}.
+
+\paragraph{Ratio of inter-cluster edge weight}
+Similarly to the previous metric, this metric measures how many percent
+of the total accumulated edge weight lies in between clusters:
+\[
+  RW_{inter}(G_{combined}) =
+  \frac{
+    \sum_{e_j \in E_{inter}(G_{combined})}^{\vert E_{inter}(G_{combined}) \vert} W(e_j)
+  }{
+    \sum_{e_k \in E(G_{combined})}^{\vert E(G_{combined}) \vert} W(e_k)
+  }
+\]
+The rationale here is the same as for the \textit{amount of inter-cluster edges}.
+
+\paragraph{Mean cluster size}
+Regarding the last metric of this second set, it is important to know that
+as part of the implementation of our methodology detailed in chapter
+\ref{chap:implementation}, the size in bytes is calculated for every class
+of the input monolithic application during the initial analysis step.
+In the case of Java applications, the compiled JVM byte-code is used for this
+calculation as it is more standardized and misses arbitrary characters such as
+line breaks. For other languages or platforms, the source code might be a
+feasible option after being normalized (e.g. stripped off line breaks).
+Thus, a way to calculate the accumulated size of a cluster is required beforehand:
+\[
+  S(c) = \sum_{v_i \in V(c)}^{\vert V(c) \vert} S(v_i)
+\]
+Finally, this metric calculates the population mean size over all of the
+generated clusters:
+\[
+  \mu_{S(C)} = \mu(\{ c_i \in C \mid S(c_i) \})
+\]
+This gives an insight regarding the size of the clustering which, similarly to
+the \textit{amount of clusters} metric, depicts the notion of granularity.
 
 
 
 \section{Coupling modularity}
 
+Finally, the third set of devised metrics is the most interesting one since,
+compared to the second set, it not only answers \textit{RQ2} but also directly
+measures the quality of the resulting clustering.
+In contrast to the second set, for the third set is always hold true that
+the higher the value gets, the better.
 
+This set consists of five metrics based on the \textit{modularity} metric,
+introduced in section \ref{sect:background-graph-clustering}:
+\begin{itemize}[noitemsep]
+  \item Dynamic coupling modularity
+  \item Semantic coupling modularity
+  \item Evolutionary coupling modularity
+  \item Average coupling modularity
+  \item Total coupling modularity
+\end{itemize}
+Precisely, the first three of the above share the same underlying equation
+of calculating the \textit{modularity} of their respective coupling graph
+(e.g. \(Q(G_{semantic})\)).
+The \textit{average coupling modularity} is the arithmetic mean
+of the set of the first three metrics.
+Lastly, the \textit{total coupling modularity} is the \textit{modularity}
+calculation performed on the combined graph \(Q(G_{combined})\).
+
+Specifically this last set is directly answering \textit{RQ2} by offering
+numeric and objective metrics that can directly be translated into how
+qualitative the generated microservice candidate recommendations are.
 
 
 
