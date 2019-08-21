@@ -1231,7 +1231,7 @@ nothing more than the notion of proper \textit{encapsulation} \cite{ms-fowler}.
 
 
 
-\section{Selecting and extracting software quality metrics}
+\section{Selecting and extracting software quality metrics} \label{sect:software-quality-metrics}
 
 All of the aforementioned principles will be violated if the boundaries of the
 microservices are chosen poorly. Thus, we propose a semi-automated methodology
@@ -1249,7 +1249,7 @@ makes any sense, all based on the fact that it processes input mapped to said
 best practices.
 
 Eventually, we found that three main types of coupling in software systems map
-to the abovementioned principles:
+to the above-mentioned principles:
 \begin{enumerate}
   \item Dynamic coupling
   \item Semantic coupling
@@ -2068,7 +2068,7 @@ in the following sections while the devised metrics are the following:
 
 
 
-\section{Input fidelity}
+\section{Input fidelity} \label{sect:input-fidelity-metrics}
 
 The first set of metrics is not directly answering \textit{RQ2} but nevertheless,
 it is interesting to look at as the \textit{input fidelity} as it holds
@@ -2237,18 +2237,249 @@ qualitative the generated microservice candidate recommendations are.
 
 \section{Database} \label{sect:implementation-database}
 
+As pointed out in the beginning of this chapter, a three-tier, web-based
+application architecture was chosen which incorporates a database
+for persistent data.
+Instead of utilizing a traditional, relational database model,
+for our implementation, the graph-based database model was chosen
+due to the fact that the persisted data is entirely graph-based.
+Thus, a graph-based database storage lends itself perfectly to the
+type of data that we need to persist.
+
+Graph databases are a subset of \textit{NoSQL} databases as they are
+neither relational nor work with the \textit{Structured Query Language} (SQL)
+\cite{vicknair2010graphdatabase}.
+As Vicknair et al. show in their work \textit{A Comparison of a
+Graph Database and a Relational Database}, when querying graph-based
+data via a graph database compared to a relational, SQL-based DBMS,
+the duration per query is oftentimes drastically lower
+\cite{vicknair2010graphdatabase}.
+Additionally, data modeling in the traditional sense is not even
+necessary as the generated data can be persisted into the database as-is.
+Due to these two reasons, especially the latter one, a graph-based DBMS
+was chosen for our implementation.
+
+Similarly to other database models, a multitude of database management
+systems (DBMS) exist following a graph-based approach.
+We chose the graph database \textit{Neo4j} for the following two reasons.
+Firstly, it is by far the most popular and most well-maintained graph DBMS
+\cite{graph-dbms-ranking}.
+Secondly, it is implemented in Java and provides an API library for Java
+and additionally an \textit{Object Graph Mapper} (OGM) which is a library
+that can map the graph model into native Java objects with built-in
+serialization and deserialization \cite{neo4j-ogm}.
+
+
+\subsection{Object Graph Mapper (OGM)}
+
+To utilize the \textit{Neo4j} OGM, written and maintained by the \textit{Neo4j}
+creators \cite{neo4j-ogm}, one composes classes for each node and edge type
+that is used. Within \textit{Neo4j}, these are called \textit{Nodes} and
+\textit{Relationships} \cite{neo4j-ogm}.
+In the following subsections, the process of building OGM models and utilizing
+them is exhibited.
+
+
+\subsubsection{Relationships}
+One has to create a class annotated with \code{@RelationshipEntity("CALLS")}
+The annotation itself is part of the OGM library and has to be imported.
+A class annotated like this can then be used to serialize and deserialize edges
+of the respective graph. The annotation needs to know what the type of the
+\textit{Relationship} is, this is a string that is necessary since \textit{Neo4j}
+persists the edges of the input graph as the mentioned \textit{Relationships}.
+Precisely, the \textit{Neo4j} creators recommend to use single uppercase third-person
+singular present tense verbs to describe the type of relation \cite{neo4j-ogm}.
+Just like in the above example, \code{"CALLS"}, \code{"OWNS"}, \code{"KNOWS"} would
+be good examples. Due to this implementation detail of \textit{Neo4j},
+this information has to be provided when annotating \textit{Relationship} classes.
+The rest of the created class are just properties, some of which are mandatory,
+while as many additional ones containing data can be added arbitrarily.
+\smaller
+\begin{lstlisting}[caption=Relationship OGM class, label=ogm-relationship, breaklines=true]
+@RelationshipEntity(type = CALLS)
+class CallsRelationship() {
+    @Id
+    @GeneratedValue
+    var id: Long? = null
+
+    @StartNode
+    var caller: Unit
+    
+    @EndNode
+    var callee: Unit
+    
+    @Property
+    var dynamiCouplingScore: Int = 0
+    
+    @Property
+    var semanticCouplingScore: Int = 0
+    
+    @Property
+    var logicalCouplingScore: Int = 0
+}
+\end{lstlisting}
+\normalsize
+The above code example \ref{ogm-relationship}, was implemented in Kotlin
+as this programming language was used to implemented the entire back-end
+as discussed earlier in this chapter.
+The class identifier can be chosen arbitrarily while the class needs to
+encompass three properties.
+Namely, these are \code{@StartNode}, \code{@EndNode}, and \code{@Id}.
+The annotations \code{@StartNode} and \code{@EndNode} need to point
+to a non-nullable instance of a \textit{Node} class as exhibited in the
+following subsection. As the naming implies, this information is used
+to link the resulting edge of this \textit{Relationship} class to the
+two nodes that it connects.
+Moreover, the \code{@Id} annotation is used to have a unique identifier
+once an object of the class gets instantiated so that the OGM can map
+the object back to the object in the persistent graph data storage.
+Either the developer supplies these identifiers from the outside although
+it is advised to just leverage the \code{@GeneratedValue} annotation that
+will handle all this mapping automatically \cite{neo4j-ogm}.
+When utilizing the OGM library within Kotlin, this property has to be
+declared to be nullable owing to the fact that the identifier might not
+be known when creating and subsequently inserting a completely new entity.
+Finally, one can add an arbitrary amount of additional data properties
+to the class via the \code{@Property} annotation since \textit{Neo4j} can persist
+any data together with any \textit{Relationship}. In our use case,
+these are the coupling scores discussed in section \ref{sect:software-quality-metrics}.
+The entirety of the modeled data is covered at the end of this section in
+\ref{subsect:data-models}.
+
+
+\subsubsection{Nodes}
+Similarly to the \textit{Relationships}, the \textit{Nodes} are also
+created by annotating a class, this time with the \code{@NodeEntity}
+annotation. Again, certain properties on the defined class are mandatory
+while others can be added optionally as seen in code example \ref{ogm-node}.
+\smaller
+\begin{lstlisting}[caption=Node OGM class, label=ogm-node, breaklines=true]
+class Unit(
+    var identifier: String,
+    var packageIdentifier: String,
+    var projectName: String,
+    var size: Long
+) {
+    @Id
+    @GeneratedValue
+    override var id: Long? = null
+
+    @Relationship(type = CALLS, direction = INCOMING)
+    var callees: MutableSet<CallsRelationship> = mutableSetOf()
+
+    @Relationship(type = CALLS, direction = OUTGOING)
+    var callers: MutableSet<CallsRelationship> = mutableSetOf()
+}
+\end{lstlisting}
+\normalsize
+The \code{@Id} is required once again, apart from that the \code{@Relationship}
+annotations are not mandatory but a node in a given graph usually has outgoing
+or incoming edges (or unidirectional or undirected ones).
+Since the graph that is built as part of our methodology is directed,
+it is specified if \textit{Relationships} are outgoing or incoming via
+a constant that is shipped with the OGM library.
+Moreover, similarly to \textit{Relationships} in \textit{Neo4j}, every \textit{Node}
+can optionally carry an arbitrary number of additional data fields which are set
+via regular class properties in the constructor in example \ref{ogm-node}.
+Finally, the \textit{Nodes} as well as the \textit{Relationships} can have additional
+methods, these are ignored by the OGM as it just looks out for properties.
+
+
+\subsubsection{Persisting and retrieving graph data}
+A \code{SessionFactory} that is shipped with the OGM library returns
+\code{Session} objects that among others offer the methods:
+\begin{itemize}[noitemsep]
+    \item \code{save()}
+    \item \code{loadAll()}
+\end{itemize}
+The first one accepts any class instance annotated with the \code{@NodeEntity}
+or \code{@RelationshipEntity} annotation and persists it into the \textit{Neo4j}
+database. Additionally, serialization and subsequent mapping of native JVM
+data types into data types supported by \textit{Neo4j} is completely automatic
+and handled by the OGM \cite{neo4j-ogm} although both can be configured manually
+if wished.
+The second method can in return retrieve already persisted data.
+Its API allows for ordering, pagination, filtering, and other features \cite{neo4j-ogm},
+although our implementation only makes use of the filtering features, such as
+\code{session.loadAll(Unit.class, Filter("projectName", ComparisonOperator.EQUALS, "test"))}.
+Once again, the deserialization and mapping of the data types is handled by
+the OGM by passing it a static reference to an annotated OGM entity class.
+
+
+\subsection{Data models} \label{subsect:data-models}
+
+Finally, the devised data models for our implementation are covered in this subsection.
+Overall, only one \textit{Relationship} and only two \textit{Nodes} are necessary
+to model our data:
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.90\textwidth]{data-models-nodes}
+\caption{Node data models}
+\caption*{
+  Two \textit{Node} models are necessary. The first one carries the extracted
+  data modeled as a weighted and directed graph while the second one is used
+  to persist the calculated metrics on a per\hyp project basis.
+}
+\label{fig:data-models-nodes}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.50\textwidth]{data-models-relationships}
+\caption{Relationships data models}
+\caption*{
+  One \textit{Relationship} model is necessary. Its sole usage is to link
+  two \code{Unit} \textit{Nodes} together seen in figure \ref{fig:data-models-nodes}.
+}
+\label{fig:data-models-relationships}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.90\textwidth]{data-models-example}
+\caption{Data models example}
+\caption*{
+  This is an example how the \textit{Nodes} and \textit{Relationships} work together.
+}
+\label{fig:data-models-example}
+\end{figure}
+Precisely, the \code{Metrics} \textit{Node} persists metrics on a per\hyp project basis
+as described in section \ref{sect:input-fidelity-metrics} --- only the fidelity
+metrics are persisted in the database owing to the fact that their calculation is
+resource\hyp intensive thus the result is persisted as it will not change in any case.
+The \code{Unit} \textit{Node} is the main \textit{Node} type of the data model as it
+encompasses the weighted and directed graph that was constructed out of the input
+monolithic application as exhibited in chapter \ref{chap:extracting-coupling}.
+The \code{CALLS} \textit{Relationship} is used to persist which
+\code{Unit} \textit{Nodes} are linked to each other and in which direction.
+Finally, figure \ref{fig:data-models-example} depicts how the modeled
+\textit{Nodes} and \textit{Relationships} behave.
+
+
+
 \section{Back-end} \label{sect:implementation-back-end}
+
+
+
+
 
 \section{Front-end} \label{sect:implementation-front-end}
 
+
+
+
 \subsection{Visualizing microservice recommendations}
+
+
+
 
 \subsubsection{Network view}
 
+
+
 \subsubsection{Textual view}
 
-\subsubsection{Metrics view}
 
+
+\subsubsection{Metrics view}
 
 
 
