@@ -2235,17 +2235,92 @@ qualitative the generated microservice candidate recommendations are.
 
 \chapter{Implementation} \label{chap:implementation}
 
+In the last chapters, we described the methodology that we devised to answer
+\textit{RQ1} as well as the metrics we created to answer \textit{RQ2} ---
+both of these were so far theoretic in nature.
+However, since the subject of our work is very applied and close to industry
+in practice, on top of the theoretic description, we additionally designed
+and build a fully-functional implementation of our devised methodology.
+
+
+
+\section{Architecture}
+The general, high-level architecture of our application is a three-tier
+web-based design. The three tiers are namely the front-end, the back-end,
+as well as the database.
+
+The front-end is built as a \textit{single page application} (SPA),
+running in a web browser. It is just consisting of static HTML, CSS, and JS files
+that are purely being interpreted and executed by the web browser.
+
+The back-end is written in Kotlin, runs as a server process, and exposes
+a REST-API that the front-end will use and consume to upload and fetch information.
+
+The database is persisting data that needs to be available even when the
+back-end shuts down and starts again. However, in our application,
+the purpose of the database is mainly that to cache data after it has
+been initially processed, as this needs some time. The data itself can be
+rebuilt with the same input deterministically and will be rarely modified.
+
+As pointed out, for smaller scale applications, a monolithic architecture
+makes sense more often by being easier to implement and maintain.
+Thus, we designed our the back-end of our application in a monolith manner.
+
+The implemented application has two major processes that can be started
+via RESTful endpoints which are detailed in section \label{sect:implementation-back-end}
+and depicted in figure \ref{fig:architecture-overview}.
+These processes are to analyze and persist and input monolithic application
+as well as clustering and retrieving it again as a separate step.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{architecture-overview}
+\caption{Overview of the architecture of our implementation}
+\caption*{
+    The implementation is built as a three-tier web-based architecture consisting of
+    front-end, back-end, and database. In the diagram, the two main processes of
+    persisting and clustering input monolithic applications are depicted.
+}
+\label{fig:architecture-overview}
+\end{figure}
+
+We published our implementation as open source software, licensed under the
+\textit{Apache 2 License} \cn --- the entire source code can be found on GitHub \cn.
+
+
+
 \section{Database} \label{sect:implementation-database}
+
+
+
+
 
 \section{Back-end} \label{sect:implementation-back-end}
 
+
+
+
+
 \section{Front-end} \label{sect:implementation-front-end}
+
+
+
+
 
 \subsection{Visualizing microservice recommendations}
 
+
+
+
 \subsubsection{Network view}
 
+
+
+
 \subsubsection{Textual view}
+
+
+
 
 \subsubsection{Metrics view}
 
