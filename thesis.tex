@@ -1740,7 +1740,7 @@ that the final graph covers the whole application.
 
 
 
-\section{Merging input dimensional graphs into combined one}
+\section{Merging input dimensional graphs} \label{sect:merging-graphs}
 
 Finally, four graphs are constructed out of the four input dimensions
 that need to merged into a combined one so that it can be clustered eventually.
@@ -1840,7 +1840,7 @@ algorithm to choose, to as optimally as possible devise the recommendations.
 
 
 
-\section{Survey of graph clustering algorithms}
+\section{Survey of graph clustering algorithms} \label{sect:graph-clustering-algorithm-survey}
 
 The idea of graph clustering was exhibited in the \textit{\nameref{chap:background}}
 chapter together with a range of available, renowned algorithms.
@@ -2410,7 +2410,8 @@ the OGM by passing it a static reference to an annotated OGM entity class.
 
 Finally, the devised data models for our implementation are covered in this subsection.
 Overall, only one \textit{Relationship} and only two \textit{Nodes} are necessary
-to model our data:
+to model our data as depicted in figures \ref{fig:data-models-nodes} and
+\ref{fig:data-models-relationships}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.90\textwidth]{data-models-nodes}
@@ -2457,7 +2458,506 @@ Finally, figure \ref{fig:data-models-example} depicts how the modeled
 
 \section{Back-end} \label{sect:implementation-back-end}
 
+As already shown, the entire back-end is implemented in the programming language
+\textit{Kotlin} which is a language heavily based on Java, that compiles to JVM
+bytecode while also being completely inter-operable with Java code meaning that
+any existing Java libraries can seamlessly be used within Kotlin source code.
 
+The back-end is built as a web-based application with a RESTful API that offers
+a couple of endpoints for the front-end to use and consume.
+The server process is utilizing \textit{Netty} \cite{ktor-netty} as an embedded
+server although the native coroutines of Kotlin are used to spawn a new one for
+every incoming HTTP request.
+Furthermore, coroutines are used within the business logic as well.
+\textit{Coroutines} is a feature of the Kotlin language which is a lightweight
+abstraction on top of threads that enable asynchronous programming \cite{kotlin-coroutines}.
+The starting point of said server process is the file \textit{Main.kt} that
+performs all of the scaffolding and starts up the server back-end.
+
+For the API endpoints, the so-called \textit{resources}, a library called
+\textit{Ktor} was utilized which enables easy declaration and configuration
+of them. The library is built and maintained by the Kotlin creators
+\textit{JetBrains} \cite{ktor}.
+All endpoints accept and respond via \textit{JSON} as the data exchange format
+while the library \textit{Jackson} is used to automatically serialize and
+deserialize JSON data \cite{ktor-jackson}.
+Going deeper into the back-end from the endpoints, \textit{controllers} are handling
+the request and instantiate and call the respective parts of the business logic.
+Moreover, a \textit{models} directory holds all the classes that are just used
+as \textit{data classes} as they are called in Kotlin --- classes that are not
+encapsulating any advanced business logic and are instead used to pass data around
+the application in a structured way. Additionally, some may offer static utility
+methods specific to their usage or when leveraging a special data format that
+needs to be converted from other formats.
+Finally, some functionalities are small in size and are used by multiple parts
+of the business logic hence have no natural location in the application structure.
+These \textit{utility} classes are therefore residing in a directory called
+\textit{utility} in the top-level of the application structure.
+The top-level structure of the application is depicted in figure
+\ref{fig:back-end-structure} while a detailed explanation of every implemented
+class can be found in the documentation of \textit{Steinmetz} \cn.
+
+\begin{figure}[htbp]
+\centering
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[kotlin
+  [controller
+    [analysis]
+  ]
+  [model
+    [graph]
+    [metrics]
+    [neo4j]
+    [resource]
+  ]
+  [resource
+    [AnalysisResource.kt]
+  ]
+  [utility
+    [ArchiveExtractor.kt]
+    [Neo4jConnector.kt]
+    [Utilities.kt]
+  ]
+  [Main.kt]
+]
+\end{forest}
+\caption{Top-level back-end structure}
+\caption*{
+  The top-level file structure of the back-end with a maximum depth of 3.
+}
+\label{fig:back-end-structure}
+\end{figure}
+
+
+\subsection{API resources} \label{subsect:api-resources}
+
+Namely, there are three resource endpoints for adding new projects, retrieving them,
+and to eventually cluster them:
+\begin{enumerate}[noitemsep]
+    \item \code{POST\quad  "/analysis/"}
+    \item \code{GET \quad  "/analysis/\{projectName\}"}
+    \item \code{GET \quad  "/analysis/\{projectName\}/cluster"}
+\end{enumerate}
+
+
+\subsubsection{Resource 1}
+The first resource only accepts \code{POST} requests and is solely used to
+create new projects by uploading the necessary data and extracting the
+coupling information out of it as discussed in chapter \ref{chap:extracting-coupling}.
+An overview of the data that resource 1 mandates is depicted in table
+\ref{table:data-resource-1}.
+Additionally, table \ref{table:data-types-resource-1} exhibits what the
+binary data fields of table \ref{table:data-resource-1} have to be in
+the example case that \code{"JAVA"} was chosen as the \code{projectPlatform}.
+Finally, we added a feature that allows for one of the three following
+data fields to be missing during the upload owing to the fact that sometimes
+it is difficult to supply all three (specifically the \code{dynamicAnalysisFile})
+while the analysis can still be performed albeit with lower quality:
+\begin{itemize}[noitemsep]
+    \item \code{dynamicAnalysisFile}
+    \item \code{semanticAnalysisFile}
+    \item \code{evolutionaryAnalysisFile}
+\end{itemize}
+
+\begin{table}[ht!]
+\smaller
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|Y|Y|Y|}
+ \hline
+ Name~ & Data type~ & Description~ \\
+ \hline\hline
+ \code{projectName}                & String &
+ A freely chosable identifier for the uploaded data \\\hline
+ \code{projectPlatform}            & Enum \{"JAVA"\} &
+ The platform of the input monolithic application \\\hline
+ \code{vcsSystem}                  & Enum \{"GIT", "HG", "SVN", "P4", "TFS"\} &
+ The VCS system used during the development of the input monolithic application \\\hline
+ \code{basePackageIdentifier}      & String &
+ The root package identifier that all other packages in the project share; is used to filter out dependencies bundled with the application \\\hline
+ \code{staticAnalysisFile}         & Binary &
+ A binary file containing the data for performing the static analysis \\\hline
+ \code{dynamicAnalysisFile}        & Binary &
+ A binary file containing the data for performing the dynamic analysis \\\hline
+ \code{semanticAnalysisFile}       & Binary &
+ A binary file containing the data for performing the semantic analysis \\\hline
+ \code{evolutionaryAnalysisFile}   & Binary &
+ A binary file containing the data for performing the evolutionary analysis \\\hline
+\end{tabularx}
+\caption{Data required by resource 1}
+\caption*{
+  Exhibits the data that resource 1 (\code{POST "/analysis/"}) mandates to function.
+}
+\label{table:data-resource-1}
+\end{table}
+
+\begin{table}[ht!]
+\smaller
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|Y|Y|Y|}
+ \hline
+ Name~ & File extension~ & Description~ \\
+ \hline\hline
+ \code{staticAnalysisFile}         & \code{.jar} / \code{.zip} &
+ Either a \code{.jar} file with compiled bytecode or a \code{.zip} file with plain source code;
+ both are used to build the static call graph, either via compiled code or by traversing the source code \\\hline
+ \code{dynamicAnalysisFile}        & \code{.jfr} &
+ The \code{.jfr} extension stems from the \textit{Java Flight Recorder} which is a profiler shipped with newer
+ JRE versions that can be enabled to conduct dynamic program analysis; the JRE also offers an API to process
+ recorded \code{.jfr} files from within another Java application \\\hline
+ \code{semanticAnalysisFile}       & \code{.zip} &
+ Strictly needs the source code archived as a \code{.zip} file as the code written by the programmers
+ is necessary to perform natural language processing \\\hline
+ \code{evolutionaryAnalysisFile}   & \code{.txt} &
+ The format is depending on which \code{vcsPlatform} was chosen; a log file of the repository of that platform
+ of the application as a plain text file \\\hline
+\end{tabularx}
+\caption{Description of the binary data required by resource 1}
+\caption*{
+  Exhibits the binary data that resource 1 (\code{POST "/analysis/"}) mandates to function
+  in the case of the Java platform chosen as the \code{projectPlatform}.
+}
+\label{table:data-resource-1}
+\end{table}
+
+
+\subsubsection{Resource 2}
+The second resource, \code{GET "/analysis/\{projectName\}"}, is solely used to retrieve a project
+that was persisted earlier via resource 1. Hence, it only mandates the \code{projectName} as a string
+to query \textit{Neo4j} for the respective un-clustered graph.
+
+
+\subsubsection{Resource 3}
+The third resource is used to cluster a graph that was persisted earlier using resource 1.
+This is done in two steps as the computational time of the logic behind resource 1 is a lot higher
+compared to the duration of the clustering of resource 3.
+Furthermore, the clustering is usually performed multiple times leveraging different graph clustering
+algorithms. Thus, it saves time and memory to construct the graph-theoretic representation of the
+input monolithic application only once and to retrieve it multiple times for every request to resource 3.
+
+
+\subsection{Logic controllers}
+
+Technically, only one logic controller exists, the \code{AnalysisController}, that
+branches out into separate classes that implement the actual logic.
+Figure \ref{fig:top-level-logic-structure} depicts the structure of the directories
+containing the logic.
+The \code{AnalysisController} class implements the actual controller for all of the
+\code{"/analysis"} resources covered in subsection \ref{subsect:api-resources}.
+From there, the \code{analysis} controller package branches out into three sub-packages
+which are detailed in the following subsections.
+
+\begin{figure}[htbp]
+\scriptsize
+\centering
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[analysis
+  [clustering
+    [chinesewhispers
+        [ChineseWhispersManager.kt]
+    ]
+    [clausetnewmanmoore
+        [ClausetNewmanMooreManager.kt]
+    ]
+    [infomap
+        [InfomapManager.kt]
+    ]
+    [louvain
+        [LouvainManager.kt]
+    ]
+    [mcl
+        [MclExecutor.kt]
+        [MclManager.kt]
+    ]
+    [walktrap
+        [WalktrapExecutor.kt]
+        [WalktrapManager.kt]
+    ]
+    [Clusterer.kt]
+    [ClusteringAlgorithm.kt]
+    [ClusteringAlgorithmManager.kt]
+    [EdgeWeightingFormulaCalculator.kt]
+  ]
+  [extraction
+    [coupling
+        [dynamically]
+        [evolutionary]
+        [semantically]
+        [statically]
+    ]
+    [graph
+        [GraphConverter.kt]
+        [GraphInserter.kt]
+    ]
+    [AbstractExtractor.kt]
+    [ExtractorCompanion.kt]
+    [Platform.kt]
+  ]
+  [metrics
+    [clustering
+        [ClusteringQualityAnalyzer.kt]
+    ]
+    [input
+        [InputQualityAnalyzer.kt]
+    ]
+  ]
+  [AnalysisController.kt]
+]
+\end{forest}
+\caption{Structure of the packages containing the logic}
+\caption*{
+  The top-level file structure of the packages that contain the implemented
+  business logic with a maximum depth of 4.
+}
+\label{fig:top-level-logic-structure}
+\end{figure}
+
+
+\subsubsection{Clustering}
+This package contains everything necessary to perform the clustering of
+earlier uploaded projects. As exhibited in section \ref{sect:graph-clustering-algorithm-survey},
+seven graph clustering algorithms were implemented by wrapping the reference implementations
+of their authors in a generic API that is consistent within our implementation for all
+of the utilized graph clustering algorithms.
+
+\paragraph{Clusterer.kt}
+The \code{Clusterer} class is the entry point for clustering an input graph using any of
+the available algorithms. The graph that was retrieved out of \textit{Neo4j} is passed into
+the \code{Clusterer} after being cloned owing to the fact that by default, all of the available
+algorithms will concurrently cluster the selected graph such that all of them would work
+on the same reference in memory which would cause corruption.
+
+\paragraph{ClusteringAlgorithm.kt}
+This file contains an enum which is used to identify which graph clustering algorithm
+the \code{Clusterer} should apply to the input graph.
+
+\paragraph{ClusteringAlgorithmManager.kt}
+This file contains an interface which defines a contract that all of the distinct manager classes
+for each available graph clustering algorithm should implement --- it ensures that the APIs
+for all of the algorithms stay consistent.
+
+\paragraph{EdgeWeightingFormulaCalculator.kt}
+This file contains a class with static methods that implement the edge weighting which was
+detailed in section \ref{sect:merging-graphs}.
+
+\paragraph{Graph clustering managers and executors}
+Every sub-package for each of the available graph clustering algorithms contains
+a manager class which implements the \code{ClusteringAlgorithmManager} interface.
+In these classes, the actual reference implementation of each algorithm is wrapped.
+Consequently, the implementations in those classes differ vastly from one to the other.
+
+Some of the reference implementations are written in Java which allows us to directly
+integrate them into our implmentation. However, the majority of them are compiled C or
+C++ programs that are more difficult to integrate.
+Initially, we leveraged the \textit{Java Native Interface} (JNI), a foreign function
+invocation interface bundled with the Java platform, that can be used to integrate
+C, C++, and assembly programs into a Java application \cite{jni}.
+On the downside, the source code of the C and C++ programs has to be touched to utilize
+the JNI. However, we did not have access to all of the reference implementations as source
+code, some were only shipped pre-compiled.
+Moreover, all of the reference implementations in C or C++ are designed as
+\textit{Command Line Interfaces} (CLI) instead of libraries.
+As a consequence, in the latest version of \textit{Steinmetz}, we opted to wrap the
+CLI with the \code{ProcessBuilder} class of the Java platform.
+This enables to call any CLI from within a Java application by invoking a process,
+piping input into \code{STDIN} and parsing the output of the invoked program from
+the processes \code{STDOUT}. This might seem error-prone on first sight, however,
+the CLIs are all well-defined which makes input and output of them to be easy to
+encode and decode.
+Additionally, we added a lot of validation for the input such that we have not seen
+an error or malfunction when testing and evaluating our implementation so far.
+The only downside is that the portability of the Java platform is lowered a bit,
+as the compiled native programs are platform-specific. Nevertheless, the same problem
+is present when using the JNI.
+
+Furthermore, some graph clustering algorithms mandate multiple runs to yield good results.
+Thus, an additional executor class is utilized there which contains the actual logic while
+the manager class wraps the executor class and executes multiple instances of it concurrently,
+leveraging the \textit{coroutine} feature of the Kotlin programming language.
+
+
+\subsubsection{Extraction}
+The sub-packages within the package \code{extraction.coupling} in figure
+\ref{fig:top-level-logic-structure} are each implementing one input dimension of the
+ones highlighted in chapter \ref{chap:extracting-coupling}.
+
+Firstly, the sub-package \code{extraction.graph} contains two classes,
+\code{GraphConverter} and \code{GraphInserter}, which are handling the deserialization
+of a graph retrieved out of \textit{Neo4j} utilizing the OGM and the insertion of
+a newly constructed graph into \textit{Neo4j} respectively.
+
+As pointed out earlier, the extraction strategies differ from platform to platform.
+Thus, for illustrative purposes, we implemented the entire flow for the \textit{Java}
+platform. The \code{Platform.kt} file contains an enum with all of the available
+platforms --- currently only \code{JAVA}. However, later in this section we show
+how our implementation can be easily extended for other platforms as this was a
+conscious design decisions to model the architecture in a extendable manner.
+This enum is used by the controller to know which classes to instantiate and invoke
+that then conduct the coupling extraction.
+
+Moreover, the \code{AbstractExtractor} and \code{ExtractorCompanion} are an abstract
+class and an interface that all of the extraction classes respectively their
+static companions implement. \textit{Companions} are a feature of the Kotlin language
+that allow to create static methods by embedding a singleton object within a class
+that can therefore stay state-free and static \cite{kotlin-companions}.
+
+Within each of the mentioned sub-packages, there is an abstract class that implements
+some general behavior necessary for the respective input dimension
+(e.g. \code{AbstractDynamicAnalysisExtractor}). The abstract class itself however
+implements the \code{AbstractExtractor}.
+Within each of the sub-packages, there are sub-packages for each platform available
+in the \code{Platform} enum.
+In this chapter, the exact implementation of all of these is not covered as the
+explanation would be very detailed. Instead, only one type of coupling extraction
+will be covered for the sake of example. All of the others can be studied via the
+source code itself or via the documentation.
+Furthermore, the entire structure of the coupling extraction is depicted in figure
+\ref{fig:coupling-extraction-structure}.
+
+\paragraph{JavaSemanticCouplingExtractor.kt}
+For the semantic coupling extraction, we opted to build our own implementation
+from scratch. As according to the process exhibited in \ref{subsect:semantic-similarity},
+we implemented a completely decoupled library that calculates \textit{semantic similarity}
+of input code bases. Similarly to the main implementation of our methodology,
+the Java platform was implemented for now again, the extendability regarding other
+platforms is easily possible and encouraged.
+
+The library has the simple name \textit{semantic-coupling} and is available as
+open source code on GitHub, licensed under the \textit{MIT license}
+\footnote{\url{https://github.com/loehnertz/semantic-coupling/}}.
+Additionally, we plan on releasing it on \textit{Maven Central} after the release
+of this thesis. The library is completely separate from our methodology and
+also generic in its implementation.
+
+The \code{main} method accepts a list of documents as plain-text strings,
+the source code files, as well as the programming language that they are written in
+out of an included public enum.
+The returned result is a list of tuples with the two source code files that were compared
+as well as their percentage-based similarity as a floating point number.
+
+Additionally, many options can be set when constructing the public entry class
+of the library. These include if \textit{stemming} or \textit{lemmatization} should be used,
+if \textit{LSI} should be used, if so, how many \textit{LSI} dimensions should be calculated,
+and if certain source code files should be excluded to gain some execution speed if the user
+is not interested in their similarity anyways.
+
+Furthermore, the aforementioned Kotlin \textit{coroutines} are heavily leveraged in
+the library as many steps of the \textit{semantic similarity} calculation can be
+run concurrently.
+
+\begin{figure}[htbp]
+\small
+\centering
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[extraction.coupling
+  [dynamically
+    [platforms
+        [java
+            [InstrumentationRecordingAnalyzer.kt]
+            [JfrRecordingAnalyzer.kt]
+            [JvmDynamicAnalysisExtractor.kt]
+        ]
+    ]
+    [AbstractDynamicAnalysisExtractor.kt]
+  ]
+  [evolutionary
+    [platforms
+        [java
+            [JvmLogicalCouplingExtractor.kt]
+        ]
+    ]
+    [AbstractLogicalCouplingExtractor.kt]
+    [VcsPlatform.kt]
+  ]
+  [semantically
+    [platforms
+        [java
+            [JavaSemanticCouplingExtractor.kt]
+        ]
+    ]
+    [AbstractSemanticCouplingExtractor.kt]
+  ]
+  [statically
+    [platforms
+        [java
+            [JvmBytecodeExtractor.kt]
+        ]
+    ]
+    [AbstractStaticAnalysisExtractor.kt]
+    [StaticAnalysisExtractorCompanion.kt]
+  ]
+]
+\end{forest}
+\caption{Structure of the packages containing the coupling extraction logic}
+\caption*{
+  The file structure of the packages that contain the implemented coupling extraction logic.
+}
+\label{fig:coupling-extraction-structure}
+\end{figure}
+
+
+\subsubsection{Metrics}
+This package contains two sub-packages which each contain classes that implement
+the calculation of the metrics for the input and the clustering respectively,
+as detailed in chapter \ref{chap:metrics}.
+The distinct implementations are not covered in more detail as they are very
+close to the mathematical formulae in chapter \ref{chap:metrics}.
 
 
 
