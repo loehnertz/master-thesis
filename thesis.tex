@@ -2242,6 +2242,15 @@ However, since the subject of our work is very applied and close to industry
 in practice, on top of the theoretic description, we additionally designed
 and build a fully-functional implementation of our devised methodology.
 
+Our implementation carries the name \textit{Steinmetz} which is the German
+word for \textit{stonemason}. The name was chosen as our application is used
+to cut one large stone, the monolith, into many smaller stones, the microservices.
+Additionally, we published our implementation as open source software,
+licensed under the \textit{Apache 2 License}
+\footnote{\url{https://github.com/loehnertz/Steinmetz/blob/develop/LICENSE}} ---
+the entire source code can be found on GitHub
+\footnote{\url{https://github.com/loehnertz/Steinmetz/}}.
+
 
 
 \section{Architecture}
@@ -2267,7 +2276,7 @@ makes sense more often by being easier to implement and maintain.
 Thus, we designed our the back-end of our application in a monolith manner.
 
 The implemented application has two major processes that can be started
-via RESTful endpoints which are detailed in section \label{sect:implementation-back-end}
+via RESTful endpoints which are detailed in section \ref{sect:implementation-back-end}
 and depicted in figure \ref{fig:architecture-overview}.
 These processes are to analyze and persist and input monolithic application
 as well as clustering and retrieving it again as a separate step.
@@ -2283,9 +2292,6 @@ as well as clustering and retrieving it again as a separate step.
 }
 \label{fig:architecture-overview}
 \end{figure}
-
-We published our implementation as open source software, licensed under the
-\textit{Apache 2 License} \cn --- the entire source code can be found on GitHub \cn.
 
 
 
@@ -2466,6 +2472,7 @@ Finally, the devised data models for our implementation are covered in this subs
 Overall, only one \textit{Relationship} and only two \textit{Nodes} are necessary
 to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \ref{fig:data-models-relationships}.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.90\textwidth]{data-models-nodes}
@@ -2477,6 +2484,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 }
 \label{fig:data-models-nodes}
 \end{figure}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.50\textwidth]{data-models-relationships}
@@ -2487,6 +2495,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 }
 \label{fig:data-models-relationships}
 \end{figure}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.90\textwidth]{data-models-example}
@@ -2496,6 +2505,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 }
 \label{fig:data-models-example}
 \end{figure}
+
 Precisely, the \code{Metrics} \textit{Node} persists metrics on a per\hyp project basis
 as described in section \ref{sect:input-fidelity-metrics} --- only the fidelity
 metrics are persisted in the database owing to the fact that their calculation is
@@ -2619,7 +2629,7 @@ create new projects by uploading the necessary data and extracting the
 coupling information out of it as discussed in chapter \ref{chap:extracting-coupling}.
 An overview of the data that resource 1 mandates is depicted in table
 \ref{table:data-resource-1}.
-Additionally, table \ref{table:data-types-resource-1} exhibits what the
+Additionally, table \ref{table:binary-data-resource-1} exhibits what the
 binary data fields of table \ref{table:data-resource-1} have to be in
 the example case that \code{"JAVA"} was chosen as the \code{projectPlatform}.
 Finally, we added a feature that allows for one of the three following
@@ -2689,7 +2699,7 @@ while the analysis can still be performed albeit with lower quality:
   Exhibits the binary data that resource 1 (\code{POST "/analysis/"}) mandates to function
   in the case of the Java platform chosen as the \code{projectPlatform}.
 }
-\label{table:data-resource-1}
+\label{table:binary-data-resource-1}
 \end{table}
 
 
