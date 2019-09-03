@@ -2251,6 +2251,12 @@ licensed under the \textit{Apache 2 License}
 the entire source code can be found on GitHub
 \footnote{\url{https://github.com/loehnertz/Steinmetz/}}.
 
+The three parts of the application are all bundled into \textit{Docker} containers
+via \textit{Docker Compose} which allows for easy boot-up and tear-down without
+installing any dependencies on the operation system apart from \textit{Docker}
+and \textit{Docker Compose} itself \cite{docker} \cite{docker-compose} ---
+a big advantage when putting our implementation to use.
+
 
 
 \section{Architecture}
@@ -2330,7 +2336,7 @@ that can map the graph model into native Java objects with built-in
 serialization and deserialization \cite{neo4j-ogm}.
 
 
-\subsection{Object Graph Mapper (OGM)}
+\subsection{Object graph mapper}
 
 To utilize the \textit{Neo4j} OGM, written and maintained by the \textit{Neo4j}
 creators \cite{neo4j-ogm}, one composes classes for each node and edge type
@@ -2354,6 +2360,7 @@ be good examples. Due to this implementation detail of \textit{Neo4j},
 this information has to be provided when annotating \textit{Relationship} classes.
 The rest of the created class are just properties, some of which are mandatory,
 while as many additional ones containing data can be added arbitrarily.
+
 \smaller
 \begin{lstlisting}[caption=Relationship OGM class, label=ogm-relationship, breaklines=true]
 @RelationshipEntity(type = CALLS)
@@ -2379,6 +2386,7 @@ class CallsRelationship() {
 }
 \end{lstlisting}
 \normalsize
+
 The above code example \ref{ogm-relationship}, was implemented in Kotlin
 as this programming language was used to implemented the entire back-end
 as discussed earlier in this chapter.
@@ -2859,7 +2867,7 @@ code, some were only shipped pre-compiled.
 Moreover, all of the reference implementations in C or C++ are designed as
 \textit{Command Line Interfaces} (CLI) instead of libraries.
 As a consequence, in the latest version of \textit{Steinmetz}, we opted to wrap the
-CLI with the \code{ProcessBuilder} class of the Java platform.
+CLI with the \code{ProcessBuilder} class of the Java platform \cite{process-builder}.
 This enables to call any CLI from within a Java application by invoking a process,
 piping input into \code{STDIN} and parsing the output of the invoked program from
 the processes \code{STDOUT}. This might seem error-prone on first sight, however,
@@ -3027,21 +3035,233 @@ close to the mathematical formulae in chapter \ref{chap:metrics}.
 
 \section{Front-end} \label{sect:implementation-front-end}
 
+The front-end is designed and built as a \textit{single page application} (SPA)
+using \textit{Vue.js}, which is a framework to built reactive SPAs utilizing
+HTML, CSS, and JS that run in a web browser \cite{vuejs}.
 
+It supports and encourages to build the SPA as multiple, reusable components.
+Thus, the engineer has to design up-front how the planned front-end could be
+logically divided into components --- in this regard it takes ideas from
+object orientation as one component can build upon other ones and inherit
+and augment their functionality.
+
+The framework contains control structures to render components conditionally
+and to loop over an array data structure while rendering HTML and CSS for
+every item in said array. Features like these are main arguments for utilizing
+a SPA framework compared to building the front-end application from scratch
+with plain HTML, CSS, and JS.
+Yet, the most important feature is the built-in reactiveness which is not built
+into web browsers. Precisely, it put watchers onto every usage of any state
+in the SPA and automatically re-renders just the effected HTML node in the DOM
+on-the-fly which allows the engineer to build applications that are reacting
+to state changes on their own rather then via a manually implemented trigger
+\cite{vuejs}.
+
+Furthermore, every component has a transient state that vanishes upon a
+page refresh or session reload by default. Each component can send messages,
+mostly consisting of state updates, to child components that they embed as well
+as to components higher up in the hierarchy.
+As a consequence, one entry point component exists that the engineer fills
+with other components to assemble the SPA.
+
+The data to populate the components state and therefore the page is usually
+fetched from an API endpoint of a back-end application, this is no different
+in our case.
+
+
+\subsection{User interface}
+
+The user interface (UI) is arranged as a set of cards stacked on top of each
+other. Either, they display control elements or rendered data.
+Figure \ref{fig:front-end-ui} is a screenshot of the entire front-end with
+example input and data. Every card has a clear and distinct border with
+a shadow to visually separate them from each other.
+In the following subsection, some of the most important cards are covered
+in more detail. From top to bottom, the cards fulfill the following tasks:
+
+\begin{enumerate}
+  \item Adding a new project by uploading the analysis files. Additionally,
+        the programming language as well the VCS platform of the input
+        monolithic application have to be selected.
+  \item Retrieving a project that was persisted earlier either as the plain
+        graph or in its clustered form.
+  \item Selecting a graph clustering algorithm for rendering the visualization
+        below as well as selecting a metric that should be used for evaluating
+        the results. Additionally, a slider sets how many runs graph clustering
+        algorithms should get that are either non-deterministic or have an
+        additional input parameter that determines the granularity of the
+        resulting clustering. In that case, these algorithms are maximally run
+        as often as the slider specifies in a concurrent manner.
+  \item Changing the weighting for the three input dimensions. By default,
+        every dimension is weighted the same, however, this can be changed by
+        the user.
+  \item The rendered graph either plain or clustered; every cluster then depicts
+        one microservice. Furthermore, the connections between the units of the
+        input monolithic application as part of the microservices can be
+        examined. Moreover, a completely textual view can alternatively be
+        displayed.
+  \item A brief overview of general metrics that are not specific to clustering.
+  \item The metrics that are specific to the clustering and more specifically
+        belonging to the graph clustering algorithm selected above.
+  \item The same card as the one above for each of the available
+        graph clustering algorithms apart from the selected one.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{front-end-ui}
+\caption{User interface of the front-end}
+\caption*{
+  The front-end consists of multiple cards stacked on top of each other,
+  each filled with either controls or displaying rendered data.
+}
+\label{fig:front-end-ui}
+\end{figure}
 
 
 \subsection{Visualizing microservice recommendations}
 
-\subsubsection{Network view}
+After uploading a new project or retrieving an existing one, three views exist
+for visualizing features of the microservice recommendations for that project.
+Selecting a graph clustering algorithm in the third tile of the UI
+has the effect that the resulting clustering of the selected algorithm
+will be used to render all of the views exhibited in this subsection.
+Regardless of the selection, all of the available algorithms are executed
+concurrently, but the selected one will provide the data for rendering the views.
 
+
+\subsubsection{Graph view}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{graph-view-ui}
+\caption{The graph view in the UI of the front-end}
+\caption*{
+  The front-end offers a graph view of the clustered graph that depicts
+  the computed microservice recommendations.
+}
+\label{fig:graph-view-ui}
+\end{figure}
+
+The first and most obvious view is the \textit{graph view}. It essentially
+renders the graph that is already persisted in \textit{Neo4j} with the
+computed clustering visualized as well. Figure \ref{fig:graph-view-ui} shows
+the \textit{graph view} in detail. The whole view can be zoomed in and out
+seamlessly by scrolling within the card. We tested the visualization with
+a 10,000 node, fully-connected graph which was still functional although
+rendered with a lower frame rate. The rendering is done via a HTML5 canvas.
+
+\paragraph{Default mode}
+Precisely, orange hexagons depict a microservice while the classes between
+different microservices have different randomized colors to visually emphasize
+them toward each other. The orange lines are intra-cluster connections,
+while green lines are inter-cluster connections.
+These have different thicknesses depending on their edge weight which can be
+displayed by hovering over the edge. Moreover, the inter-cluster edges have
+arrow heads depicting in which directions the microservice would invoke
+each other which can be seen in detail in figure \ref{fig:node-graph-view}.
+Finally, every unit of each service has its name printed inside of the node
+as well as the full qualified name and the byte size when hovering over it
+as seen in figure \ref{fig:node-graph-view}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{node-graph-view}
+\caption{A closeup of a node in the graph view}
+\caption*{
+  The front-end offers a graph view of the clustered graph that depicts
+  the computed microservice recommendations.
+}
+\label{fig:node-graph-view}
+\end{figure}
+
+\paragraph{Detailed mode}
+Additionally, another mode of the view exists that will display intra-cluster
+edges which allows the user to see how units within a service are connected
+to each other as well as how they are connected to other services and their
+units. Furthermore, units in a square shape are solely accessed within their
+own service while units in a diamond shape are communicating with units from
+other microservice recommendations.
+This mode can be seen in figure \ref{fig:detailed-graph-view} and is
+activated by toggling the \textit{Hide Inter-Cluster Edges} option.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{detailed-graph-view}
+\caption{A closeup of the detailed graph view mode}
+\caption*{
+  The graph view has a second, more detailed mode that also displays
+  all of the inter-cluster as well as intra-cluster edges.
+}
+\label{fig:detailed-graph-view}
+\end{figure}
+
+\paragraph{Un-clustered mode}
+A last, additional graph view mode renders the graph in its un-clustered form
+as it is persisted in \textit{Neo4j}. This mode is mainly interesting to
+examine the structure or architecture of the input monolithic application.
+The mode can be seen in figure \ref{fig:un-clustered-graph-view} and is
+activated by toggling the \textit{Clustered View} option which also disables
+the \textit{Hide Inter-Cluster Edges} as well.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{un-clustered-graph-view}
+\caption{A closeup of the un-clustered graph view mode}
+\caption*{
+  The graph view has a third mode that can be used to see the un-clustered
+  graph as it is persisted in \textit{Neo4j}. This can be used to examine
+  the structure of the input monolithic application on its own.
+}
+\label{fig:un-clustered-graph-view}
+\end{figure}
 
 
 \subsubsection{Textual view}
+As large input monolithic applications will also produce large graph clusterings,
+the readability of the \textit{graph view} is hindered.
+However especially when the microservice recommendations should
+be implemented, a textual view is preferred as the graphical nature of the
+\textit{graph view} is expected to not provide enough of an overview regarding
+the resulting microservice candidate recommendations.
+This view can be seen in further detail in figure \ref{fig:textual-view-ui}.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{textual-view-ui}
+\caption{A closeup of the textual view}
+\caption*{
+  Additionally to the \textit{graph view}, a solely textual view was implemented
+  that just displays which units should belong to which service.
+}
+\label{fig:textual-view-ui}
+\end{figure}
 
 
 \subsubsection{Metrics view}
+Lastly, the user interface displays an overview of the metrics that we selected
+All of those are covered in detail in chapter \ref{chap:metrics}.
+The big tile on top of the others, as seen in figure \ref{fig:graph-view-ui},
+contains general metrics that are not measuring anything regarding the
+clustering but rather the input.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{graph-view-ui}
+\caption{A closeup of the metrics view}
+\caption*{
+  Every available graph clustering algorithm is evaluated while the one that
+  scored the highest in the selected metric is highlighted in green.
+}
+\label{fig:graph-view-ui}
+\end{figure}
+
+The tile directly below is displaying results regarding the selected
+graph clustering algorithm. However, the information is identical with the
+smaller tiles below. Each tile corresponds to one of the available algorithms,
+the selected one just gets the largest tile for better visibility.
+
+Finally, the algorithm that scored the highest in the metric that was selected
+in the third tile, next to the selected algorithm, is highlighted in green.
 
 
 
