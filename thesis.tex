@@ -145,7 +145,8 @@ for evaluating microservice decomposition methodologies?"}
 Firstly, the approach for the methodology is developed and validated
 for feasibility especially regarding its implementation.
 Apart from its general description in the \textit{\nameref{chap:related}} chapter,
-the approach itself is explained and devised in chapters \ref{} to \ref{}.
+the approach itself is explained and devised in chapters
+\ref{chap:extracting-coupling} to \ref{chap:metrics}.
 
 Secondly, the foundation for the rationale behind the methodology is worked out
 as the approach itself is abstracted away from the topic of
@@ -159,10 +160,10 @@ This part of the research is covered in chapter \ref{chap:rationale}.
 
 Likewise, not only a theoretical methodology but also an implemented
 proof-of-concept (PoC) are the outputs of this project.
-The latter is introduced in chapter \ref{}.
+The latter is introduced in chapter \ref{chap:implementation}.
 The steps that this PoC needs to conduct are derived and tested
 independently via exploratory as well as confirmatory case studies
-in chapter \ref{} to receive substantive, numeric,
+in chapter \ref{chap:results} to receive substantive, numeric,
 and separate results \cite{easterbrook2008selecting}.
 Moreover, controlled experiments are not feasible as control results
 with their dependent variables for the outcomes are rare and difficult
@@ -171,8 +172,8 @@ to find and measure \cite{easterbrook2008selecting}.
 Finally, the research is validated with real-world monolithic applications.
 A large-scale code base provided by the company hosting this thesis as well as
 large open source software projects were candidates for this.
-The evaluation as part of chapter \ref{} is conducted using
-a custom set of metrics devised in chapter \ref{}.
+The evaluation as part of section \ref{sect:evaluation} is conducted using
+a custom set of metrics devised in chapter \ref{chap:metrics}.
 
 
 
@@ -282,9 +283,11 @@ that are in need of scaling can be scaled instead of the entirety of the applica
 In contrast to monolithic applications, microservices introduce a non\hyp negligible
 amount of overhead. Firstly, the architectural style is geared toward
 agile software development which by itself mandates a certain organizational setup.
+
 Secondly, the development demands other patterns in terms of e.g.
 error-handling and data management compared to a monolithic software design.
-Lastly, the deployment is more fine-grained and usually encompasses a lot of
+
+Moreover, the deployment is more fine-grained and usually encompasses a lot of
 cloud computing facilities such as \textit{Infrastructure as a Service} (IaaS)
 together with certain topics completely unheard of in monolithic architectures
 such as \textit{service discovery} which is dealing with the task of each
@@ -300,17 +303,19 @@ is a grand task. However, the boundaries need to be defined even more strictly
 as migrating certain functionality and data later on has a bigger impact than
 doing the same in a monolithic application, since data can oftentimes
 stay where it is in a monolithic architecture.
+
 Likewise, the interfaces between services need more care than interfaces in a
 monolithic application due to their distributed nature that can lead to
 performance and fail-over problems a lot faster as a network is acting
 in between.
+
 Finally, Conway's law \cite{conway1968law} is more important than ever
 in a microservices landscape as overly dependent life cycles between services
 will lead to nothing more than a \textit{distributed monolith} in the long run.
 \newline
 
 
-In summary, the larger and more complicated the underlying business logic
+\noindent In summary, the larger and more complicated the underlying business logic
 becomes, the more the application can benefit from a microservices\hyp based architecture.
 Specifically when developing the overarching application in agile teams,
 microservices offer natural boundaries for this organizational structure.
@@ -345,10 +350,10 @@ the way that it is utilized in our methodology.
 Generally, a call graph is consisting of \textit{"nodes that are the routines
 of the program and directed arcs that represent calls from call sites to
 routines"} \cite{graham1982gprof}. Those graphs can be created via static
-as well as dynamic program analysis, although the latter is covered in
+as well as dynamic program analysis, while the latter is covered in
 subsection \ref{subsect:background-dynamic-analysis}.
 In an object-oriented program, the routines would represent methods
-or even whole classes \cite{grove1997callgraph}.
+or even entire classes \cite{grove1997callgraph}.
 
 The two basic ways to represent the weight \(W(e_i) \in \mathbb{R}\)
 of a weighted edge \(e_i \in E\) as part of a call graph \(G = (V, E)\)
@@ -382,7 +387,7 @@ to gather information about runtime performance, memory usage,
 or debugging \cite{ernst2003static}.
 Another application is the creation of a call graph as discussed in subsection
 \ref{subsubsect:call-graph-static}. For the same reasons and a few others on top,
-this the process of generating a \textit{dynamic call graph} are interested to our work.
+the process of generating a \textit{dynamic call graph} is interested to our work.
 
 
 \subsubsection{Call graph generation} \label{subsubsect:call-graph-dynamic}
@@ -428,7 +433,7 @@ as a mathematical process are \cite{singhal2001ir}:
 
 
 \subsubsection{Similarity calculation}
-All of the abovementioned steps have to be performed for every document
+All of the above-mentioned steps have to be performed for every document
 in the corpus until the resulting vectors can be run through a function that
 calculates their similarity. A common approach for this is the
 \textit{cosine similarity} which calculates the cosine of an angle \(\theta\)
@@ -450,7 +455,7 @@ Importantly, each document \(D_i\) is a sequence not a set
 (i.e. is allows the repetition of elements), otherwise the 5th step would not
 work as shown later.
 Consequently, punctuation characters are stripped from the document and
-the text get split for instance on spaces \cite{singhal2001ir}.
+the text gets split, for instance, on spaces \cite{singhal2001ir}.
 
 
 \subsubsection{Stop word filtering}
@@ -555,14 +560,14 @@ of each term on a per-document basis \cite{robertson2004tfidf}:
 \[tfidf(t,d,C) = tf(t,d) \times idf(t,C)\]
 
 Applying \textit{tf-idf} changes the values of the elements in the matrix
-from \(\forall td_{m,n} \in \{td \in \mathbb{Z} \mid td \le 0\}\)
-to \(\forall td_{m,n} \in \{td \in \mathbb{R} \mid td \le 0\}\) due to
+from \(\forall td_{m,n} \in \{td \in \mathbb{Z} \mid td \ge 0\}\)
+to \(\forall td_{m,n} \in \{td \in \mathbb{R} \mid td \ge 0\}\) due to
 the two divisions involved.
 
 
 \subsubsection{Latent semantic indexing (LSI)}
 This last step is optional but oftentimes utilized to further improve the quality
-of the output of this process. \textit{Latent semantic indexing} (LSI) describes
+of the output of the entire process. \textit{Latent semantic indexing} (LSI) describes
 the process of applying \textit{singular value decomposition} (SVD) to
 the aforementioned term-document matrix \cite{deerwester1990lsi}. % TODO: Should one go into more detail?
 The rationale in the context of the similarity calculation is
@@ -575,7 +580,7 @@ the same idea \cite{press2011oxford} whereas \textit{polysemy} describes the phe
 where same term describes multiple ideas \cite{press2011oxford}.
 After applying \textit{LSI}, each document vector of the corpus \(\vec{\mathbf d_i} \in C\)
 has a magnitude of the previously chosen \(z\) amount of dimensions \(\|\vec{\mathbf d_i}\|\).
-Consequently, the abovementioned \textit{cosine similarity} can be calculated.
+Consequently, the above-mentioned \textit{cosine similarity} can be calculated.
 
 
 \subsubsection{Source code processing}
@@ -613,7 +618,7 @@ The goal again is to get a percentage that resembles how similar the life cycles
 of two given entities are, in the same vein to the \textit{semantic similarity}.
 Compared to the previously exhibited \textit{semantic similarity} however,
 the \textit{evolutionary similarity} has the downside of not having a renowned
-or standard approach to retrieve the abovementioned percentage.
+or standard approach to retrieve the above-mentioned percentage.
 We chose a generally applicable approach based on the work by Tornhill
 on \textit{evolutionary similarity} \cite{tornhill2015crimescene}.
 
@@ -639,9 +644,8 @@ the entity \(e_1\) is calculated to obtain a percentage:
 \[
   \frac{\vert R' \vert}{\{ r' \in \{ r \in R \mid r \in [t_1, t_2] \} \mid e_1 \in r' \}}
 \]
-As a consequence, the time interval \([t_1, t_2]\) covering the vs can be
-shifted such that either every revision is evaluated on its own or that multiple
-are evaluated at a time.
+As a consequence, the time interval \([t_1, t_2]\) can be shifted such that
+either every revision is evaluated on its own or that multiple are evaluated at a time.
 
 Additionally, a threshold can be applied to filter out noise such that only
 after a certain amount of shared revisions of two entities \(e_1 \in E, e_2 \in E\),
@@ -649,7 +653,7 @@ the revisions are added to the shared revisions \(R'\) to increase the relevance
 of this \textit{evolutionary similarity} measurement \cite{tornhill2015crimescene}.
 
 The details of the utilization of this approach as part of our devised methodology
-is explained in chapters \ref{chap:rationale} and \ref{chap:extracting-coupling}.
+are explained in chapters \ref{chap:rationale} and \ref{chap:extracting-coupling}.
 
 \smaller
 \begin{lstlisting}[caption=Example Git log, label=git-log, breaklines=true]
@@ -674,7 +678,7 @@ describes the process of partitioning a usually undirected
 and unweighted or weighted graph into subgraphs \cite{lancichinetti2009community}.
 Important to our work is that partitions on the input graph are calculated,
 so that the resulting clusters do not overlap although a subset of
-graph clustering algorithms exists that generates overlapping clusters.
+graph clustering algorithms exists that can generate overlapping clusters.
 A cluster is typically described as a group of vertices that are densely
 interconnected via their \textit{intra-cluster edges} while being only sparsely
 connected to other vertices outside of their own cluster via
@@ -713,7 +717,7 @@ values over \(0.4\) already resemble a strong clustering structure
 \subsection{Renowned graph clustering algorithms} \label{subsect:renowned-graph-clustering-algorithms}
 
 There are many graph clustering algorithms that were devised in this century
-and are considered as state-of-the-art
+and are considered to be state-of-the-art
 \cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
 Thus, in this subsection we discuss renowned graph clustering algorithms.
 Furthermore, the way that we utilize the exhibited graph clustering algorithms
@@ -721,7 +725,7 @@ as part of this work is discussed further in chapter
 \ref{chap:creating-service-recommendations}.
 
 \paragraph{Girvan-Newman \cite{girvan2002community}}
-The \textit{Girvan-Newman} algorithm is seen as one of the earliest, successful,
+The \textit{Girvan-Newman} algorithm is oftentimes seen as the most successful,
 wide-spread graph clustering algorithm \cite{lancichinetti2009community}.
 It was released by Girvan and Newman as part of their influential 2002 paper:
 \textit{"Community structure in social and biological networks"} \cite{girvan2002community}.
@@ -796,7 +800,7 @@ However, shortly after, another improved version of his new algorithm
 was published together with Clauset and Moore which is the
 faster and generally improved version \cite{clauset2004modularity}.
 
-As abovementioned, maximizing \textit{modularity} is an NP-complete
+As above-mentioned, maximizing \textit{modularity} is an NP-complete
 optimization problem which led Clauset et al. to solve it via a greedy heuristic.
 Their algorithm starts off with putting every vertex of the given graph in its
 own cluster, such that \(\{\{v\} \mid v \in V\}\).
@@ -815,7 +819,7 @@ named after their university \cite{blondel2008modularity}.
 It is based on a similar premise to that of \textit{Clauset-Newman-Moore}.
 The algorithm by Blondel et al. consists of two distinct phases.
 
-Before beginning with the first phase, every vertex is placed in their own cluster.
+Before beginning with the first phase, every vertex is placed in its own cluster.
 The first phase then checks for each vertex with which adjacent vertex it can
 merge clusters to reach a maximum increase in \textit{modularity}.
 Compared to \textit{Clauset-Newman-Moore}, only if the \textit{modularity}
@@ -832,7 +836,7 @@ Additionally, self-loops are attached to every vertex \cite{blondel2008modularit
 Finally, the first phase is applied to the newly constructed graph again.
 These two phases are then iteratively alternated until the increase in
 \textit{modularity} ends or reaches a plateau \cite{blondel2008modularity}.
-Hence, the \textit{Louvain} is a heuristic algorithm as well.
+Hence, the \textit{Louvain} algorithm is working with a heuristic as well.
 
 Fortunato et al. showed that \textit{modularity} optimization suffers
 the problem of not being able to identify clusters of small sizes, the so called
@@ -978,11 +982,11 @@ Owing to the fact that one principle of the microservices architecture is about
 separating data stores \cite{ms-microservices}, the approach to analyze
 the data models (e.g. schemes) of existing database tables is, generally speaking,
 an important one. This approach covers direct analysis of database tables
-as well as the analysis of \textit{object relational mappers} (ORM)
+as well as the analysis of \textit{object relational mappings} (ORM)
 if those were already in use in the existing application.
 \paragraph{VCS mining}
 The repositories of existing solutions are usually part of a
-version control system (VCS) such as Git. Consequently, revisions and merges
+\textit{version control system} (VCS) such as Git. Consequently, revisions and merges
 can be analyzed to e.g. determine the coupling of certain files, modules, or classes.
 \paragraph{External interface analysis}
 The external interfaces (i.e. the Web-APIs) of existing solutions can be analyzed to get
@@ -993,11 +997,11 @@ a sense of existing modularization and cohesion within the solution.
 
 In the following paragraphs, the features used as matrix columns are explained in more detail.
 \paragraph{Evaluation}
-This column just depicts if the cited source of a row evaluated their work in any form.
+This column just denotes if the cited source of a row evaluated their work in any form.
 \paragraph{Evaluation by testing}
 Since this literature survey was focused on works that research assisted or semi-automated
 microservice decomposition, theoretically, the works could be evaluated with real-world or
-even artificial data such as large open source projects built with a monolithic architecture.
+even artificial data such as large open source projects with a monolithic architecture.
 \paragraph{Evaluation via metrics}
 Owing to the fact that the area of research of this project is still rather young and sparse
 \cite{jin2018functionality}\cite{fritzsch2018monolith}, custom as well as renowned metrics
@@ -1033,8 +1037,8 @@ as they relate closely in topic.
 \subsection{Analyzed inputs}
 
 Gysel and K{\"o}lbener used \textit{SE model analysis} as their only approach ---
-a type of input that is unlikely to be available or
-can be created with a lot of manual work, as they acknowledge
+a type of input that is unlikely to be available or can only
+be created with a lot of manual work, as they acknowledge
 themselves in their original work \cite{gysel2016service}.
 This fact decreases the actual usability of the devised methodology and leaves
 room for improvement.
@@ -1115,7 +1119,7 @@ Mazlami \cite{mazlami2017extraction}.
 
 Instead, we devise an extensive set of numeric metrics that offers
 an objective and quantifiable view on the resulting microservice recommendations
-to be able to evaluate not only our methodology but the recommendations them self as well.
+to be able to evaluate not only our methodology but the recommendations themselves as well.
 
 
 
@@ -1159,8 +1163,8 @@ or congestion \cite{newman2015building, alshuqayran2016systematic}.
 Thirdly, the performance suffers compared to native method invocations e.g.
 as part of a monolithic application. Communication over a network always
 involves latency and the serialization and deserialization
-of each request and response (i.e. when utilizing HTTP) is a costly action
-in terms of runtime \cite{newman2015building}.
+of each request and response (i.e. when utilizing JSON over HTTP)
+is a costly action in terms of runtime \cite{newman2015building}.
 
 
 \subsection{Principle 2} \label{subsect:ms-principle-2}
@@ -1187,7 +1191,7 @@ in a given application \cite{newman2015building, ms-fowler}.
 Thus, a \textit{task} has no distinct upper limit regarding its size.
 One service should encapsulate one \textit{bounded context} while trying to
 keep them as small as reasonable possible to still satisfy the idea of having
-\textit{microservices} so that size, complexity, and maintenance stay manageable
+\textit{microservices} such that size, complexity, and maintenance stay manageable
 \cite{newman2015building, ms-fowler}.
 
 \paragraph{Bounded contexts}
@@ -1217,7 +1221,7 @@ Since microservices are attributed to \textit{Conway's law}
 in the sense that this architectural style lends itself well to letting
 separate teams handle one or multiple microservices \cite{newman2015building},
 it keeps the services decoupled apart from data and interfaces by having
-independent software development life cycle.
+independent software development life cycles.
 
 The more dependent the life cycles are, the more coupled the services become
 and hence the longer it will take to apply feature additions, changes,
@@ -1243,7 +1247,7 @@ dimensions of the input into our devised methodology.
 This gives a rationale for how the eventual output of our methodology can
 be qualitative based on the fact that the input dimensions were carefully
 chosen based on what literature defines as \textit{good} based on the principles.
-Essentially, the input is mapped to microservices architecture best practices
+Essentially, the input is mapped to microservices-based architecture best practices
 which allows us to reason about how and why the output of our methodology
 makes any sense, all based on the fact that it processes input mapped to said
 best practices.
@@ -1274,7 +1278,7 @@ of this mapping as part of our methodology are discussed in chapter
 \caption{Mapping design principles of microservices to coupling types}
 \caption*{
   We detected that three of the most important design principles of the
-  microservices paradigm maps directly to three main types of coupling.
+  microservices paradigm map directly to three main types of coupling.
 }
 \label{fig:principles-of-microservices}
 \end{figure}
@@ -1283,7 +1287,7 @@ of this mapping as part of our methodology are discussed in chapter
 \subsection{Dynamic coupling}
 
 The term refers to any metric of coupling that measures how coupled
-components are during their runtime hence it is recorded during the execution
+components are during their runtime, hence it is recorded during the execution
 of a given application which ties it to \textit{dynamic program analysis}.
 
 For instance, counting how often a certain component calls or accesses another
@@ -1296,7 +1300,7 @@ Hence, the weighted edges of the graph symbolize the \textit{execution counts}.
 However, we opted not to make the constructed graph directed as graph clustering
 is usually not applied to directed graphs \cite{lancichinetti2009community}.
 Moreover, the other coupling types also only yield undirected graphs which
-would make a combined analysis on all of them non\hyp functional.
+would make a combined analysis on all of them defunct.
 
 Finally, the first principle maps to this type of coupling due to the fact that
 the \textit{dynamic coupling} information can be utilized to keep
@@ -1349,13 +1353,13 @@ how the three types of coupling are extracted out of them. Additionally,
 a static program analysis is conducted as covered in this chapter.
 
 Sometimes it is not possible to provide every of the four inputs which is why
-at least any three out of the four have to be provided while our devised
-methodology can still conduct its analysis.
+at least any three out of the four have to be provided for our devised
+methodology to still conduct its analysis.
 
 Finally, our methodology is focused on object-oriented programming,
-hence we will from now on use the term \textit{class} instead of \textit{entity}
+hence we will from now on use the term \textit{class} instead of \textit{unit}
 for describing the vertices of the constructed weighted graphs.
-Moreover, the following descriptions are on the example of Java applications,
+Moreover, the following descriptions are focused on Java applications,
 however in chapter \ref{chap:implementation} we exhibit how other
 languages and platforms can be added to the implementation.
 
@@ -1373,11 +1377,11 @@ in subsection \ref{subsubsect:call-graph-static}.
 We utilize an approach that starts with the \code{main} method or methods of
 the given application and then recursively walks down the classes and their
 methods that are instantiated or invoked. Consequently, a graph with
-possible cycles is built.
+possible cycles is constructed.
 Both, class instantiations as well as method invocations can be registered
 although as part of our methodology, both  will result in an edge connecting
 the instantiating or invoking class vertex to the one it is instantiating
-or invoking --- the algorithm \ref{algo:class-walk} depicts this process.
+or invoking --- algorithm \ref{algo:class-walk} depicts this process.
 
 \begin{algorithm}[ht]
 \caption{Recursive walk trough classes and methods}
@@ -1420,20 +1424,19 @@ the classes and methods as detailed in chapter \ref{chap:implementation}.
 
 The resulting static call graph is theoretically directed in the manner that it
 gets constructed in algorithm \ref{algo:class-walk}, the first class in the class
-pairs that are getting returned by it is the vertex the edge is pointing away from.
+pairs that are getting returned, is the vertex the edge is pointing away from.
 Furthermore, it would be possible to count how often a class instantiates or
 invokes another and accumulate this value as a weighted edge.
-
 However, we opted to utilize neither directions nor weights
 and instead to construct a regular undirected, unweighted graph.
 Owing to the fact that the graphs resulting from the the other coupling types
 are not directed, using a directed graph for this coupling type makes no sense.
 Moreover, the weights associated with a \textit{static coupling} graph
 do not have much meaning since the range of the weights is not very significant
-as certain algorithms may instantiate a lot of other classes,
+as certain business logic may instantiate a lot of other classes,
 yet this does not strictly increase their coupling.
 Specifically when compared to the other coupling types, potential edge weights
-on the \textit{static coupling} graph are not very relevant, thus this graph
+of the \textit{static coupling} graph are not very relevant, thus this graph
 is plainly used for being able to obtain a final graph that covers the
 entirety of the input monolithic application, as mentioned earlier.
 
@@ -1464,13 +1467,13 @@ higher input fidelity. This is further detailed in the chapter on
 \subsection{Sampling\hyp based approach}
 
 The first approach is more concerned with observing (i.e. monitoring)
-the running application from the outside. The typical method to do so is
-a \textit{sampling\hyp based} application profiling. This means that with a preset
-frequency, every \(n\) milliseconds, a sample is recorded regarding what the
+the running application from the outside. The typical way to conduct this is
+\textit{sampling\hyp based} application profiling. This means that with a preset
+frequency, \(n\) times per second, a sample is recorded regarding what the
 application is currently doing. This concerns actions such as
 the memory usage, thread usage, which method is invoked how often, etc.
 
-Focusing on the \textit{Java Virtual Machine} (JVM) as we target it with our
+Focusing on the \textit{Java Virtual Machine} (JVM), as we target it with our
 implementation, it ships with a built-in profiler,
 called \textit{Java Flight Recorder} (JFR).
 The JFR is a \textit{sampling\hyp based} profiler that is shipped
@@ -1489,7 +1492,7 @@ certain events (e.g. method invocations) which leads to the situation that
 there is no certainty how much it actually recorded --- yet, this is true
 for every \textit{sampling\hyp based} approach and an inherent problem of them.
 However, the higher the sampling rate gets, the higher is the overhead for
-recording sampling more while still not eliminating said inherent problem.
+recording gets, while still not eliminating said inherent problem.
 
 
 \subsection{Instrumentation\hyp based approach}
@@ -1504,12 +1507,12 @@ every single method entry together with which method invoked it.
 The disadvantage of this approach is that the impact on the runtime performance
 is immense owing to the fact that every single method invocation is logged.
 
-Generally, there are multiple ways how to implement
-\textit{instrumentation\hyp based} profiling however the most common way
+Generally, there are multiple ways to implement
+\textit{instrumentation\hyp based} profiling, however the most common way
 is some form of aspect-oriented programming (AOP) \cite{kiczales1997aop}.
 
 The idea of AOP is to essentially inject extra functionality for
-\textit{cross-cutting concerns}, which describes operations that are not
+\textit{cross-cutting concerns}, which describe operations that are not
 necessarily limited to a certain feature, such as logging \cite{kiczales1997aop}.
 The idea itself is simple however, first the user defines \textit{cutting points},
 which behave like patterns that are being matched on the source code,
@@ -1530,8 +1533,8 @@ the injected piece of logging code is executed just as the rest of the code
 Similarly to the \textit{static coupling} again, the \textit{semantic coupling}
 extraction only needs the source code itself. Importantly, human-readable,
 not yet compiled source code is necessary as the semantics are lost in compiled
-code since it is not human-readable anymore.
-We implemented an approach from scratch that conducts the  steps regarding
+code since it does not contain natural language anymore.
+We implemented an approach from scratch that conducts the steps regarding the
 semantic similarity calculation from subsection \ref{subsect:semantic-similarity}:
 \begin{enumerate}[noitemsep]
   \item Tokenization
@@ -1564,7 +1567,7 @@ Consequently, source code such as the following example \ref{packages-and-import
 would include package paths in the term list of the respective document
 which would distort the result of the \textit{semantic coupling} analysis.
 Thus, every line is parsed separately and language-specific keywords such as
-\code{package} or \code{import} trigger that the line get discarded.
+\code{package} or \code{import} trigger that the line gets discarded.
 
 \smaller
 \begin{lstlisting}[caption=Packages and imports in Java, label=packages-and-imports, language=Java, breaklines=true]
@@ -1609,10 +1612,10 @@ Additionally, every resulting term is converted to lower case so that
 the subsequent steps handle the same term in different cases as
 semantically indifferent.
 
-The rest of the steps is conducted just as described in subsection
+The remaining steps are conducted just as described in subsection
 \ref{subsect:semantic-similarity} since after the second step,
 the following steps work on term lists as part of documents of the corpus
-\(t_i \in d_i, d_i \in C\), which, at that point, are regular natural language.
+\(t_i \in d_i, d_i \in C\), which, at that point, are containing regular natural language.
 
 
 
@@ -1633,8 +1636,8 @@ Tornhill \cite{tornhill2015crimescene} which is exhibited in subsection
 Theoretically, every VCS that has the notion of revisions that include files
 and that is able to generate a log file which details past revisions together
 with the files involved, can be used to extract \textit{evolutionary coupling}
-information. A few example VCS that we also support as part of our implemented
-methodology detailed in chapter \ref{chap:implementation}:
+information. Common VCS that we also support as part of our implemented
+methodology detailed in chapter \ref{chap:implementation} are:
 \begin{itemize}[noitemsep]
   \item \textit{Git}
   \item \textit{Subversion}
@@ -1652,7 +1655,7 @@ include files. Owing to the fact that in applications written in Java,
 one file is also equivalent to one class, we can generate the coupling graph
 without any changes to the log format. Nevertheless, it would be possible
 to extend the \textit{evolutionary coupling} information extraction to support
-languages that might keep multiple entities (i.e. the vertices in the graph)
+languages that might keep multiple \textit{units} (i.e. the vertices in the graph)
 in the same file by generating more detailed log files on a line level within
 the files. However, this is not covered by our work as we focus on
 Java applications for our initial implementation.
@@ -1675,7 +1678,7 @@ The values are constants that can be changed while the defaults that we employ a
 \end{itemize}
 For clarification, figure \ref{fig:vcs-log-timeline} depicts an example
 timeline to show how the \textit{evolutionary coupling} is calculated
-via a given a VCS log.
+via a given VCS log.
 
 \begin{figure}[htbp]
 \centering
@@ -1720,7 +1723,7 @@ each of these coupling types, called dimensions from now on.
 
 \section{Building a weighted graph for each input dimension}
 
-Out of each of the input dimensions, a weighted graph is built with the classes
+Out of each of the input dimensions, a weighted graph is constructed with the classes
 as the vertices \(v_i \in V\) and the coupling values between the classes
 as the weighted edges \(e_i \in E\) representing a percentage
 \(W(e_i) \in [0.0, 1.0]\) --- resulting in a weighted graph \(G = (V, E)\).
@@ -1743,7 +1746,7 @@ that the final graph covers the whole application.
 \section{Merging input dimensional graphs} \label{sect:merging-graphs}
 
 Finally, four graphs are constructed out of the four input dimensions
-that need to merged into a combined one so that it can be clustered eventually.
+that need to be merged into a combined one so that it can be clustered eventually.
 Essentially, this encompasses a two step process with the first being
 a set-theoretic union of the two first graph tuples \(G_i = (V, E)\) such that:
 \[
@@ -1761,7 +1764,7 @@ application are only known at runtime such as the usage of
 On the other hand, dynamic program analysis entails the problem that
 it is by no means guaranteed that every class of the executed application
 is called or even instantiated --- the resulting graph is highly dependent
-on the workload while the dynamic analysis is conducted.
+on the workload during the dynamic analysis.
 
 In the second step, the two remaining input dimensional graphs are merged into
 the combined graph \(G_{combined}\):
@@ -1797,8 +1800,8 @@ percentages. Instead, we use a modifiable \textit{edge weighting formula} which
 is defining factors for each input dimension to increase or decrease its importance
 in calculating the combined weight of each edge \(\forall e_i \in E_{combined}\)
 in the combined graph \(G_{combined}\). Owing to the fact, that the
-\textit{static coupling} dimension yields not edge weights as covered in section
-\ref{sect:static-coupling-extraction}, it is excluded from
+\textit{static coupling} dimension does not yield edge weights as covered in
+section \ref{sect:static-coupling-extraction}, it is excluded from
 the \textit{edge weighting formula}:
 \small
 \begin{equation*}
@@ -1832,11 +1835,11 @@ coupling, resembled by the combined edge weights
 are more likely to end up in the same cluster.
 These clusters would then mirror the notion of the \textit{bounded contexts},
 introduced in subsection \ref{subsect:ms-principle-2}.
-Thus, each cluster would then resemble one microservice candidate recommendation.
+Thus, each cluster then resembles one microservice candidate recommendation.
 
 Consequently, the question arises which approach to take in clustering the
 constructed graph \(G_{combined}\) at hand, respectively which graph clustering
-algorithm to choose, to as optimally as possible devise the recommendations.
+algorithm to choose, to devise the recommendations as optimally as possible.
 
 
 
@@ -1874,7 +1877,7 @@ The citation numbers in the table are also referenced there.
  \cite{rosvall2008infomap}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
  \cite{biemann2006chinese}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
  \cite{reichardt2004detecting}  & \(\mathcal{O}(n)\)            & $\oplus$  & $\ominus$  & $\ominus$  & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
- \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & ~          & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & N/A        & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
 \end{tabularx}
 \caption{Graph clustering algorithm survey matrix}
 \caption*{
@@ -1917,7 +1920,7 @@ nevertheless, it is interesting to include this metric in the conducted survey.
 This characteristic is the first rated one as it is the most important for our
 methodology in the sense that the utilization of an algorithm as part of
 the implementation of our methodology is only possible when an implementation
-of said algorithm is available.
+of that algorithm is available.
 
 \paragraph{Does not require amount of clusters}
 For our devised methodology, it is beneficial if the utilized graph clustering
@@ -1930,10 +1933,10 @@ To circumvent this problem we came up with the solution to execute the affected
 algorithms multiple times with the same input and differing cluster amounts
 for a fixed number of iterations. Afterwards, the run that produced the highest
 scoring metric is selected in place where other algorithms that are not affected
-would have yielded one output in the first place.
+would have yielded only one output in the first place.
 This may sound like a very ineffective solution but due to the fact that
 a single run of any graph clustering algorithm is completely isolated from
-another one, this process can be run concurrently with ease.
+another one, this process can be executed concurrently with ease.
 How exactly this is implemented is discussed in chapter \ref{chap:implementation}.
 
 \paragraph{Deterministic}
@@ -1945,7 +1948,7 @@ with the solution discussed in the previous paragraph again.
 \paragraph{Considers weighted edges}
 This characteristic is of great importance for us since the input graphs
 will always be weighted. Furthermore, the whole idea of our methodology
-is to cluster similar vertices where the similarity is resembled via the edge weights.
+is to cluster similar vertices where the similarity is resembled via edge weights.
 
 \paragraph{Hard clustering}
 The term \textit{hard clustering} describes that the output clustering
@@ -1955,7 +1958,7 @@ to each vertex of the graph. Comparatively, \textit{soft clustering} or
 produces overlapping clusters \cite{lancichinetti2009community}.
 Similarly to the previous characteristic, this is not desired regarding our
 devised methodology as every vertex can only belong to one microservice
-which requires \textit{hard clustering} (i.e. a partitioning).
+which requires \textit{hard clustering} (i.e. partitioning).
 
 \paragraph{Hierarchical}
 The last characteristic is not directly important for our methodology
@@ -1975,7 +1978,7 @@ for our devised methodology to function.
 
 Regardless of which of the first nine graph clustering algorithms out of
 table \ref{table:graph-clustering-survey} is chosen, the input and output
-is the same in its core.
+are the same at their core.
 Although the exact input and output formats differ between the algorithms,
 it always boils down to passing a list of edges to the algorithm ---
 listing \ref{graph-clustering-algorithm-input} depicts this kind of input format.
@@ -2006,7 +2009,7 @@ After serializing the input graph, the chosen algorithm clusters the graph
 and returns the clustering as its output. The inner workings of the chosen
 algorithm are assumed as a black-box function at this point since this was
 already discussed in subsection \ref{subsect:renowned-graph-clustering-algorithms}
-and as it is not important for the understanding of this current section.
+and as it is not important for the understanding of this section.
 
 Similarly to the input, the output of the selected algorithms also shares
 a common notion regarding the format. This example output format is depicted
@@ -2043,12 +2046,12 @@ calculate metrics and render the clustered weighted graph for the user.
 As laid out in chapter \ref{chap:rationale}, we aimed for an objective
 mapping of the input monolithic application to its graph-theoretic representation
 and the clustered output respectively.
-Thus, it was important to us to also devise objective metrics numeric in nature
+Thus, it was important to us to also devise objective metrics, numeric in nature,
 to be able to evaluate the results of our methodology and to answer \textit{RQ2}.
 
-In total, we devised a total of 12 metrics that can be ordered into three sets ---
+In total, we devised a total of 12 metrics that can be sorted into three sets ---
 some of them being more general and overarching while others are more specific
-to the problem at hand at give a direct order of magnitude regarding the
+to the problem at hand by offering a direct order of magnitude regarding the
 quality of the produced output. The three sets of metrics are covered
 in the following sections while the devised metrics are the following:
 \begin{itemize}
@@ -2070,9 +2073,9 @@ in the following sections while the devised metrics are the following:
 
 \section{Input fidelity} \label{sect:input-fidelity-metrics}
 
-The first set of metrics is not directly answering \textit{RQ2} but nevertheless,
-it is interesting to look at as the \textit{input fidelity} as it holds
-implications on the eventual quality of the clustering.
+The first set of metrics is not directly answering \textit{RQ2} but is interesting
+to look at nevertheless as the \textit{input fidelity} bears implications
+regarding the eventual quality of the clustering.
 The term \textit{input fidelity}, that we devised, describes how many percent
 of the classes of the entire application a given input covers which gives us
 three different \textit{input fidelity} metrics:
@@ -2123,8 +2126,8 @@ count toward the \textit{input fidelity}.
 \paragraph{Evolutionary coupling}
 Similarly to the \textit{dynamic coupling}, the \textit{evolutionary coupling}
 graphs are nearly never reaching full \textit{input fidelity}.
-The \textit{evolutionary coupling} graph is affected by the threshold introduced
-to filter out noise that were covered in subsection \ref{subsect:evolutionary-similarity}.
+The \textit{evolutionary coupling} graph is affected by the threshold used
+to filter out noise that was introduced in subsection \ref{subsect:evolutionary-similarity}.
 These thresholds will lead to certain edges not being part of the
 \textit{evolutionary coupling} graph which will lower the \textit{input fidelity}
 as a result.
@@ -2150,8 +2153,8 @@ higher values are better or worse. With the \textit{amount of clusters},
 \(\vert C \vert\) one wants a value in the middle without knowing where
 the middle exactly lies --- more clusters convert to more microservice
 candidate recommendations which is not necessarily better.
-Nevertheless, in this case the metric offers an insight regarding the question
-of granularity of the produced output.
+Nevertheless, in this case the metric offers an important insight regarding
+the question of granularity of the produced output.
 
 \paragraph{Amount of inter-cluster edges}
 This metric is calculated by counting the amount of edges in the combined graph
@@ -2160,7 +2163,7 @@ This metric is calculated by counting the amount of edges in the combined graph
   \vert E_{inter}(G_{combined}) \vert =
   \vert \{ e_i(v_j, \ v_k) \in E(G_{combined}) \mid C(v_j) \neq C(v_k) \} \vert
 \]
-The smaller this value is the less interfaces the microservice candidate
+The smaller this value is the less external interfaces the microservice candidate
 recommendations will have thus it is generally preferred for this metric to be
 low however it is not desirable to achieve the lowest as possible as this
 might sacrifice other metrics such as the \textit{coupling modularity}.
@@ -2179,7 +2182,7 @@ of the total accumulated edge weight lies in between clusters:
 The rationale here is the same as for the \textit{amount of inter-cluster edges}.
 
 \paragraph{Mean cluster size}
-Regarding the last metric of this second set, it is important to know that
+Regarding the last metric of the second set, it is important to know that
 as part of the implementation of our methodology detailed in chapter
 \ref{chap:implementation}, the size in bytes is calculated for every class
 of the input monolithic application during the initial analysis step.
@@ -2206,8 +2209,8 @@ the \textit{amount of clusters} metric, depicts the notion of granularity.
 Finally, the third set of devised metrics is the most interesting one since,
 compared to the second set, it not only answers \textit{RQ2} but also directly
 measures the quality of the resulting clustering.
-In contrast to the second set, for the third set is always hold true that
-the higher the value gets, the better.
+In contrast to the second set, for the third set is always holds true that
+higher values are better.
 
 This set consists of five metrics based on the \textit{modularity} metric,
 introduced in section \ref{sect:background-graph-clustering}:
@@ -2254,7 +2257,7 @@ the entire source code can be found on GitHub
 The three parts of the application are all bundled into \textit{Docker} containers
 via \textit{Docker Compose} which allows for easy boot-up and tear-down without
 installing any dependencies on the operation system apart from \textit{Docker}
-and \textit{Docker Compose} itself \cite{docker} \cite{docker-compose} ---
+and \textit{Docker Compose} themselves \cite{docker} \cite{docker-compose} ---
 a big advantage when putting our implementation to use.
 
 
@@ -2279,12 +2282,12 @@ rebuilt with the same input deterministically and will be rarely modified.
 
 As pointed out, for smaller scale applications, a monolithic architecture
 makes sense more often by being easier to implement and maintain.
-Thus, we designed our the back-end of our application in a monolith manner.
+Thus, we designed the back-end of our application in a monolith manner.
 
-The implemented application has two major processes that can be started
+The implemented application has two major functionalities that can be used
 via RESTful endpoints which are detailed in section \ref{sect:implementation-back-end}
 and depicted in figure \ref{fig:architecture-overview}.
-These processes are to analyze and persist and input monolithic application
+These functionalities are to analyze and persist an input monolithic application
 as well as clustering and retrieving it again as a separate step.
 
 \begin{figure}[htbp]
@@ -2293,8 +2296,9 @@ as well as clustering and retrieving it again as a separate step.
 \caption{Overview of the architecture of our implementation}
 \caption*{
     The implementation is built as a three-tier web-based architecture consisting of
-    front-end, back-end, and database. In the diagram, the two main processes of
-    persisting and clustering input monolithic applications are depicted.
+    front-end, back-end, and database. In the diagram, the two main functionalities of
+    persisting and clustering input monolithic applications are depicted and
+    divided by the horizontal black line.
 }
 \label{fig:architecture-overview}
 \end{figure}
@@ -2317,23 +2321,24 @@ neither relational nor work with the \textit{Structured Query Language} (SQL)
 \cite{vicknair2010graphdatabase}.
 As Vicknair et al. show in their work \textit{A Comparison of a
 Graph Database and a Relational Database}, when querying graph-based
-data via a graph database compared to a relational, SQL-based DBMS,
-the duration per query is oftentimes drastically lower
-\cite{vicknair2010graphdatabase}.
+data via a graph database compared to a relational, SQL-based
+database management system (DBMS), the duration per query is oftentimes
+drastically lower \cite{vicknair2010graphdatabase}.
 Additionally, data modeling in the traditional sense is not even
 necessary as the generated data can be persisted into the database as-is.
 Due to these two reasons, especially the latter one, a graph-based DBMS
 was chosen for our implementation.
 
-Similarly to other database models, a multitude of database management
-systems (DBMS) exist following a graph-based approach.
+Similarly to other database models, a multitude of DBMS exist following a
+graph-based approach.
 We chose the graph database \textit{Neo4j} for the following two reasons.
 Firstly, it is by far the most popular and most well-maintained graph DBMS
 \cite{graph-dbms-ranking}.
 Secondly, it is implemented in Java and provides an API library for Java
 and additionally an \textit{Object Graph Mapper} (OGM) which is a library
 that can map the graph model into native Java objects with built-in
-serialization and deserialization \cite{neo4j-ogm}.
+serialization and deserialization just as an \textit{Object Relational Mapper} (ORM)
+would \cite{neo4j-ogm}.
 
 
 \subsection{Object graph mapper}
@@ -2347,15 +2352,15 @@ them is exhibited.
 
 
 \subsubsection{Relationships}
-One has to create a class annotated with \code{@RelationshipEntity("CALLS")}
-The annotation itself is part of the OGM library and has to be imported.
+One has to create a class annotated with \code{@RelationshipEntity("")},
+the annotation itself is part of the OGM library and has to be imported.
 A class annotated like this can then be used to serialize and deserialize edges
 of the respective graph. The annotation needs to know what the type of the
 \textit{Relationship} is, this is a string that is necessary since \textit{Neo4j}
 persists the edges of the input graph as the mentioned \textit{Relationships}.
 Precisely, the \textit{Neo4j} creators recommend to use single uppercase third-person
 singular present tense verbs to describe the type of relation \cite{neo4j-ogm}.
-Just like in the above example, \code{"CALLS"}, \code{"OWNS"}, \code{"KNOWS"} would
+Thus, \code{"CALLS"}, \code{"OWNS"}, \code{"KNOWS"} would
 be good examples. Due to this implementation detail of \textit{Neo4j},
 this information has to be provided when annotating \textit{Relationship} classes.
 The rest of the created class are just properties, some of which are mandatory,
@@ -2387,8 +2392,8 @@ class CallsRelationship() {
 \end{lstlisting}
 \normalsize
 
-The above code example \ref{ogm-relationship}, was implemented in Kotlin
-as this programming language was used to implemented the entire back-end
+The above code example \ref{ogm-relationship}, is implemented in Kotlin,
+as this programming language was used to implement the entire back-end,
 as discussed earlier in this chapter.
 The class identifier can be chosen arbitrarily while the class needs to
 encompass three properties.
@@ -2397,7 +2402,7 @@ The annotations \code{@StartNode} and \code{@EndNode} need to point
 to a non-nullable instance of a \textit{Node} class as exhibited in the
 following subsection. As the naming implies, this information is used
 to link the resulting edge of this \textit{Relationship} class to the
-two nodes that it connects.
+two vertices that it connects.
 Moreover, the \code{@Id} annotation is used to have a unique identifier
 once an object of the class gets instantiated so that the OGM can map
 the object back to the object in the persistent graph data storage.
@@ -2440,17 +2445,17 @@ class Unit(
 }
 \end{lstlisting}
 \normalsize
-The \code{@Id} is required once again, apart from that the \code{@Relationship}
-annotations are not mandatory but a node in a given graph usually has outgoing
-or incoming edges (or unidirectional or undirected ones).
-Since the graph that is built as part of our methodology is directed,
+The \code{@Id} is required once again while the \code{@Relationship}
+annotations are not mandatory, nevertheless a node in a given graph usually
+has outgoing or incoming edges (or unidirectional or undirected ones).
+Since the graph that is constructed as part of our methodology is directed,
 it is specified if \textit{Relationships} are outgoing or incoming via
 a constant that is shipped with the OGM library.
 Moreover, similarly to \textit{Relationships} in \textit{Neo4j}, every \textit{Node}
 can optionally carry an arbitrary number of additional data fields which are set
 via regular class properties in the constructor in example \ref{ogm-node}.
 Finally, the \textit{Nodes} as well as the \textit{Relationships} can have additional
-methods, these are ignored by the OGM as it just looks out for properties.
+methods, these are ignored by the OGM as it just looks for properties.
 
 
 \subsubsection{Persisting and retrieving graph data}
@@ -2465,7 +2470,9 @@ or \code{@RelationshipEntity} annotation and persists it into the \textit{Neo4j}
 database. Additionally, serialization and subsequent mapping of native JVM
 data types into data types supported by \textit{Neo4j} is completely automatic
 and handled by the OGM \cite{neo4j-ogm} although both can be configured manually
-if wished.
+if wished. Furthermore, the OGM will recursively persist the data attached to the
+object passed into the \code{save()} method (e.g. a \textit{Node} connected to
+another one via a \textit{Relationship}, all three will be persisted).
 The second method can in return retrieve already persisted data.
 Its API allows for ordering, pagination, filtering, and other features \cite{neo4j-ogm},
 although our implementation only makes use of the filtering features, such as
@@ -2487,8 +2494,8 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \caption{Node data models}
 \caption*{
   Two \textit{Node} models are necessary. The first one carries the extracted
-  data modeled as a weighted and directed graph while the second one is used
-  to persist the calculated metrics on a per\hyp project basis.
+  data while the second one is used to persist the calculated metrics on a
+  per\hyp project basis.
 }
 \label{fig:data-models-nodes}
 \end{figure}
@@ -2499,7 +2506,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \caption{Relationships data models}
 \caption*{
   One \textit{Relationship} model is necessary. Its sole usage is to link
-  two \code{Unit} \textit{Nodes} together seen in figure \ref{fig:data-models-nodes}.
+  two \code{Unit} \textit{Nodes} together as seen in figure \ref{fig:data-models-nodes}.
 }
 \label{fig:data-models-relationships}
 \end{figure}
@@ -2522,7 +2529,7 @@ The \code{Unit} \textit{Node} is the main \textit{Node} type of the data model a
 encompasses the weighted and directed graph that was constructed out of the input
 monolithic application as exhibited in chapter \ref{chap:extracting-coupling}.
 The \code{CALLS} \textit{Relationship} is used to persist which
-\code{Unit} \textit{Nodes} are linked to each other and in which direction.
+\code{Unit} \textit{Nodes} are linked to each other.
 Finally, figure \ref{fig:data-models-example} depicts how the modeled
 \textit{Nodes} and \textit{Relationships} behave.
 
@@ -2541,26 +2548,29 @@ The server process is utilizing \textit{Netty} \cite{ktor-netty} as an embedded
 server although the native coroutines of Kotlin are used to spawn a new one for
 every incoming HTTP request.
 Furthermore, coroutines are used within the business logic as well.
-\textit{Coroutines} is a feature of the Kotlin language which is a lightweight
+\textit{Coroutines} are a feature of the Kotlin language which are a lightweight
 abstraction on top of threads that enable asynchronous programming \cite{kotlin-coroutines}.
 The starting point of said server process is the file \textit{Main.kt} that
 performs all of the scaffolding and starts up the server back-end.
 
 For the API endpoints, the so-called \textit{resources}, a library called
 \textit{Ktor} was utilized which enables easy declaration and configuration
-of them. The library is built and maintained by the Kotlin creators
+of them. The library is built and maintained by the Kotlin creator
 \textit{JetBrains} \cite{ktor}.
 All endpoints accept and respond via \textit{JSON} as the data exchange format
 while the library \textit{Jackson} is used to automatically serialize and
 deserialize JSON data \cite{ktor-jackson}.
+
 Going deeper into the back-end from the endpoints, \textit{controllers} are handling
 the request and instantiate and call the respective parts of the business logic.
-Moreover, a \textit{models} directory holds all the classes that are just used
+
+Moreover, a \textit{models} directory holds all the classes that are used
 as \textit{data classes} as they are called in Kotlin --- classes that are not
 encapsulating any advanced business logic and are instead used to pass data around
 the application in a structured way. Additionally, some may offer static utility
 methods specific to their usage or when leveraging a special data format that
 needs to be converted from other formats.
+
 Finally, some functionalities are small in size and are used by multiple parts
 of the business logic hence have no natural location in the application structure.
 These \textit{utility} classes are therefore residing in a directory called
@@ -2676,7 +2686,7 @@ while the analysis can still be performed albeit with lower quality:
 \end{tabularx}
 \caption{Data required by resource 1}
 \caption*{
-  Exhibits the data that resource 1 (\code{POST "/analysis/"}) mandates to function.
+  The data that resource 1 (\code{POST "/analysis/"}) mandates to function.
 }
 \label{table:data-resource-1}
 \end{table}
@@ -2704,7 +2714,7 @@ while the analysis can still be performed albeit with lower quality:
 \end{tabularx}
 \caption{Description of the binary data required by resource 1}
 \caption*{
-  Exhibits the binary data that resource 1 (\code{POST "/analysis/"}) mandates to function
+  The binary data that resource 1 (\code{POST "/analysis/"}) mandates to function
   in the case of the Java platform chosen as the \code{projectPlatform}.
 }
 \label{table:binary-data-resource-1}
@@ -2712,18 +2722,20 @@ while the analysis can still be performed albeit with lower quality:
 
 
 \subsubsection{Resource 2}
-The second resource, \code{GET "/analysis/\{projectName\}"}, is solely used to retrieve a project
-that was persisted earlier via resource 1. Hence, it only mandates the \code{projectName} as a string
-to query \textit{Neo4j} for the respective un-clustered graph.
+The second resource, \code{GET "/analysis/\{projectName\}"}, is solely used to
+retrieve a project that was persisted earlier via resource 1. Hence, it only
+mandates the \code{projectName} as a string to query \textit{Neo4j} for the
+respective un\hyp clustered graph.
 
 
 \subsubsection{Resource 3}
-The third resource is used to cluster a graph that was persisted earlier using resource 1.
-This is done in two steps as the computational time of the logic behind resource 1 is a lot higher
-compared to the duration of the clustering of resource 3.
-Furthermore, the clustering is usually performed multiple times leveraging different graph clustering
-algorithms. Thus, it saves time and memory to construct the graph-theoretic representation of the
-input monolithic application only once and to retrieve it multiple times for every request to resource 3.
+The third resource is used to cluster a graph that was persisted earlier using
+resource 1. This is done in two steps as the computational time of the logic
+behind resource 1 is a lot higher compared to the duration of the clustering
+of resource 3. Furthermore, the clustering is usually performed multiple times
+leveraging different graph clustering algorithms. Thus, it conserves resources
+to construct the graph-theoretic representation of the input monolithic application
+only once and to retrieve it multiple times for every request to resource 3.
 
 
 \subsection{Logic controllers}
@@ -2825,29 +2837,30 @@ which are detailed in the following subsections.
 \subsubsection{Clustering}
 This package contains everything necessary to perform the clustering of
 earlier uploaded projects. As exhibited in section \ref{sect:graph-clustering-algorithm-survey},
-seven graph clustering algorithms were implemented by wrapping the reference implementations
-of their authors in a generic API that is consistent within our implementation for all
-of the utilized graph clustering algorithms.
+seven graph clustering algorithms were implemented by wrapping the
+reference implementations of their authors in a generic API that is consistent
+within our implementation for all of the utilized graph clustering algorithms.
 
 \paragraph{Clusterer.kt}
-The \code{Clusterer} class is the entry point for clustering an input graph using any of
-the available algorithms. The graph that was retrieved out of \textit{Neo4j} is passed into
-the \code{Clusterer} after being cloned owing to the fact that by default, all of the available
-algorithms will concurrently cluster the selected graph such that all of them would work
-on the same reference in memory which would cause corruption.
+The \code{Clusterer} class is the entry point for clustering an input graph
+using any of the available algorithms. The graph that was retrieved out of
+\textit{Neo4j} is passed into the \code{Clusterer} after being cloned owing
+to the fact that by default, all of the available algorithms will concurrently
+cluster the selected graph such that all of them would work on the same
+reference in memory which would cause corruption.
 
 \paragraph{ClusteringAlgorithm.kt}
-This file contains an enum which is used to identify which graph clustering algorithm
-the \code{Clusterer} should apply to the input graph.
+This file contains an enum which is used to identify which graph clustering
+algorithm the \code{Clusterer} should apply to the input graph.
 
 \paragraph{ClusteringAlgorithmManager.kt}
-This file contains an interface which defines a contract that all of the distinct manager classes
-for each available graph clustering algorithm should implement --- it ensures that the APIs
-for all of the algorithms stay consistent.
+This file contains an interface which defines a contract that all of the
+distinct manager classes for each available graph clustering algorithm
+should implement --- it ensures that the APIs for all of the algorithms stay consistent.
 
 \paragraph{EdgeWeightingFormulaCalculator.kt}
-This file contains a class with static methods that implement the edge weighting which was
-detailed in section \ref{sect:merging-graphs}.
+This file contains a class with static methods that implement the edge weighting
+which was detailed in section \ref{sect:merging-graphs}.
 
 \paragraph{Graph clustering managers and executors}
 Every sub-package for each of the available graph clustering algorithms contains
@@ -2861,7 +2874,7 @@ C++ programs that are more difficult to integrate.
 Initially, we leveraged the \textit{Java Native Interface} (JNI), a foreign function
 invocation interface bundled with the Java platform, that can be used to integrate
 C, C++, and assembly programs into a Java application \cite{jni}.
-On the downside, the source code of the C and C++ programs has to be touched to utilize
+On the downside, the source code of the C and C++ programs has to be modified to utilize
 the JNI. However, we did not have access to all of the reference implementations as source
 code, some were only shipped pre-compiled.
 Moreover, all of the reference implementations in C or C++ are designed as
@@ -2871,7 +2884,7 @@ CLI with the \code{ProcessBuilder} class of the Java platform \cite{process-buil
 This enables to call any CLI from within a Java application by invoking a process,
 piping input into \code{STDIN} and parsing the output of the invoked program from
 the processes \code{STDOUT}. This might seem error-prone on first sight, however,
-the CLIs are all well-defined which makes input and output of them to be easy to
+the CLIs are all well-defined which makes input and output of them easy to
 encode and decode.
 Additionally, we added a lot of validation for the input such that we have not seen
 an error or malfunction when testing and evaluating our implementation so far.
@@ -2900,7 +2913,7 @@ Thus, for illustrative purposes, we implemented the entire flow for the \textit{
 platform. The \code{Platform.kt} file contains an enum with all of the available
 platforms --- currently only \code{JAVA}. However, later in this section we show
 how our implementation can be easily extended for other platforms as this was a
-conscious design decisions to model the architecture in a extendable manner.
+conscious design decisions to model the architecture in an extendable manner.
 This enum is used by the controller to know which classes to instantiate and invoke
 that then conduct the coupling extraction.
 
@@ -2908,7 +2921,7 @@ Moreover, the \code{AbstractExtractor} and \code{ExtractorCompanion} are an abst
 class and an interface that all of the extraction classes respectively their
 static companions implement. \textit{Companions} are a feature of the Kotlin language
 that allow to create static methods by embedding a singleton object within a class
-that can therefore stay state-free and static \cite{kotlin-companions}.
+that can therefore stay stateless and static \cite{kotlin-companions}.
 
 Within each of the mentioned sub-packages, there is an abstract class that implements
 some general behavior necessary for the respective input dimension
@@ -2929,7 +2942,7 @@ from scratch. As according to the process exhibited in \ref{subsect:semantic-sim
 we implemented a completely decoupled library that calculates \textit{semantic similarity}
 of input code bases. Similarly to the main implementation of our methodology,
 the Java platform was implemented for now again, the extendability regarding other
-platforms is easily possible and encouraged.
+platforms however is easily possible and encouraged.
 
 The library has the simple name \textit{semantic-coupling} and is available as
 open source code on GitHub, licensed under the \textit{MIT license}
@@ -3098,8 +3111,8 @@ in more detail. From top to bottom, the cards fulfill the following tasks:
   \item The rendered graph either plain or clustered; every cluster then depicts
         one microservice. Furthermore, the connections between the units of the
         input monolithic application as part of the microservices can be
-        examined. Moreover, a completely textual view can alternatively be
-        displayed.
+        examined. The view can zoomed seamlessly.
+        Moreover, a completely textual view can alternatively be displayed.
   \item A brief overview of general metrics that are not specific to clustering.
   \item The metrics that are specific to the clustering and more specifically
         belonging to the graph clustering algorithm selected above.
@@ -3136,7 +3149,7 @@ concurrently, but the selected one will provide the data for rendering the views
 \includegraphics[width=.96\textwidth]{graph-view-ui}
 \caption{The graph view in the UI of the front-end}
 \caption*{
-  The front-end offers a graph view of the clustered graph that depicts
+  The front-end offers a \textit{graph view} of the clustered graph that depicts
   the computed microservice recommendations.
 }
 \label{fig:graph-view-ui}
@@ -3148,7 +3161,7 @@ computed clustering visualized as well. Figure \ref{fig:graph-view-ui} shows
 the \textit{graph view} in detail. The whole view can be zoomed in and out
 seamlessly by scrolling within the card. We tested the visualization with
 a 10,000 node, fully-connected graph which was still functional although
-rendered with a lower frame rate. The rendering is done via a HTML5 canvas.
+rendered with a lower frame rate. The rendering is done via a HTML5 \code{<canvas>}.
 
 \paragraph{Default mode}
 Precisely, orange hexagons depict a microservice while the classes between
@@ -3157,10 +3170,10 @@ them toward each other. The orange lines are intra-cluster connections,
 while green lines are inter-cluster connections.
 These have different thicknesses depending on their edge weight which can be
 displayed by hovering over the edge. Moreover, the inter-cluster edges have
-arrow heads depicting in which directions the microservice would invoke
+arrow heads depicting in which directions the microservices would invoke
 each other which can be seen in detail in figure \ref{fig:node-graph-view}.
 Finally, every unit of each service has its name printed inside of the node
-as well as the full qualified name and the byte size when hovering over it
+as well as the fully qualified name and the byte size when hovering over it
 as seen in figure \ref{fig:node-graph-view}.
 
 \begin{figure}[htbp]
@@ -3168,8 +3181,8 @@ as seen in figure \ref{fig:node-graph-view}.
 \includegraphics[width=.96\textwidth]{node-graph-view}
 \caption{A closeup of a node in the graph view}
 \caption*{
-  The front-end offers a graph view of the clustered graph that depicts
-  the computed microservice recommendations.
+  Every node's name is displayed once zoomed in far enough.
+  Furthermore, when hovering over any node, additional information is displayed.
 }
 \label{fig:node-graph-view}
 \end{figure}
@@ -3180,7 +3193,7 @@ edges which allows the user to see how units within a service are connected
 to each other as well as how they are connected to other services and their
 units. Furthermore, units in a square shape are solely accessed within their
 own service while units in a diamond shape are communicating with units from
-other microservice recommendations.
+other microservices.
 This mode can be seen in figure \ref{fig:detailed-graph-view} and is
 activated by toggling the \textit{Hide Inter-Cluster Edges} option.
 
@@ -3195,24 +3208,25 @@ activated by toggling the \textit{Hide Inter-Cluster Edges} option.
 \label{fig:detailed-graph-view}
 \end{figure}
 
-\paragraph{Un-clustered mode}
-A last, additional graph view mode renders the graph in its un-clustered form
-as it is persisted in \textit{Neo4j}. This mode is mainly interesting to
-examine the structure or architecture of the input monolithic application.
-The mode can be seen in figure \ref{fig:un-clustered-graph-view} and is
+\paragraph{Natural mode}
+A last, additional graph view mode renders the graph in a more natural form
+without artificial changes to the way that the clusters are rendered.
+This mode is mainly interesting to examine the structure or architecture
+of the input monolithic application.
+The mode can be seen in figure \ref{fig:natural-graph-view} and is
 activated by toggling the \textit{Clustered View} option which also disables
 the \textit{Hide Inter-Cluster Edges} as well.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.96\textwidth]{un-clustered-graph-view}
-\caption{A closeup of the un-clustered graph view mode}
+\includegraphics[width=.96\textwidth]{natural-graph-view}
+\caption{A closeup of the natural graph view mode}
 \caption*{
-  The graph view has a third mode that can be used to see the un-clustered
-  graph as it is persisted in \textit{Neo4j}. This can be used to examine
+  The \textit{graph view} has a third mode that can be used to see a more
+  natural rendering of the clustered graph. This can be used to examine
   the structure of the input monolithic application on its own.
 }
-\label{fig:un-clustered-graph-view}
+\label{fig:natural-graph-view}
 \end{figure}
 
 
@@ -3230,29 +3244,29 @@ This view can be seen in further detail in figure \ref{fig:textual-view-ui}.
 \includegraphics[width=.96\textwidth]{textual-view-ui}
 \caption{A closeup of the textual view}
 \caption*{
-  Additionally to the \textit{graph view}, a solely textual view was implemented
-  that just displays which units should belong to which service.
+  Additionally to the \textit{graph view}, a solely \textit{textual view}
+  was implemented that just displays which units belong to which service.
 }
 \label{fig:textual-view-ui}
 \end{figure}
 
 
 \subsubsection{Metrics view}
-Lastly, the user interface displays an overview of the metrics that we selected
+Lastly, the UI displays an overview of the metrics that we selected.
 All of those are covered in detail in chapter \ref{chap:metrics}.
-The big tile on top of the others, as seen in figure \ref{fig:graph-view-ui},
+The big tile on top of the others, as seen in figure \ref{fig:metrics-view-ui},
 contains general metrics that are not measuring anything regarding the
 clustering but rather the input.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{graph-view-ui}
+\includegraphics[width=\textwidth]{metrics-view-ui}
 \caption{A closeup of the metrics view}
 \caption*{
   Every available graph clustering algorithm is evaluated while the one that
-  scored the highest in the selected metric is highlighted in green.
+  scored the highest in the selected metric is additionally highlighted in green.
 }
-\label{fig:graph-view-ui}
+\label{fig:metrics-view-ui}
 \end{figure}
 
 The tile directly below is displaying results regarding the selected
@@ -3270,7 +3284,7 @@ in the third tile, next to the selected algorithm, is highlighted in green.
 
 \section{Experimental setup}
 
-\section{Evaluation}
+\section{Evaluation} \label{sect:evaluation}
 
 
 
