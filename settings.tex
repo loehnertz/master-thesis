@@ -85,6 +85,7 @@
 \usepackage[algoruled,lined,linesnumbered,commentsnumbered]{algorithm2e} % algorithms
 \usepackage{tabularx} % better tables
 \usepackage{diagbox} % diagonally split table cells
+\usepackage{multirow}
 \usepackage{hhline}
 \usepackage{enumitem}
 \usepackage{array}
@@ -143,6 +144,16 @@
 
 % Wikipedia-style "citation needed" macro
 \newcommand{\cn}[1][]{\textsuperscript{\color{red} ~[citation needed]~}}
+
+% UvA logo and text
+\newcommand{\uva}{
+	\begin{tabular}{r l}
+		\multirow{2}{*}{\includegraphics[height=65pt]{uva.pdf}}
+		&\textsc{\Large Universiteit van Amsterdam}\\
+		&\textsc{\small Faculteit der Natuurwetenschappen, Wiskunde en Informatica}\\
+		&\textsc{\small Master Software Engineering}
+	\end{tabular}
+}
 
 % Code markup
 \newcommand{\code}[1]{\texttt{#1}}
