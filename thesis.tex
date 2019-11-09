@@ -5,13 +5,13 @@
 \newcommand{\studyprogramme}{Software Engineering}
 \newcommand{\degreetype}{Master of Science}
 \newcommand{\thesistitle}{
-Toward systematic decomposition of monolithic software into microservices
+Toward automatic decomposition of monolithic software into microservices
 }
 \newcommand{\thesissubtitle}{
-SUBTITLE
+Conception of a methodology and its exemplarily implementation
 }
 \newcommand{\thesisauthor}{Jakob L{\"o}hnertz}
-\newcommand{\thesisdate}{31/08/2019}
+\newcommand{\thesisdate}{31/10/2019}
 \newcommand{\thesislocation}{Amsterdam}
 \newcommand{\firstmarker}{Dr.\ Ana Oprescu}
 \newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
@@ -28,9 +28,27 @@ SUBTITLE
 
 
 \begin{abstract}
+The microservices paradigm gets more and more traction and many companies choose to adopt it
+for new developments as well as to transform existing monolithic software to be
+microservices\hyp based instead.
+However, the latter approach bears many difficulties that involve much manual work,
+specifically in the early stages of such a decomposition process.
+Determining the boundaries between the services, where one service ends and the next one begins,
+is a notoriously difficult task for which a lot of literature exists that however mainly helps with
+providing a framework to determine said boundaries manually, with \textit{Domain-driven design} by
+Eric Evans laying the foundation for this entire domain of research.
 
-ABSTRACT
-
+This thesis devises a methodology that automatically generates microservice candidate recommendations
+for any given piece of monolithic software without any further user input but the software itself.
+To do this, four dimensions of coupling are calculated out of the input software that each
+construct a weighted graph with the edges resembling coupling between the units of the software.
+Next, the four graphs are merged into one before being clustered by specifically surveyed and assessed
+state-of-the-art graph clustering algorithms --- the resulting clusters then resemble the microservice
+candidate recommendations. Additionally, a large set of numeric metrics was formulated to evaluate the
+output of the methodology.
+Finally, the devised methodology was fully implemented, with an additional
+graphical user interface for ease of use, to work with input Java software while
+being easily extensible to be able to support other platforms in the future.
 \end{abstract}
 
 
@@ -49,7 +67,7 @@ around it gets larger and larger every day.
 One of the terms that gained a lot of traction in recent years is \textit{microservices}.
 Many engineers talk about their benefits and challenges but the general notion
 is positive and the buzz is undeniable.
-At the end of the day, microservices are nothing more than an architectural style
+At the end of the day, microservices are nothing more than an architectural pattern
 for designing back-end software.
 For those that actually take the step to build and deploy such an application
 landscape, the journey is not always straightforward.
@@ -140,7 +158,7 @@ for evaluating microservice decomposition methodologies?"}
 
 
 
-\section{Research methods} % TODO: Validate this section
+\section{Research methods}
 
 Firstly, the approach for the methodology is developed and validated
 for feasibility especially regarding its implementation.
@@ -569,7 +587,7 @@ the two divisions involved.
 This last step is optional but oftentimes utilized to further improve the quality
 of the output of the entire process. \textit{Latent semantic indexing} (LSI) describes
 the process of applying \textit{singular value decomposition} (SVD) to
-the aforementioned term-document matrix \cite{deerwester1990lsi}. % TODO: Should one go into more detail?
+the aforementioned term-document matrix \cite{deerwester1990lsi}.
 The rationale in the context of the similarity calculation is
 to reduce the matrix with \(m\) rows and \(n\) columns to one with a
 set amount of \(z\) dimensions as the rows.
@@ -788,7 +806,6 @@ As its name implies, it tries to compute a graph clustering by utilizing short
 Markov chain random walks and the idea that due to existing, albeit latent
 clustering structure of a given graph, those random walks are more likely
 to get \textit{trapped} in said clusters \cite{pons2005computing}.
-%TODO: One could describe a little more here, maybe?!
 The main improvement over \textit{MCL} is better runtime complexity
 \cite{pons2005computing}.
 
@@ -861,8 +878,6 @@ via Huffman coding \cite{huffman1952coding}.
 Additionally, each cluster receives a prefix so that the codes for the vertices
 can be reused in different clusters which decreases the required amount of bits
 to represent the Huffman coding \cite{rosvall2008infomap}.
-
-%TODO: One could describe a little more here, maybe?!
 
 Finally, the phase that is reiterated over and over eventually tries to
 change the clusters of the vertices such that the \textit{map equation}
@@ -1235,7 +1250,7 @@ nothing more than the notion of proper \textit{encapsulation} \cite{ms-fowler}.
 
 
 
-\section{Selecting and extracting software quality metrics} \label{sect:software-quality-metrics}
+\section{Selecting software quality metrics} \label{sect:software-quality-metrics}
 
 All of the aforementioned principles will be violated if the boundaries of the
 microservices are chosen poorly. Thus, we propose a semi-automated methodology
@@ -1367,7 +1382,7 @@ languages and platforms can be added to the implementation.
 
 \section{Static coupling extraction} \label{sect:static-coupling-extraction}
 
-As discussed in more detail in chapter \ref{chap:software-as-weighted-graph},
+As discussed in more detail in chapter \ref{sect:software-as-weighted-graph},
 we opt for also constructing a full static call graph which is covered
 in subsection \ref{subsubsect:call-graph-static}.
 
@@ -1710,7 +1725,9 @@ via a given VCS log.
 
 
 
-\chapter{Representing software as weighted graphs} \label{chap:software-as-weighted-graph}
+\chapter{Creating microservice recommendations} \label{chap:creating-service-recommendations}
+
+\section{Representing software as weighted graphs} \label{sect:software-as-weighted-graph}
 
 Our methodology works by clustering a weighted graph hence we need to construct
 it first. As discussed in chapter \ref{chap:rationale}, three general
@@ -1718,10 +1735,6 @@ coupling types were chosen to be leveraged for devising the microservice
 candidates recommendations.
 Precisely, the input monolithic application gets analyzed from the view of
 each of these coupling types, called dimensions from now on.
-
-
-
-\section{Building a weighted graph for each input dimension}
 
 Out of each of the input dimensions, a weighted graph is constructed with the classes
 as the vertices \(v_i \in V\) and the coupling values between the classes
@@ -1822,12 +1835,7 @@ the \textit{edge weighting formula}:
 In the above formula, the weight factors \(w_x\) can then be substituted
 with custom factors. Our default setting is an average with all the
 weight factors being \(1\).
-
-
-
-
-\chapter{Creating microservice recommendations} \label{chap:creating-service-recommendations}
-
+\newline
 Once the combined graph \(G_{combined}\) has been constructed, the next step is
 to apply graph clustering to it such that groups of vertices that have strong
 coupling, resembled by the combined edge weights
@@ -2087,7 +2095,7 @@ three different \textit{input fidelity} metrics:
 
 Precisely, this measures how many percent of the edges of a certain input graph
 are also part of the combined graph \(G_{combined}\) covered in chapter
-\ref{chap:software-as-weighted-graph}:
+\ref{sect:software-as-weighted-graph}:
 \[
   IF(G_{input}, G_{combined}) = \frac{\vert E(G_{input}) \vert}{\vert E(G_{combined}) \vert}
 \]
@@ -3282,7 +3290,104 @@ in the third tile, next to the selected algorithm, is highlighted in green.
 
 \chapter{Results} \label{chap:results}
 
+Our full implementation exhibited in chapter \ref{chap:implementation} allowed us
+to evaluate our methodology using actual software which was selected via the
+definition of a multitude of criteria followed by extensive research to identify
+possible candidates for the experiments.
+
+
+
 \section{Experimental setup}
+
+Three freely available open-source applications were chosen to be run through
+\textit{Steinmetz} to generate a set of microservice recommendations,
+to determine which graph clustering algorithm performed the best in the case
+of each input application and also overall, and if the microservice candidate
+recommendations yielded good results regarding the devised metrics.
+
+
+\subsection{Subjects}
+
+As shown in section \ref{sect:background-architecture}, a microservices\hyp based
+architecture only makes sense for large scale web-based back-end applications
+compared to libraries, SDKs, and dedicated GUI software.
+Consequently, software that falls into said category had to be selected which
+is far more difficult compared to the other categories as such software is
+typically found in enterprises and not overly common in the open-source sector.
+
+Additionally, the selected applications had to be implemented with the Java
+programming language as the first version of \textit{Steinmetz} that we implemented
+for now only supports input software that was written in Java.
+
+Furthermore, to be able to analyze all three of the input dimensions covered in
+section \ref{sect:software-quality-metrics}, the selected applications had to fulfill
+another, more distinct set of criteria:
+
+\begin{itemize}[noitemsep]
+    \item Dynamic coupling: Still being able to execute in the latest version
+    \item Semantic coupling: Being available as uncompiled source code
+    \item Evolutionary coupling: Being version-controlled via a supported VCS
+\end{itemize}
+
+% Finally, the following three applications that fulfill both of these requirements
+% were selected after an intensive survey of possible ones via the search functionality
+% of GitHub and regular searches via Google:
+
+% \begin{itemize}[noitemsep]
+%     \item Heritrix (\url{https://github.com/internetarchive/heritrix3})
+% \end{itemize}
+
+
+\subsection{Difficulties} \label{subsect:difficulties}
+
+As discussed in the previous section, the selected applications have to fulfill
+a set of requirements for each of the three input dimensions.
+Furthermore, the \textit{dynamic coupling} involves another difficulty which
+was already discussed in subsection \ref{subsect:background-dynamic-analysis} ---
+owing to the fact that the software has to be executed in order to conduct
+\textit{dynamic program analysis}, this input dimension involves a lot more work
+than any of the other.
+
+Moreover, another problem arises which is more specific to
+our use case: The dynamic coupling between units of the application that should
+later belong to different microservices only becomes apparent while the application
+is under full load by a real user base.
+Otherwise, \textit{dynamic coupling} will be measured while it is easy to see
+that the results are flawed when not analyzing actual load on the system.
+
+This problem is actually twofold. Firstly, the coupling of non-production workload
+is usually completely different from workload generated by an actual user base and
+secondly, it is unlikely that most parts of the application will even be invoked.
+One set of metrics that we devised that measure the \textit{fidelity} of the
+different analysis types is useful to determine how severe this latter problem is.
+However, the first problem is a dilemma as it just cannot be known how well the
+workload during the \textit{dynamic analysis} resembled the \textit{dynamic coupling}
+of the application when not conducted in a production environment.
+
+Although load testing and example work loads exist, the recordings will still
+not reach the quality of ones recorded in a running production environment.
+Apart from the fact that even example workloads are very sparse for open-source
+software, a production environment is simply not available to us to guarantee
+high quality and high fidelity \textit{dynamic analysis}.
+Overall, this is specifically problematic as some \textit{dynamic coupling} will always
+be recorded which will in turn also be used to generate the microservice candidate
+recommendations which are then flawed and unreliable.
+
+Due to this difficulty and its possible repercussions, we decided to leave the
+\textit{dynamic coupling} input dimension out of our experiments.
+Nevertheless, the functionality was tested with example workloads and was adjudged
+to be working accordingly which still enables \textit{Steinmetz} to be used
+in an enterprise setting with readily available production environments.
+Finally, owing to the fact that our implementation allows for one input dimension
+to be left out when conducting an analysis, this difficulty could be circumvented
+during the experiments.
+
+
+\subsection{Execution}
+
+
+
+
 
 \section{Evaluation} \label{sect:evaluation}
 
@@ -3291,13 +3396,129 @@ in the third tile, next to the selected algorithm, is highlighted in green.
 
 \chapter{Discussion} \label{chap:discussion}
 
+Coming back to the introduction of this thesis and the posed research questions,
+we created a full methodology that gets any monolithic software as its input,
+outputting microservice candidate recommendations in various formats.
+Furthermore, a large set of metrics were devised that measure the input and
+output quality of said methodology.
+In conclusion, we devised a methodology that improves upon similar ones in
+this area of research in multiple aspects such as:
+
+\begin{itemize}
+    \item A rationale that ties the input to the output to be able to reason
+    about how the generated microservice recommendations are of any relevance
+    owing to the fact that the analyzed input measures common microservice
+    quality metrics extracted from literature.
+    \item The application of said rationale to analyzable software metrics
+    that constitute the foundation of the devised methodology.
+    \item A conducted survey of graph clustering algorithms to identify feasible
+    ones via an extensive set of criteria. Eventually, eight algorithms were
+    selected and incorporated into the methodology compared to a maximum
+    of two in previous research in this domain.
+    \item A full implementation of the devised methodology with a modern
+    graphical user interface that enables a user to quickly analyze input
+    monolithic software.
+    \item A large set of objective metrics that are numeric in nature,
+    to measure the input and output of the methodology to allow for an
+    easy comparison of the chosen graph clustering algorithms as well as
+    the generated microservice candidate recommendations themselves.
+\end{itemize}
+
+
+
 \section{Threats to validity} \label{sect:threats-to-validity}
+
+The main threat to validity was exhibited in subsection \ref{subsect:difficulties}
+which is namely that the input dimension regarding the \textit{dynamic coupling}
+cannot be analyzed very well in an experimental environment which decreased
+the significance of our evaluation. On the other hand, using this input dimension
+would have expectedly resulted in even less valid results. This problem can just
+only be fully solved once our methodology is used in a production environment.
+
+Additionally, just as the other existing methodologies in this area of research
+such as the ones covered in chapter \ref{chap:related}, the inherent weakness
+of our methodology is to assess the quality of the generated results.
+Although we devised objective metrics numeric in nature, the decision if a set
+of created microservice recommendations is good is still subjective from the
+standpoint of the software engineer conducting the decomposition process.
+There are many possible reasons that a human could decide that certain units
+of the existing application definitely should not be put into separate services
+due to security concerns when a network is involved, compliance reasons, etc.
+Thus, this shortcoming is also addressed in the following section on
+\textit{\nameref{sect:future-work}}.
+
+
 
 \section{Future work} \label{sect:future-work}
 
-\section{Conclusion} \label{sect:conclusion}
+While the devised methodology is working and fully-functional, there are two
+main improvements that were detected, with the first one being a possible
+feature addition to \textit{Steinmetz}, while the latter one is a follow-up
+on the methodology exhibited in this thesis. In the following subsections,
+the two future work improvements are discussed in further detail.
+
+\paragraph{Manual reassignment of units to microservices candidates}
+As discussed earlier already, a human software engineer might have a demur
+in the decisions that \textit{Steinmetz} made. For instance, due to
+security concerns or compliance reasons, the engineer might have a requirement
+that certain units of the input monolithic application have to be part of
+the same microservice (e.g. to avoid communication over a network).
+Consequently, a feature addition to our methodology and implementation
+would be that the user can select that certain units should not be divided
+into separate services. This information can then be incorporated into the
+analysis by the methodology when generating the microservice candidate
+recommendations.
+
+\paragraph{Automatically generating API of microservices candidates}
+The other, larger follow-up improvement to our methodology is to not only
+generate the microservice recommendations but to additionally generate the
+API that would become necessary if the recommendations would actually be
+implemented. Apart from improving the usefulness of the implementation
+for a prospective user, this API generation could also be used to
+automatically detect if the interfaces are efficient and effective and
+to otherwise improve them by slightly shifting the boundaries between
+the units, utilizing an algorithm, to offer a more holistic set of
+microservice candidate recommendations that can be validated from an
+additional perspective --- the quality of the interfaces between the services.
 
 
+
+
+\chapter{Conclusion} \label{chap:conclusion}
+
+The microservices paradigm is getting more and more traction while
+many companies are stuck with monolithic legacy systems that could
+benefit from being renovated by decomposing them into microservices.
+However, legacy software is typically difficult to grasp with increasing size.
+While this process is tedious and very manual for a human,
+for a computer it is much easier to oversee the entirety of the
+application that was chosen to be decomposed at least in the initial
+step that is about detecting the boundaries between the future services.
+
+The area of research of this thesis is still young compared to others
+in the domain of computer science as Fritzsch et al. showed in their
+study on the current situation in this exact area of research.
+They also concluded that more research is desired to further improve
+upon existing approaches.
+
+Thus, we showed how a rationale can tie the input to the output,
+to be able to assert that the final microservice recommendations
+were generated via the means of an input that leads to \textit{good}
+microservice boundaries which were extracted out of the input ---
+the three dimensions of coupling in the case of our methodology.
+Furthermore, it became apparent that a multitude of graph clustering
+algorithms are available to be utilized for creating microservice
+recommendations which offered a deeper insight into which are
+feasible for this purpose by leveraging the metrics that were
+incorporated into our methodology which enables a user to easily
+compare different graph clustering algorithms quickly.
+
+To conclude, we devised a working methodology that generates results
+in just a few seconds, which would have taken hours if done
+by a human software engineer.
+Additionally, we fully implemented the devised methodology with a
+modern graphical user interface that allows for fast analysis runs
+that yield microservice candidate recommendations in a variety of formats.
 
 
 
