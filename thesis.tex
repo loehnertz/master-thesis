@@ -3299,18 +3299,18 @@ possible candidates for the experiments.
 
 \section{Experimental setup}
 
-Three freely available open-source applications were chosen to be run through
-\textit{Steinmetz} to generate a set of microservice recommendations,
-to determine which graph clustering algorithm performed the best in the case
-of each input application and also overall, and if the microservice candidate
-recommendations yielded good results regarding the devised metrics.
+Five freely available open-source applications as well as a closed source one
+provided my the host organization of this thesis project were chosen to be run through
+\textit{Steinmetz} to generate a set of microservice candidate recommendations.
+The goal is to determine which graph clustering algorithm performed the best in the case
+of each input application as well as overall.
 
 
 \subsection{Subjects}
 
 As shown in section \ref{sect:background-architecture}, a microservices\hyp based
-architecture only makes sense for large scale web-based back-end applications
-compared to libraries, SDKs, and dedicated GUI software.
+architecture only makes sense for large\hyp scale web\hyp based back\hyp end
+applications compared to libraries, SDKs, and dedicated GUI software.
 Consequently, software that falls into said category had to be selected which
 is far more difficult compared to the other categories as such software is
 typically found in enterprises and not overly common in the open-source sector.
@@ -3324,18 +3324,40 @@ section \ref{sect:software-quality-metrics}, the selected applications had to fu
 another, more distinct set of criteria:
 
 \begin{itemize}[noitemsep]
-    \item Dynamic coupling: Still being able to execute in the latest version
+    \item Dynamic coupling: Executable in the latest version
     \item Semantic coupling: Being available as uncompiled source code
     \item Evolutionary coupling: Being version-controlled via a supported VCS
 \end{itemize}
 
-% Finally, the following three applications that fulfill both of these requirements
-% were selected after an intensive survey of possible ones via the search functionality
-% of GitHub and regular searches via Google:
+Finally, the six applications seen in table \ref{table:evaluation-projects}
+that fulfill these requirements were selected after an intensive survey
+of possible ones via the search functionality of GitHub and regular searches via Google.
 
-% \begin{itemize}[noitemsep]
-%     \item Heritrix (\url{https://github.com/internetarchive/heritrix3})
-% \end{itemize}
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|c|c|c|X|}
+\hline
+Project & Project Page & SLOC & Description \\
+\hline\hline
+Heritrix        & \href{https://github.com/internetarchive/heritrix3}{GitHub Repository} & $15454$ &
+The \textit{Internet Archive's} open-source, extensible, web-scale, archival-quality web
+crawler project \\\hline
+Teammates       & \href{https://github.com/TEAMMATES/teammates}{GitHub Repository} & $42280$ &
+An online tool for managing peer evaluations and other feedback paths of students
+\\\hline
+XWiki           & \href{https://github.com/xwiki/xwiki-platform}{GitHub Repository} & $231349$ &
+An advanced open source enterprise wiki \\\hline
+Jenkins         & \href{https://github.com/jenkinsci/jenkins}{GitHub Repository} & $102263$ &
+A leading open-source automation server to automate development workflows \\\hline
+Apache Solr     & \href{https://github.com/apache/lucene-solr}{GitHub Repository} & $203365$ &
+A high-performance, fully\hyp featured text search engine \\\hline
+Picnic Platform & \textit{Closed Source} & $55767$ &
+The core back-end of Picnic (the host organization of this thesis project) \\
+\hline
+\end{tabularx}
+\caption{The software projects selected for the evaluation}
+\label{table:evaluation-projects}
+\end{table}
 
 
 \subsection{Difficulties} \label{subsect:difficulties}
