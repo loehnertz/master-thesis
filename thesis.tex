@@ -3450,6 +3450,7 @@ this area of research in multiple aspects such as:
 
 \section{Threats to validity} \label{sect:threats-to-validity}
 
+\paragraph{Missing dynamic coupling}
 The main threat to validity was exhibited in subsection \ref{subsect:difficulties}
 which is namely that the input dimension regarding the \textit{dynamic coupling}
 cannot be analyzed very well in an experimental environment which decreased
@@ -3457,7 +3458,19 @@ the significance of our evaluation. On the other hand, using this input dimensio
 would have expectedly resulted in even less valid results. This problem can just
 only be fully solved once our methodology is used in a production environment.
 
-Additionally, just as the other existing methodologies in this area of research
+\paragraph{Shared code}
+We detected that a shortcoming with our approach is that units
+of an analyzed code base that are supposed to be shared (i.e. utility classes)
+will be attributed to one microservice recommendation although its coupling
+might be equally high toward other ones. This can be mitigated by keeping
+such units in a separate top-level package or module as our methodology then
+allows to ignore it in the analysis via the \code{basePackageIdentifier} parameter.
+Hence, in an actual microservice decomposition one could maintain such code in a
+\textit{Git Submodule} or transfer it to an internally used library that all the
+microservices depend on \cite{git-submodules}.
+
+\paragraph{Quality assessment}
+Just as the other existing methodologies in this area of research
 such as the ones covered in chapter \ref{chap:related}, the inherent weakness
 of our methodology is to assess the quality of the generated results.
 Although we devised objective metrics numeric in nature, the decision if a set
