@@ -5,7 +5,7 @@
 \usepackage{textcomp} % Euro
 \usepackage[hyphens]{url}
 \usepackage{amsmath} % Advanced mathematical notation
-\usepackage{amssymb} % Symbols
+% \usepackage{amssymb} % Symbols
 \usepackage{emptypage} % Empty pages are now actually empty
 \usepackage{caption} % Better image and table captions
 \usepackage{varwidth} % Used for the custom captions
@@ -19,6 +19,7 @@
 }
 \captionsetup{format=centered} % Global activation of the custom captions
 
+\usepackage{color}
 \usepackage{xcolor}
 \usepackage[tikz]{bclogo}
 \usepackage[framemethod=tikz]{mdframed}
@@ -86,20 +87,45 @@
 \usepackage{tabularx} % better tables
 \usepackage{diagbox} % diagonally split table cells
 \usepackage{multirow}
+\usepackage{rotating}
 \usepackage{hhline}
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{url}
 \usepackage{forest}
+\usepackage{verbatim}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.8}
+\usepackage{pgfplotstable}
 \graphicspath{ {figures/} }
 
+\definecolor{lstgrey}{rgb}{0.95,0.95,0.95}
+\lstset{
+    language=Java,
+    frame=single,
+    backgroundcolor=\color{lstgrey},
+    basicstyle=\small\ttfamily,
+    captionpos=b,
+    tabsize=2,
+    commentstyle=\color{gray},              % Comments font
+    tabsize=2,                              % Default tab size
+    captionpos=b,                           % Caption-position = bottom
+    breaklines=true,                        % Automatic line breaking?
+    breakatwhitespace=false,                % Automatic breaks only at whitespace?
+    showspaces=false,                       % Dont make spaces visible
+    showtabs=false,                         % Dont make tabls visible
+    columns=flexible,                       % Column format
+}
+
 % Page layout
-\usepackage[paper=a4paper,width=14cm,left=35mm,height=22cm]{geometry}
+% \usepackage[paper=a4paper,width=14cm,left=35mm,height=22cm]{geometry}
+\usepackage[paper=a4paper]{geometry}
 \usepackage{setspace}
 \usepackage[htt]{hyphenat}
 \usepackage{sectsty}
-\linespread{1.5}
+% \linespread{1.5}
+\linespread{1.25}
 \subsubsectionfont{\large}
 
 % Page markers
@@ -111,7 +137,7 @@
 \fancyhead[R]{\phv \thepage}
 % rather not use anything for the footer
 \fancyfoot[C]{\ } % no page count in the bottom
-%\fancyfoot[R]{\textsf{\small Software Engineering MS}}
+% \fancyfoot[R]{\textsf{\small Software Engineering MS}}
 
 % Share the sources
 \usepackage{bibtopic}
@@ -148,7 +174,7 @@
 % UvA logo and text
 \newcommand{\uva}{
 	\begin{tabular}{r l}
-		\multirow{2}{*}{\includegraphics[height=65pt]{uva.pdf}}
+		\multirow{2}{*}{\includegraphics[height=55pt]{uva.pdf}}
 		&\textsc{\Large Universiteit van Amsterdam}\\
 		&\textsc{\small Faculteit der Natuurwetenschappen, Wiskunde en Informatica}\\
 		&\textsc{\small Master Software Engineering}
