@@ -11,7 +11,7 @@ Toward automatic decomposition of monolithic software into microservices
 Conception of a methodology and its exemplarily implementation
 }
 \newcommand{\thesisauthor}{Jakob L{\"o}hnertz}
-\newcommand{\thesisdate}{31/10/2019}
+\newcommand{\thesisdate}{31/01/2020}
 \newcommand{\thesislocation}{Amsterdam}
 \newcommand{\firstmarker}{Dr.\ Ana Oprescu}
 \newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
@@ -53,9 +53,7 @@ being easily extensible to be able to support other platforms in the future.
 
 
 
-
 \tableofcontents
-
 
 
 
@@ -490,7 +488,7 @@ Both of these terms refer to the process of removing the endings of all terms
 in a given document \(\{t_i \in D_i \mid normalization(t_i)\}\) that is part of
 the corpus \(D_i \in C\) \cite{singhal2001ir}.
 
-The rationale of this step is to normalize the semantics of the terms ---
+The rationale of this step is to normalize the semantics of the terms ---\\
 \(\{\textit{organization}, \textit{organizer}, \textit{organizing}\}\) essentially
 encapsulate the same semantic meaning of their \textit{lemma}: \textit{organize}.
 Nevertheless, if not normalized, a purely mathematical approach,
@@ -681,7 +679,7 @@ Date:   Tue Jun 18 11:23:33 2019 +0200
 
     Add the average coupling modularity to the selectable ones
 
-2   0   ../controller/analysis/metrics/clustering/ClusteringQualityAnalyzer.kt
+2   0   ../controller/analysis/metrics/clustering/QualityAnalyzer.kt
 1   0   ../model/metrics/ClusteringQuality.kt
 6   3   ../frontend/src/App.vue
 \end{lstlisting}
@@ -694,6 +692,7 @@ Date:   Tue Jun 18 11:23:33 2019 +0200
 The term \textit{graph clustering}, sometimes also called \textit{community detection},
 describes the process of partitioning a usually undirected
 and unweighted or weighted graph into subgraphs \cite{lancichinetti2009community}.
+The graph can optionally be directed although many graph clustering algorithms discard this information.
 Important to our work is that partitions on the input graph are calculated,
 so that the resulting clusters do not overlap although a subset of
 graph clustering algorithms exists that can generate overlapping clusters.
@@ -945,7 +944,7 @@ notion that there is still room for improvement.
  \cite{knoche2018using}           & ~         & $\odot$   & ~         & ~       & ~         & ~         & $\ominus$ & $\ominus$ & ~         & $\ominus$ \\\hline
 \end{tabularx}
 \caption{Literature survey matrix}
-\caption*{
+\caption*{\centering
   The signs used in the matrix  are defined as follows:
   \begin{itemize}[noitemsep]
       \item An empty cell depicts that the approach or feature of that column was not utilized
@@ -1291,7 +1290,7 @@ of this mapping as part of our methodology are discussed in chapter
 \centering
 \includegraphics[width=.90\textwidth]{principles-of-microservices}
 \caption{Mapping design principles of microservices to coupling types}
-\caption*{
+\caption*{\centering
   We detected that three of the most important design principles of the
   microservices paradigm map directly to three main types of coupling.
 }
@@ -1312,11 +1311,6 @@ To clarify, a weighted and directed graph can be constructed when gathering
 this \textit{dynamic coupling} metric for every single \textit{execution count}.
 Hence, the weighted edges of the graph symbolize the \textit{execution counts}.
 
-However, we opted not to make the constructed graph directed as graph clustering
-is usually not applied to directed graphs \cite{lancichinetti2009community}.
-Moreover, the other coupling types also only yield undirected graphs which
-would make a combined analysis on all of them defunct.
-
 Finally, the first principle maps to this type of coupling due to the fact that
 the \textit{dynamic coupling} information can be utilized to keep
 communicative components from being spread over multiple microservices
@@ -1325,7 +1319,7 @@ communicative components from being spread over multiple microservices
 
 \subsection{Semantic coupling}
 
-Just like with the \textit{dynamic coupling}, an undirected and weighted graph
+Just like with the \textit{dynamic coupling}, a directed and weighted graph
 is constructed out of \textit{semantic coupling} information.
 Precisely, it is measured how semantically similar two components are which
 causes the weighted edge in the resulting graph that connects their vertices
@@ -1340,7 +1334,7 @@ which would otherwise violate the second principle.
 
 \subsection{Evolutionary coupling}
 
-Again, an undirected and weighted graph can be constructed out of the
+Again, a directed and weighted graph can be constructed out of the
 \textit{evolutionary coupling} information.
 To be more precise, if two components change together more often it can be
 inferred that their life cycles are more or less coupled.
@@ -1368,8 +1362,8 @@ how the three types of coupling are extracted out of them. Additionally,
 a static program analysis is conducted as covered in this chapter.
 
 Sometimes it is not possible to provide every of the four inputs which is why
-at least any three out of the four have to be provided for our devised
-methodology to still conduct its analysis.
+at least the first and any two out of the three others have to be provided for our devised
+methodology to still conduct its analysis correctly.
 
 Finally, our methodology is focused on object-oriented programming,
 hence we will from now on use the term \textit{class} instead of \textit{unit}
@@ -1442,11 +1436,8 @@ gets constructed in algorithm \ref{algo:class-walk}, the first class in the clas
 pairs that are getting returned, is the vertex the edge is pointing away from.
 Furthermore, it would be possible to count how often a class instantiates or
 invokes another and accumulate this value as a weighted edge.
-However, we opted to utilize neither directions nor weights
-and instead to construct a regular undirected, unweighted graph.
-Owing to the fact that the graphs resulting from the the other coupling types
-are not directed, using a directed graph for this coupling type makes no sense.
-Moreover, the weights associated with a \textit{static coupling} graph
+However, we opted to discard weights and instead to construct a directed, unweighted graph.
+The weights associated with a \textit{static coupling} graph
 do not have much meaning since the range of the weights is not very significant
 as certain business logic may instantiate a lot of other classes,
 yet this does not strictly increase their coupling.
@@ -1699,7 +1690,7 @@ via a given VCS log.
 \centering
 \includegraphics[width=.96\textwidth]{vcs-log-timeline}
 \caption{An example timeline of a VCS log}
-\caption*{
+\caption*{\centering
   A textual VCS log is mined for \textit{evolutionary coupling} information
   by analyzing how many percent of the shared revisions of two entities
   do overlap. The figure specifically depicts the usage of time ranges
@@ -1865,9 +1856,13 @@ in table \ref{table:graph-clustering-survey}.
 The way that classifications are negated was chosen so that $\oplus$
 is a positive feature regarding the utilization as part of our work.
 
-Eventually, the first seven algorithms from table \ref{table:graph-clustering-survey}
-were selected to be utilized as part of our work --- they are discussed
-in more detail in the \textit{\nameref{chap:background}} subsection regarding
+Eventually, apart from the \textit{Girvan-Newman} algorithm, the first seven algorithms from table
+\ref{table:graph-clustering-survey} were selected to be utilized as part of our work.
+We chose to not select \textit{Girvan-Newman} as well despite its positive evaluation as Newman
+designed an improved version of it shortly after together with Clauset and Moore
+\cite{clauset2004modularity}.
+The selected graph clustering algorithms are discussed in more detail in the
+\textit{\nameref{chap:background}} subsection regarding
 \textit{\nameref{subsect:renowned-graph-clustering-algorithms}}.
 The citation numbers in the table are also referenced there.
 
@@ -1888,7 +1883,7 @@ The citation numbers in the table are also referenced there.
  \cite{donetti2004detecting}    & N/A                           & $\oplus$  & $\ominus$  & N/A        & $\ominus$  & $\oplus$  & $\oplus$ \\\hline
 \end{tabularx}
 \caption{Graph clustering algorithm survey matrix}
-\caption*{
+\caption*{\centering
   All of the information necessary for the classification including the
   runtime complexity indications are taken out of the original papers of the
   authors which leads to the fact that some information is unknown as
@@ -2012,6 +2007,11 @@ a single edge. The integers used for the vertices are their identifiers,
 some algorithms require identifiers from \([1, n] \in \mathbb{Z}\) where \(n\)
 is the number of edges, others also work with arbitrary strings as identifiers.
 This fact is discussed in more detail in chapter \ref{chap:implementation}.
+
+As mentioned in section \ref{sect:background-graph-clustering}, many graph
+clustering algorithms discard directions in the input graph which is no problem
+for our methodology as the resulting microservice candidate recommendations
+are finally unidirectional in any case.
 
 After serializing the input graph, the chosen algorithm clusters the graph
 and returns the clustering as its output. The inner workings of the chosen
@@ -2257,7 +2257,7 @@ Our implementation carries the name \textit{Steinmetz} which is the German
 word for \textit{stonemason}. The name was chosen as our application is used
 to cut one large stone, the monolith, into many smaller stones, the microservices.
 Additionally, we published our implementation as open source software,
-licensed under the \textit{Apache 2 License}
+licensed under the \textit{Apache License v2}
 \footnote{\url{https://github.com/loehnertz/Steinmetz/blob/develop/LICENSE}} ---
 the entire source code can be found on GitHub
 \footnote{\url{https://github.com/loehnertz/Steinmetz/}}.
@@ -2302,7 +2302,7 @@ as well as clustering and retrieving it again as a separate step.
 \centering
 \includegraphics[width=.96\textwidth]{architecture-overview}
 \caption{Overview of the architecture of our implementation}
-\caption*{
+\caption*{\centering
     The implementation is built as a three-tier web-based architecture consisting of
     front-end, back-end, and database. In the diagram, the two main functionalities of
     persisting and clustering input monolithic applications are depicted and
@@ -2500,7 +2500,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \centering
 \includegraphics[width=.90\textwidth]{data-models-nodes}
 \caption{Node data models}
-\caption*{
+\caption*{\centering
   Two \textit{Node} models are necessary. The first one carries the extracted
   data while the second one is used to persist the calculated metrics on a
   per\hyp project basis.
@@ -2512,7 +2512,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \centering
 \includegraphics[width=.50\textwidth]{data-models-relationships}
 \caption{Relationships data models}
-\caption*{
+\caption*{\centering
   One \textit{Relationship} model is necessary. Its sole usage is to link
   two \code{Unit} \textit{Nodes} together as seen in figure \ref{fig:data-models-nodes}.
 }
@@ -2523,7 +2523,7 @@ to model our data as depicted in figures \ref{fig:data-models-nodes} and
 \centering
 \includegraphics[width=.90\textwidth]{data-models-example}
 \caption{Data models example}
-\caption*{
+\caption*{\centering
   This is an example how the \textit{Nodes} and \textit{Relationships} work together.
 }
 \label{fig:data-models-example}
@@ -2631,7 +2631,7 @@ class can be found in the documentation of \textit{Steinmetz} \cn.
 ]
 \end{forest}
 \caption{Top-level back-end structure}
-\caption*{
+\caption*{\centering
   The top-level file structure of the back-end with a maximum depth of 3.
 }
 \label{fig:back-end-structure}
@@ -2693,7 +2693,7 @@ while the analysis can still be performed albeit with lower quality:
  A binary file containing the data for performing the evolutionary analysis \\\hline
 \end{tabularx}
 \caption{Data required by resource 1}
-\caption*{
+\caption*{\centering
   The data that resource 1 (\code{POST "/analysis/"}) mandates to function.
 }
 \label{table:data-resource-1}
@@ -2706,22 +2706,22 @@ while the analysis can still be performed albeit with lower quality:
  \hline
  Name~ & File extension~ & Description~ \\
  \hline\hline
- \code{staticAnalysisFile}         & \code{.jar} / \code{.zip} &
- Either a \code{.jar} file with compiled bytecode or a \code{.zip} file with plain source code;
- both are used to build the static call graph, either via compiled code or by traversing the source code \\\hline
- \code{dynamicAnalysisFile}        & \code{.jfr} &
+ \code{staticAnalysisFile}         & \code{.zip} &
+ A \code{.zip} file with uncompiled source code\\\hline
+ \code{dynamicAnalysisFile}        & \code{.jfr} / \code{.txt} &
  The \code{.jfr} extension stems from the \textit{Java Flight Recorder} which is a profiler shipped with newer
  JRE versions that can be enabled to conduct dynamic program analysis; the JRE also offers an API to process
- recorded \code{.jfr} files from within another Java application \\\hline
+ recorded \code{.jfr} files from within another Java application.
+ Alternatively, a plain text file can be provided with each line resembling one method
+ invocation. \\\hline
  \code{semanticAnalysisFile}       & \code{.zip} &
  Strictly needs the source code archived as a \code{.zip} file as the code written by the programmers
- is necessary to perform natural language processing \\\hline
+ is necessary to perform natural language processing. \\\hline
  \code{evolutionaryAnalysisFile}   & \code{.txt} &
- The format is depending on which \code{vcsPlatform} was chosen; a log file of the repository of that platform
- of the application as a plain text file \\\hline
+ The format is depending on which \code{vcsPlatform} was chosen; a log file of the repository of that platform of the application as a plain text file. \\\hline
 \end{tabularx}
 \caption{Description of the binary data required by resource 1}
-\caption*{
+\caption*{\centering
   The binary data that resource 1 (\code{POST "/analysis/"}) mandates to function
   in the case of the Java platform chosen as the \code{projectPlatform}.
 }
@@ -2834,7 +2834,7 @@ which are detailed in the following subsections.
 ]
 \end{forest}
 \caption{Structure of the packages containing the logic}
-\caption*{
+\caption*{\centering
   The top-level file structure of the packages that contain the implemented
   business logic with a maximum depth of 4.
 }
@@ -3038,7 +3038,7 @@ run concurrently.
 ]
 \end{forest}
 \caption{Structure of the packages containing the coupling extraction logic}
-\caption*{
+\caption*{\centering
   The file structure of the packages that contain the implemented coupling extraction logic.
 }
 \label{fig:coupling-extraction-structure}
@@ -3051,6 +3051,11 @@ the calculation of the metrics for the input and the clustering respectively,
 as detailed in chapter \ref{chap:metrics}.
 The distinct implementations are not covered in more detail as they are very
 close to the mathematical formulae in chapter \ref{chap:metrics}.
+
+
+\subsection{Extending the analysis for a new language}
+
+
 
 
 
@@ -3132,7 +3137,7 @@ in more detail. From top to bottom, the cards fulfill the following tasks:
 \centering
 \includegraphics[width=\textwidth]{front-end-ui}
 \caption{User interface of the front-end}
-\caption*{
+\caption*{\centering
   The front-end consists of multiple cards stacked on top of each other,
   each filled with either controls or displaying rendered data.
 }
@@ -3156,7 +3161,7 @@ concurrently, but the selected one will provide the data for rendering the views
 \centering
 \includegraphics[width=.96\textwidth]{graph-view-ui}
 \caption{The graph view in the UI of the front-end}
-\caption*{
+\caption*{\centering
   The front-end offers a \textit{graph view} of the clustered graph that depicts
   the computed microservice recommendations.
 }
@@ -3188,7 +3193,7 @@ as seen in figure \ref{fig:node-graph-view}.
 \centering
 \includegraphics[width=.96\textwidth]{node-graph-view}
 \caption{A closeup of a node in the graph view}
-\caption*{
+\caption*{\centering
   Every node's name is displayed once zoomed in far enough.
   Furthermore, when hovering over any node, additional information is displayed.
 }
@@ -3209,7 +3214,7 @@ activated by toggling the \textit{Hide Inter-Cluster Edges} option.
 \centering
 \includegraphics[width=.96\textwidth]{detailed-graph-view}
 \caption{A closeup of the detailed graph view mode}
-\caption*{
+\caption*{\centering
   The graph view has a second, more detailed mode that also displays
   all of the inter-cluster as well as intra-cluster edges.
 }
@@ -3229,7 +3234,7 @@ the \textit{Hide Inter-Cluster Edges} as well.
 \centering
 \includegraphics[width=.96\textwidth]{natural-graph-view}
 \caption{A closeup of the natural graph view mode}
-\caption*{
+\caption*{\centering
   The \textit{graph view} has a third mode that can be used to see a more
   natural rendering of the clustered graph. This can be used to examine
   the structure of the input monolithic application on its own.
@@ -3251,7 +3256,7 @@ This view can be seen in further detail in figure \ref{fig:textual-view-ui}.
 \centering
 \includegraphics[width=.96\textwidth]{textual-view-ui}
 \caption{A closeup of the textual view}
-\caption*{
+\caption*{\centering
   Additionally to the \textit{graph view}, a solely \textit{textual view}
   was implemented that just displays which units belong to which service.
 }
@@ -3270,7 +3275,7 @@ clustering but rather the input.
 \centering
 \includegraphics[width=\textwidth]{metrics-view-ui}
 \caption{A closeup of the metrics view}
-\caption*{
+\caption*{\centering
   Every available graph clustering algorithm is evaluated while the one that
   scored the highest in the selected metric is additionally highlighted in green.
 }
@@ -3393,12 +3398,12 @@ software, a production environment is simply not available to us to guarantee
 high quality and high fidelity \textit{dynamic analysis}.
 Overall, this is specifically problematic as some \textit{dynamic coupling} will always
 be recorded which will in turn also be used to generate the microservice candidate
-recommendations which are then flawed and unreliable.
+recommendations which are ergo flawed and unreliable.
 
 Due to this difficulty and its possible repercussions, we decided to leave the
-\textit{dynamic coupling} input dimension out of our experiments.
-Nevertheless, the functionality was tested with example workloads and was adjudged
-to be working accordingly which still enables \textit{Steinmetz} to be used
+\textit{dynamic coupling} dimension out of our experiments.
+Nevertheless, the functionality was tested with example workloads
+which still enables \textit{Steinmetz} to be used
 in an enterprise setting with readily available production environments.
 Finally, owing to the fact that our implementation allows for one input dimension
 to be left out when conducting an analysis, this difficulty could be circumvented
@@ -3412,6 +3417,8 @@ during the experiments.
 
 
 \section{Evaluation} \label{sect:evaluation}
+
+
 
 
 
