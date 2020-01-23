@@ -188,7 +188,7 @@ to find and measure \cite{easterbrook2008selecting}.
 Finally, the research is validated with real-world monolithic applications.
 A large-scale code base provided by the company hosting this thesis as well as
 large open source software projects were candidates for this.
-The evaluation as part of section \ref{sect:evaluation} is conducted using
+The evaluation as part of section \ref{chap:results} is conducted using
 a custom set of metrics devised in chapter \ref{chap:metrics}.
 
 
@@ -1074,7 +1074,7 @@ their approaches of choice. From within the domain of static program analysis,
 semantically analyzing source code was devised and implemented as input together
 with mining evolutionary data out of version control system logs.
 
-Instead, we utilize three distinct input dimensions for constructing
+Instead, we utilize four distinct input dimensions for constructing
 a more precise weighted graph which can then be clustered.
 
 
@@ -1161,7 +1161,7 @@ Following this, these three items are referred to via their number in the
 above enumeration. Moreover, every item is discussed in more detail below.
 
 
-\subsection{Principle 1}
+\subsection{Principle Nº 1}
 As Newman and others lay out \cite{newman2015building, alshuqayran2016systematic},
 very \textit{chatty} microservices are not desired due to three reasons.
 
@@ -1181,7 +1181,7 @@ of each request and response (i.e. when utilizing JSON over HTTP)
 is a costly action in terms of runtime \cite{newman2015building}.
 
 
-\subsection{Principle 2} \label{subsect:ms-principle-2}
+\subsection{Principle Nº 2} \label{subsect:ms-principle-2}
 The second principle is ambiguous without any further elaboration owing to
 the fact that the term \textit{task} has no notion of size or complexity
 attached to it.
@@ -1229,7 +1229,7 @@ and which parts have to be shared externally for the application to function
 and properly mirror its domain \cite{newman2015building}.
 
 
-\subsection{Principle 3}
+\subsection{Principle Nº 3}
 Since microservices are attributed to \textit{Conway's law}
 \cite{ms-fowler, dragoni2017microservices, conway1968law}
 in the sense that this architectural style lends itself well to letting
@@ -1319,8 +1319,7 @@ communicative components from being spread over multiple microservices
 
 \subsection{Semantic coupling}
 
-Just like with the \textit{dynamic coupling}, a directed and weighted graph
-is constructed out of \textit{semantic coupling} information.
+An undirected and weighted graph is constructed out of \textit{semantic coupling} information.
 Precisely, it is measured how semantically similar two components are which
 causes the weighted edge in the resulting graph that connects their vertices
 to hold this similarity value.
@@ -1334,7 +1333,7 @@ which would otherwise violate the second principle.
 
 \subsection{Evolutionary coupling}
 
-Again, a directed and weighted graph can be constructed out of the
+Again, an undirected and weighted graph can be constructed out of the
 \textit{evolutionary coupling} information.
 To be more precise, if two components change together more often it can be
 inferred that their life cycles are more or less coupled.
@@ -1436,7 +1435,9 @@ gets constructed in algorithm \ref{algo:class-walk}, the first class in the clas
 pairs that are getting returned, is the vertex the edge is pointing away from.
 Furthermore, it would be possible to count how often a class instantiates or
 invokes another and accumulate this value as a weighted edge.
-However, we opted to discard weights and instead to construct a directed, unweighted graph.
+However, we opted to discard weights and to instead construct a directed, unweighted graph ---
+although the directions are ignored in most cases as discussed in more detail in
+section \ref{sect:implementation-database}.
 The weights associated with a \textit{static coupling} graph
 do not have much meaning since the range of the weights is not very significant
 as certain business logic may instantiate a lot of other classes,
@@ -1684,7 +1685,8 @@ The values are constants that can be changed while the defaults that we employ a
 \end{itemize}
 For clarification, figure \ref{fig:vcs-log-timeline} depicts an example
 timeline to show how the \textit{evolutionary coupling} is calculated
-via a given VCS log.
+via a given VCS log while the direction of the coupling relationship is taken
+that was extracted out of the static analysis into a directed graph.
 
 \begin{figure}[htbp]
 \centering
@@ -1849,18 +1851,23 @@ chapter together with a range of available, renowned algorithms.
 A variety of graph clustering algorithms exists with a variety of different
 goals, mechanisms, and features
 \cite{lancichinetti2009community, fortunato2010community, danon2005comparing}.
-Consequently, a dozen renowned graph clustering algorithms were evaluated and
-assessed regarding their usability for our work.
+Consequently, a dozen renowned graph clustering algorithms out of the above sources
+were evaluated and assessed regarding their usability for our work.
 A total of nine renowned graph clustering algorithms were chosen and classified
-in table \ref{table:graph-clustering-survey}.
+in table \ref{table:graph-clustering-survey}, the others had no available
+reference implementation.
 The way that classifications are negated was chosen so that $\oplus$
 is a positive feature regarding the utilization as part of our work.
 
-Eventually, apart from the \textit{Girvan-Newman} algorithm, the first seven algorithms from table
+Eventually, apart from the \textit{Girvan-Newman} algorithm, the first six
+respectively seven algorithms from table
 \ref{table:graph-clustering-survey} were selected to be utilized as part of our work.
 We chose to not select \textit{Girvan-Newman} as well despite its positive evaluation as Newman
 designed an improved version of it shortly after together with Clauset and Moore
 \cite{clauset2004modularity}.
+The other two remaining algorithms had severe downsides that made them unsuable
+as part of our methodology (i.e. not offering a hard clustering respectively
+not working on weighted graphs).
 The selected graph clustering algorithms are discussed in more detail in the
 \textit{\nameref{chap:background}} subsection regarding
 \textit{\nameref{subsect:renowned-graph-clustering-algorithms}}.
@@ -1896,18 +1903,18 @@ The citation numbers in the table are also referenced there.
   \end{itemize}
   The way that classifications are negated was chosen so that $\oplus$
   is a positive feature regarding the utilization as part of our work.
-  % The citation numbers stand for the following algorithms:
-  % \begin{itemize}[noitemsep]
-  %   \item \cite{girvan2002community}: Girvan-Newman
-  %   \item \cite{vandongen2000graph}: MCL
-  %   \item \cite{pons2005computing}: Walktrap
-  %   \item \cite{clauset2004modularity}: Clauset-Newman-Moore
-  %   \item \cite{blondel2008modularity}: Louvain
-  %   \item \cite{rosvall2008infomap}: Infomap
-  %   \item \cite{biemann2006chinese}: Chinese Whispers
-  %   \item \cite{reichardt2004detecting}: Spinglass
-  %   \item \cite{donetti2004detecting}: Commfind
-  % \end{itemize}
+%   The citation numbers stand for the following algorithms:
+%   \begin{itemize}[noitemsep]
+%   \item \cite{girvan2002community}: Girvan-Newman
+%   \item \cite{vandongen2000graph}: MCL
+%   \item \cite{pons2005computing}: Walktrap
+%   \item \cite{clauset2004modularity}: Clauset-Newman-Moore
+%   \item \cite{blondel2008modularity}: Louvain
+%   \item \cite{rosvall2008infomap}: Infomap
+%   \item \cite{biemann2006chinese}: Chinese Whispers
+%   \item \cite{reichardt2004detecting}: Spinglass
+%   \item \cite{donetti2004detecting}: Commfind
+%   \end{itemize}
 }
 \label{table:graph-clustering-survey}
 \end{table}
@@ -1925,7 +1932,7 @@ methodology in the sense that the utilization of an algorithm as part of
 the implementation of our methodology is only possible when an implementation
 of that algorithm is available.
 
-\paragraph{Does not require amount of clusters}
+\paragraph{Does not require amount of clusters} \label{graph-clustering-algorithm-survey-amount-of-clusters}
 For our devised methodology, it is beneficial if the utilized graph clustering
 algorithm does not require a desired amount of clusters a priori owing to
 the fact that this number can only be estimated at best by a software engineer
@@ -2456,9 +2463,12 @@ class Unit(
 The \code{@Id} is required once again while the \code{@Relationship}
 annotations are not mandatory, nevertheless a node in a given graph usually
 has outgoing or incoming edges (or unidirectional or undirected ones).
-Since the graph that is constructed as part of our methodology is directed,
-it is specified if \textit{Relationships} are outgoing or incoming via
-a constant that is shipped with the OGM library.
+Since all relationships in \textit{Neo4j} have to be directional but
+the graph that is constructed as part of our methodology is undirected,
+the directions out of the merged, final graph are used.
+Importantly, during further steps or after retrieval out of \textit{Neo4j},
+these directions are ignored via the \code{.equals()} and \code{.hashCode()}
+methods of the custom data class representing an edge of a graph.
 Moreover, similarly to \textit{Relationships} in \textit{Neo4j}, every \textit{Node}
 can optionally carry an arbitrary number of additional data fields which are set
 via regular class properties in the constructor in example \ref{ogm-node}.
@@ -2534,12 +2544,24 @@ as described in section \ref{sect:input-fidelity-metrics} --- only the fidelity
 metrics are persisted in the database owing to the fact that their calculation is
 resource\hyp intensive thus the result is persisted as it will not change in any case.
 The \code{Unit} \textit{Node} is the main \textit{Node} type of the data model as it
-encompasses the weighted and directed graph that was constructed out of the input
+encompasses the graph that was constructed out of the input
 monolithic application as exhibited in chapter \ref{chap:extracting-coupling}.
 The \code{CALLS} \textit{Relationship} is used to persist which
 \code{Unit} \textit{Nodes} are linked to each other.
 Finally, figure \ref{fig:data-models-example} depicts how the modeled
-\textit{Nodes} and \textit{Relationships} behave.
+\textit{Nodes} and \textit{Relationships} behave while figure \ref{fig:class-diagram-graph-entity}
+depicts a class diagram of the involved classes within the back-end.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{class-diagram-graph-entity}
+\caption{Class diagram of the classes involved in the data model}
+\caption*{\centering
+  Each node and relationship type in \textit{Neo4j} is modeled as a class
+  in the back-end.
+}
+\label{fig:class-diagram-graph-entity}
+\end{figure}
 
 
 
@@ -2585,7 +2607,8 @@ These \textit{utility} classes are therefore residing in a directory called
 \textit{utility} in the top-level of the application structure.
 The top-level structure of the application is depicted in figure
 \ref{fig:back-end-structure} while a detailed explanation of every implemented
-class can be found in the documentation of \textit{Steinmetz} \cn.
+class can be found in the wiki of \textit{Steinmetz}
+\footnote{\url{https://github.com/loehnertz/Steinmetz/wiki}}.
 
 \begin{figure}[htbp]
 \centering
@@ -2643,17 +2666,27 @@ class can be found in the documentation of \textit{Steinmetz} \cn.
 Namely, there are three resource endpoints for adding new projects, retrieving them,
 and to eventually cluster them:
 \begin{enumerate}[noitemsep]
+    \item \code{GET \quad  "/analysis/"}
     \item \code{POST\quad  "/analysis/"}
     \item \code{GET \quad  "/analysis/\{projectName\}"}
     \item \code{GET \quad  "/analysis/\{projectName\}/cluster"}
+    \item \code{GET \quad  "/analysis/\{projectName\}/optimize"}
 \end{enumerate}
 
 
 \subsubsection{Resource 1}
-The first resource only accepts \code{POST} requests and is solely used to
+The first resource just responds with a list of names of all the projects that
+have been analyzed in the past using resource 2.
+
+This feature is used in the front\hyp end as well to provide an auto\hyp completing
+search bar when entering a project name.
+
+
+\subsubsection{Resource 2}
+The second resource only accepts \code{POST} requests and is solely used to
 create new projects by uploading the necessary data and extracting the
 coupling information out of it as discussed in chapter \ref{chap:extracting-coupling}.
-An overview of the data that resource 1 mandates is depicted in table
+An overview of the data that resource 2 mandates is depicted in table
 \ref{table:data-resource-1}.
 Additionally, table \ref{table:binary-data-resource-1} exhibits what the
 binary data fields of table \ref{table:data-resource-1} have to be in
@@ -2729,21 +2762,26 @@ while the analysis can still be performed albeit with lower quality:
 \end{table}
 
 
-\subsubsection{Resource 2}
-The second resource, \code{GET "/analysis/\{projectName\}"}, is solely used to
-retrieve a project that was persisted earlier via resource 1. Hence, it only
+\subsubsection{Resource 3}
+The third resource, \code{GET "/analysis/\{projectName\}"}, is solely used to
+retrieve a project that was persisted earlier via resource 2. Hence, it only
 mandates the \code{projectName} as a string to query \textit{Neo4j} for the
 respective un\hyp clustered graph.
 
 
-\subsubsection{Resource 3}
-The third resource is used to cluster a graph that was persisted earlier using
-resource 1. This is done in two steps as the computational time of the logic
-behind resource 1 is a lot higher compared to the duration of the clustering
-of resource 3. Furthermore, the clustering is usually performed multiple times
+\subsubsection{Resource 4}
+The fourth resource is used to cluster a graph that was persisted earlier using
+resource 2. This is done in two steps as the computational time of the logic
+behind resource 2 is a lot higher compared to the duration of the clustering
+of resource 4. Furthermore, the clustering is usually performed multiple times
 leveraging different graph clustering algorithms. Thus, it conserves resources
 to construct the graph-theoretic representation of the input monolithic application
-only once and to retrieve it multiple times for every request to resource 3.
+only once and to retrieve it multiple times for every request to resource 4.
+
+
+\subsubsection{Resource 5}
+The last resource is used to optionally optimize the hyper\hyp parameters of our methodology.
+This is explained in more detail in subsection \ref{subsubsect:hyper-parameter-optimization}.
 
 
 \subsection{Logic controllers}
@@ -2830,6 +2868,12 @@ which are detailed in the following subsections.
         [InputQualityAnalyzer.kt]
     ]
   ]
+  [optimization
+    [genetic
+        [EvolutionManager.kt]
+        [Specimen.kt]
+    ]
+  ]
   [AnalysisController.kt]
 ]
 \end{forest}
@@ -2875,6 +2919,19 @@ Every sub-package for each of the available graph clustering algorithms contains
 a manager class which implements the \code{ClusteringAlgorithmManager} interface.
 In these classes, the actual reference implementation of each algorithm is wrapped.
 Consequently, the implementations in those classes differ vastly from one to the other.
+A class diagram has been created to depict the classes involved in this step
+(see figure \ref{fig:class-diagram-clustering-algorithm-manager}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{class-diagram-clustering-algorithm-manager}
+\caption{Class diagram of the major classes involved in the clustering step}
+\caption*{\centering
+  All of the supported graph clustering algorithms have a class that implements
+  their usage.
+}
+\label{fig:class-diagram-clustering-algorithm-manager}
+\end{figure}
 
 Some of the reference implementations are written in Java which allows us to directly
 integrate them into our implmentation. However, the majority of them are compiled C or
@@ -2910,6 +2967,19 @@ leveraging the \textit{coroutine} feature of the Kotlin programming language.
 The sub-packages within the package \code{extraction.coupling} in figure
 \ref{fig:top-level-logic-structure} are each implementing one input dimension of the
 ones highlighted in chapter \ref{chap:extracting-coupling}.
+A class diagram of the involved classes can be seen in figure
+\ref{fig:class-diagram-abstract-extractor}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{class-diagram-abstract-extractor}
+\caption{Class diagram of the classes involved in the extraction step}
+\caption*{\centering
+  Every of the four coupling dimensions gets a class that implements it
+  for a supported platform.
+}
+\label{fig:class-diagram-abstract-extractor}
+\end{figure}
 
 Firstly, the sub-package \code{extraction.graph} contains two classes,
 \code{GraphConverter} and \code{GraphInserter}, which are handling the deserialization
@@ -3053,9 +3123,47 @@ The distinct implementations are not covered in more detail as they are very
 close to the mathematical formulae in chapter \ref{chap:metrics}.
 
 
+\subsubsection{Hyper-parameter optimization} \label{subsubsect:hyper-parameter-optimization}
+Similarly to the fact that some graph clustering algorithms are run
+multiple times concurrently to counteract the fact that they require the amount
+of clusters a priori, we implemented a similar idea for the hyper\hyp parameters
+of our methodology, namely the coupling type weights.
+
+To keep the runtimes of the optimization acceptable, we opted to implement a
+genetic algorithm that optimizes the hyper\hyp parameters \cn.
+It serializes the three parameters (i.e. \textit{dynamic coupling weight},
+\textit{semantic coupling weight}, \textit{evolutionary coupling weight}) into
+a chromosome. By default, a population of size 100 is evolved over 100 generations.
+To get out of local minima, the longer no better parameters were found, the higher
+the mutation chance gets according to the following formula while the
+$chanceToMutateInPercent$ is set to 1 by default and the $mutationChance$
+is capped to 50\%:
+\[
+  \frac{(chanceToMutateInPercent \times generationsWithoutImprovement)}{2}
+\]
+
+In the front\hyp end, the user can select which graph clustering algorithm is
+utilized for the fitness function of the genetic algorithm.
+Additionally, the metric that is the output of the fitness function can be
+selected from the available ones.
+
+
 \subsection{Extending the analysis for a new language}
 
-
+It was a conscious design decision in the engineering of the implementation that its core
+is agnostic of any programming language or platform that it analyzes.
+As seen in figure \ref{fig:coupling-extraction-structure}, the \code{extraction.coupling}
+package contains sub\hyp packages for every coupling dimension and then another sub\hyp package
+for the platforms that are supported. As described earlier, I exemplarily implemented every step
+of the analysis of software written in Java, hence the \code{java} packages in each
+\code{platforms} sub\hyp package.
+To be able to analyze another language or platform, one has to conduct four steps:
+\begin{enumerate}
+    \item Implement each abstract extractor class for all of the four coupling dimensions
+    \item Add the new language or platform to the \code{extraction.Platform} enum
+    \item Add the new enum entry to the front-end so it becomes selectable
+    \item Extend the clauses of the methods in \code{extraction.graph.GraphInserter}
+\end{enumerate}
 
 
 
@@ -3293,7 +3401,7 @@ in the third tile, next to the selected algorithm, is highlighted in green.
 
 
 
-\chapter{Results} \label{chap:results}
+\chapter{Experiment design} \label{chap:experiment-design}
 
 Our full implementation exhibited in chapter \ref{chap:implementation} allowed us
 to evaluate our methodology using actual software which was selected via the
@@ -3302,7 +3410,7 @@ possible candidates for the experiments.
 
 
 
-\section{Experimental setup}
+\section{Experiment setup}
 
 Five freely available open-source applications as well as a closed source one
 provided my the host organization of this thesis project were chosen to be run through
@@ -3344,21 +3452,26 @@ of possible ones via the search functionality of GitHub and regular searches via
 \hline
 Project & Project Page & SLOC & Description \\
 \hline\hline
+
 Heritrix        & \href{https://github.com/internetarchive/heritrix3}{GitHub Repository} & $15454$ &
 The \textit{Internet Archive's} open-source, extensible, web-scale, archival-quality web
 crawler project \\\hline
+
 Teammates       & \href{https://github.com/TEAMMATES/teammates}{GitHub Repository} & $42280$ &
-An online tool for managing peer evaluations and other feedback paths of students
-\\\hline
+An online tool for managing peer evaluations and other feedback paths of students \\\hline
+
 XWiki           & \href{https://github.com/xwiki/xwiki-platform}{GitHub Repository} & $231349$ &
 An advanced open source enterprise wiki \\\hline
-Jenkins         & \href{https://github.com/jenkinsci/jenkins}{GitHub Repository} & $102263$ &
-A leading open-source automation server to automate development workflows \\\hline
+
+Google Bazel    & \href{https://github.com/bazelbuild/bazel}{GitHub Repository} & $337292$ &
+A fast, scalable, multi-language and extensible build system \\\hline
+
 Apache Solr     & \href{https://github.com/apache/lucene-solr}{GitHub Repository} & $203365$ &
 A high-performance, fully\hyp featured text search engine \\\hline
-Picnic Platform & \textit{Closed Source} & $55767$ &
-The core back-end of Picnic (the host organization of this thesis project) \\
-\hline
+
+Picnic Store & \textit{Closed Source} & $26953$ &
+The store back-end of Picnic (the host organization of this thesis project) \\\hline
+
 \end{tabularx}
 \caption{The software projects selected for the evaluation}
 \label{table:evaluation-projects}
@@ -3401,22 +3514,20 @@ be recorded which will in turn also be used to generate the microservice candida
 recommendations which are ergo flawed and unreliable.
 
 Due to this difficulty and its possible repercussions, we decided to leave the
-\textit{dynamic coupling} dimension out of our experiments.
-Nevertheless, the functionality was tested with example workloads
-which still enables \textit{Steinmetz} to be used
-in an enterprise setting with readily available production environments.
-Finally, owing to the fact that our implementation allows for one input dimension
+\textit{dynamic coupling} dimension out of most of the experiments.
+Nevertheless, owing to the fact that our implementation allows for one input dimension
 to be left out when conducting an analysis, this difficulty could be circumvented
-during the experiments.
+during the first experiment.
+
+Finally, to test that the entirety of our implemented methodology was working as designed,
+we conducted the first experiment by analyzing one of the projects with all the available
+dimensions, thus including the \textit{dynamic coupling}. The details of this first as
+well as the others experiments are discussed in more detail in the following section
+\ref{sect:experiment-execution}.
 
 
-\subsection{Execution}
 
-
-
-
-
-\section{Evaluation} \label{sect:evaluation}
+\section{Execution} \label{sect:experiment-execution}
 
 
 
@@ -3424,6 +3535,8 @@ during the experiments.
 
 
 \chapter{Discussion} \label{chap:discussion}
+
+\section{Results}
 
 Coming back to the introduction of this thesis and the posed research questions,
 we created a full methodology that gets any monolithic software as its input,
@@ -3439,9 +3552,11 @@ this area of research in multiple aspects such as:
     owing to the fact that the analyzed input measures common microservice
     quality metrics extracted from literature.
     \item The application of said rationale to analyzable software metrics
-    that constitute the foundation of the devised methodology.
+    that constitute the foundation of the devised methodology in the form
+    of four software coupling dimensions compared to a maximum
+    of two in previous research in this domain.
     \item A conducted survey of graph clustering algorithms to identify feasible
-    ones via an extensive set of criteria. Eventually, eight algorithms were
+    ones via an extensive set of criteria. Eventually, six algorithms were
     selected and incorporated into the methodology compared to a maximum
     of two in previous research in this domain.
     \item A full implementation of the devised methodology with a modern
