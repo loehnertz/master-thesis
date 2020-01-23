@@ -20,7 +20,7 @@
 \captionsetup{format=centered} % Global activation of the custom captions
 
 \usepackage{color}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage[tikz]{bclogo}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage{lipsum}
@@ -100,9 +100,27 @@
 \usepackage{pgfplotstable}
 \graphicspath{ {figures/} }
 
+% Credit: https://github.com/cansik/kotlin-latex-listing
+\lstdefinelanguage{Kotlin}{
+  comment=[l]{//},
+  commentstyle={\color{gray}\ttfamily},
+  emph={delegate, filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println, return@},
+  emphstyle={\color{OrangeRed}},
+  identifierstyle=\color{black},
+  keywords={abstract, actual, as, as?, break, by, class, companion, continue, data, do, dynamic, else, enum, expect, false, final, for, fun, get, if, import, in, interface, internal, is, null, object, override, package, private, public, return, set, super, suspend, this, throw, true, try, typealias, val, var, vararg, when, where, while},
+  keywordstyle={\color{NavyBlue}\bfseries},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[s]{"""*}{*"""},
+  ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String},
+  ndkeywordstyle={\color{BurntOrange}\bfseries},
+  sensitive=true,
+  stringstyle={\color{ForestGreen}\ttfamily},
+}
+
 \definecolor{lstgrey}{rgb}{0.95,0.95,0.95}
 \lstset{
-    language=Java,
+    language=Kotlin,
     frame=single,
     backgroundcolor=\color{lstgrey},
     basicstyle=\small\ttfamily,
