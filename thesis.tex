@@ -731,11 +731,9 @@ values over \(0.4\) already resemble a strong clustering structure
 \cite{newman2004fast, fortunato2007resolution}.
 
 \paragraph{Modularization Quality}
-The \textit{Modularization Quality} (MQ) metric was devised by Mitchell and Mancoridis
-\cite{mitchell2006automatic} in a paper that researched a very similar idea to ours ---
-instead of clustering classes to achieve a microservice decomposition, they clustered
-classes of a given application to construct a top\hyp level package structure for it.
-Thus, this metric seems to be well\hyp suited for our methodology.
+The \textit{Modularization Quality} (MQ) metric calculates how good the cohesion
+within a cluster is compared to the coupling from within that cluster toward
+the other clusters \cite{mitchell2006automatic}.
 It is calculated by determining the \textit{Cluster Factor} (CF) of every
 cluster. This factor is a number on a scale from \([0.0, 1.0]\) with the same
 proposition as the \textit{modularity} metric although just the value for one
@@ -2276,27 +2274,49 @@ measures the quality of the resulting clustering.
 In contrast to the second set, for the third set is always holds true that
 higher values are better.
 
-This set consists of ten metrics based on the \textit{Modularity} and
-\textit{Modularization Quality} metrics, introduced in section
-\ref{sect:background-graph-clustering}:
+The \textit{Modularization Quality} (MQ) metric was devised by Mitchell and Mancoridis
+\cite{mitchell2006automatic} in a paper that researched a very similar idea to ours ---
+instead of clustering classes to achieve a microservice decomposition, they cluster
+classes of a given application to construct a top\hyp level package structure for it.
+Additionally, Mitchell and Mancoridis validated their metric in their work
+\cite{mitchell2006automatic}.
+Consequently, this metric is perfectly suited for our methodology as its goal is aligned with ours:
+\begin{displayquote}
+\emph{"MQ determines the quality of a partition quantitatively as the trade-off
+between interconnectivity (i.e., dependencies between the modules of two distinct
+subsystems) and intraconnectivity (i.e., dependencies between the modules of
+the same subsystem). This trade-off is based on the assumption that well-designed
+software systems are organized into cohesive subsystems that are loosely interconnected.
+Hence, MQ is designed to reward the creation of highly cohesive clusters that
+are not coupled excessively."}~\cite{mitchell2006automatic}
+\end{displayquote}
+
+Thus, this set of metrics consists of ten metrics based on the and
+\textit{Modularization Quality} and \textit{Modularity} metrics, introduced in
+section \ref{sect:background-graph-clustering}:
 \begin{itemize}[noitemsep]
-  \item Dynamic coupling modularity
-  \item Semantic coupling modularity
-  \item Evolutionary coupling modularity
-  \item Average coupling modularity
-  \item Total coupling modularity
   \item Dynamic modularization quality
   \item Semantic modularization quality
   \item Evolutionary modularization quality
   \item Average modularization quality
   \item Total modularization quality
+  \item Dynamic coupling modularity
+  \item Semantic coupling modularity
+  \item Evolutionary coupling modularity
+  \item Average coupling modularity
+  \item Total coupling modularity
 \end{itemize}
+The \textit{Modularity} metrics are included but not preferred since some
+of our supported graph clustering algorithms use it as their fitness function
+which causes the metric to favor them. Nevertheless, both kinds of metrics
+are specifially interesting when combined as high scores in both are a sign of
+a good partition and graph clustering algorithm in general.
 Precisely, the first three of each kind of the above share the same underlying
-equation of calculating the \textit{Modularity} or \textit{Modularization Quality}
+equation of calculating the \textit{Modularization Quality} or \textit{Modularity}
 of their respective coupling graph (e.g. \(G_{semantic}\)).
-The \textit{Average coupling modularity} and the \textit{Average modularization quality}
+The \textit{Average modularization quality} and the \textit{Average coupling modularity}
 are the arithmetic means of the set of the first three metrics of their kind.
-Lastly, the \textit{Total coupling modularity} and \textit{Total modularization quality}
+Lastly, the \textit{Total modularization quality} and \textit{Total coupling modularity}
 are the calculations performed on the combined graph \(G_{combined}\).
 
 Specifically this last set is directly answering \textit{RQ2} by offering
