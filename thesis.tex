@@ -702,7 +702,7 @@ connected to other vertices outside of their own cluster via
 \textit{inter-cluster edges} \cite{lancichinetti2009community, newman2004fast}.
 
 \paragraph{Modularity}
-The metric of \textit{modularity} measures the quality of a graph clustering
+The metric of \textit{Modularity} measures the quality of a graph clustering
 by comparing the interconnectedness of intra-cluster vertices to their
 inter-cluster edges. It works on unweighted as well as weighted graphs
 \cite{clauset2004modularity, blondel2008modularity}
@@ -724,34 +724,25 @@ where
 \end{itemize}
 The metric ranges on a scale of \([0.0, 1.0]\), from no clustering structure
 at all to a perfect clustering. Any given graph has a theoretic maximum in terms
-of the achievable \textit{modularity}. However, it is rarely \(1.0\) and finding
+of the achievable \textit{Modularity}. However, it is rarely \(1.0\) and finding
 the global maximum is proven to be an NP-complete optimization problem
 \cite{brandes2006maximizing}. Nevertheless, the notion in literature is that
 values over \(0.4\) already resemble a strong clustering structure
 \cite{newman2004fast, fortunato2007resolution}.
 
-\paragraph{Modularization Quality}
-The \textit{Modularization Quality} (MQ) metric calculates how good the cohesion
+\paragraph{Mean Cluster Factor}
+The \textit{Cluster Factor} (CF) metric calculates how good the cohesion
 within a cluster is compared to the coupling from within that cluster toward
 the other clusters \cite{mitchell2006automatic}.
-It is calculated by determining the \textit{Cluster Factor} (CF) of every
-cluster. This factor is a number on a scale from \([0.0, 1.0]\) with the same
-proposition as the \textit{modularity} metric although just the value for one
-cluster at a time is calculated:
+This factor is a number on a scale from \([0.0, 1.0]\) with higher values
+being better. It bears the same proposition as the \textit{Modularity}
+metric although just the value for one cluster at a time is calculated:
 \[
   CF(c) = \frac{I(c)}{I + \frac{1}{2}J(c)}
 \]
 while $I$ is a function that calculates the sum of the edge weights of
 all intra\hyp cluster edges of the given cluster $c$ while $J$ does the same
 for inter\hyp cluster edges.
-As the last step, the original paper claims to sum up the \textit{Cluster Factor}
-values of every cluster while this makes no sense when comparing the performance
-of different graph clustering algorithms as the number generally grows with
-rising amounts of clusters hence favoring algorithms that produce higher cluster
-amounts. Consequently, we decided to instead take the average of all of the
-\textit{Cluster Factor} while the ones that yield $infinity$ due to
-division\hyp by\hyp zero are treated as $0.0$. In this way, the final metric value
-ranges is on the scale of \([0.0, 1.0]\) again instead of having no scale.
 
 
 \subsection{Renowned graph clustering algorithms} \label{subsect:renowned-graph-clustering-algorithms}
@@ -834,22 +825,22 @@ The main improvement over \textit{MCL} is better runtime complexity
 \paragraph{Clauset-Newman-Moore \cite{clauset2004modularity}}
 Two years after releasing the \textit{Girvan-Newman} algorithm, Newman
 released another graph clustering algorithm \cite{newman2004fast}.
-Its idea is based on maximizing the \textit{modularity} of the clustering.
+Its idea is based on maximizing the \textit{Modularity} of the clustering.
 However, shortly after, another improved version of his new algorithm
 was published together with Clauset and Moore which is the
 faster and generally improved version \cite{clauset2004modularity}.
 
-As above-mentioned, maximizing \textit{modularity} is an NP-complete
+As above-mentioned, maximizing \textit{Modularity} is an NP-complete
 optimization problem which led Clauset et al. to solve it via a greedy heuristic.
 Their algorithm starts off with putting every vertex of the given graph in its
 own cluster, such that \(\{\{v\} \mid v \in V\}\).
 Afterwards, in a maximum of \(\vert V \vert - 1\) iterations, the two clusters
-that share a connection and whose amalgamation increases the \textit{modularity}
+that share a connection and whose amalgamation increases the \textit{Modularity}
 \(Q\) the most, respectively decreases it the least, are merged
 \cite{clauset2004modularity}.
 
 Eventually, this greedy algorithm will converge in a local or even global
-optimum regarding the \textit{modularity} of the computed clustering
+optimum regarding the \textit{Modularity} of the computed clustering
 \cite{clauset2004modularity}.
 
 \paragraph{Louvain \cite{blondel2008modularity}}
@@ -860,8 +851,8 @@ The algorithm by Blondel et al. consists of two distinct phases.
 
 Before beginning with the first phase, every vertex is placed in its own cluster.
 The first phase then checks for each vertex with which adjacent vertex it can
-merge clusters to reach a maximum increase in \textit{modularity}.
-Compared to \textit{Clauset-Newman-Moore}, only if the \textit{modularity}
+merge clusters to reach a maximum increase in \textit{Modularity}.
+Compared to \textit{Clauset-Newman-Moore}, only if the \textit{Modularity}
 can be actually increased, the clusters are merged \cite{blondel2008modularity}.
 All vertices are iterated over and checked repeatedly until a local optimum
 is reached \cite{blondel2008modularity}.
@@ -874,10 +865,10 @@ Additionally, self-loops are attached to every vertex \cite{blondel2008modularit
 
 Finally, the first phase is applied to the newly constructed graph again.
 These two phases are then iteratively alternated until the increase in
-\textit{modularity} ends or reaches a plateau \cite{blondel2008modularity}.
+\textit{Modularity} ends or reaches a plateau \cite{blondel2008modularity}.
 Hence, the \textit{Louvain} algorithm is working with a heuristic as well.
 
-Fortunato et al. showed that \textit{modularity} optimization suffers
+Fortunato et al. showed that \textit{Modularity} optimization suffers
 the problem of not being able to identify clusters of small sizes, the so called
 \textit{resolution limit problem} \cite{fortunato2007resolution}.
 The main improvements proposed by Blondel et al. specifially compared
@@ -908,7 +899,7 @@ its core idea is entirely different. The similarity stems from the fact
 that every vertex is also assigned to its own cluster in the beginning and
 that cluster are then iteratively merged when this improves the metric that
 the algorithm optimizes toward. However, compared to the \textit{Louvain}
-algorithm, instead of \textit{modularity}, a \textit{map equation} is minimized.
+algorithm, instead of \textit{Modularity}, a \textit{map equation} is minimized.
 
 Precisely, \textit{Infomap} represents the given graph as a random walk encoded
 via Huffman coding \cite{huffman1952coding}.
@@ -2117,16 +2108,16 @@ in the following sections while the devised metrics are the following:
   \item Amount of inter-cluster edges
   \item Ratio of inter-cluster edge weight
   \item Mean cluster size
-  \item Dynamic coupling modularity
-  \item Semantic coupling modularity
-  \item Evolutionary coupling modularity
-  \item Average coupling modularity
-  \item Total coupling modularity
-  \item Dynamic modularization quality
-  \item Semantic modularization quality
-  \item Evolutionary modularization quality
-  \item Average modularization quality
-  \item Total modularization quality
+  \item Dynamic Mean Cluster Factor
+  \item Semantic Mean Cluster Factor
+  \item Evolutionary Mean Cluster Factor
+  \item Average Mean Cluster Factor
+  \item Total Mean Cluster Factor
+  \item Dynamic Coupling Modularity
+  \item Semantic Coupling Modularity
+  \item Evolutionary Coupling Modularity
+  \item Average Coupling Modularity
+  \item Total Coupling Modularity
 \end{itemize}
 
 
@@ -2228,7 +2219,7 @@ Hence, this metric is a combination of the \textit{Afferent Coupling} and
 The smaller this value is the less external interfaces the microservice candidate
 recommendations will have thus it is generally preferred for this metric to be
 low however it is not desirable to achieve the lowest as possible as this
-might sacrifice other metrics such as the \textit{coupling modularity}.
+might sacrifice other metrics such as the \textit{Coupling Modularity}.
 
 \paragraph{Ratio of inter-cluster edge weight}
 Similarly to the previous metric, this metric measures how many percent
@@ -2291,20 +2282,35 @@ Hence, MQ is designed to reward the creation of highly cohesive clusters that
 are not coupled excessively."}~\cite{mitchell2006automatic}
 \end{displayquote}
 
-Thus, this set of metrics consists of ten metrics based on the and
-\textit{Modularization Quality} and \textit{Modularity} metrics, introduced in
+The first step is to calculate \textit{Cluster Factor} (CF) values for every cluster
+that range on a scale of \([0.0, 1.0]\), as explained in section
+\ref{sect:background-graph-clustering}.
+As the last step of calculating the \textit{Modularization Quality} metric,
+the original paper claims to sum up the \textit{Cluster Factor}
+values of every cluster while this makes no sense when comparing the performance
+of different graph clustering algorithms as the metric generally grows with
+rising amounts of clusters hence favoring algorithms that produce higher cluster
+amounts. Consequently, we decided to instead take the arithmetic mean of all of
+the \textit{Cluster Factor} values while the ones that yield $\infty$ due to
+division\hyp by\hyp zero are treated as $0.0$ as the original paper did as well
+\cite{mitchell2006automatic}. In this way, the final metric value
+ranges on the scale of \([0.0, 1.0]\) again instead of having no scale.
+We propose the name \textit{Mean Cluster Factor} (mCF) for this metric.
+
+Thus, as this set of metrics consists of ten metrics based on the and
+\textit{Mean Cluster Factor} and \textit{Modularity} metrics, introduced in
 section \ref{sect:background-graph-clustering}:
 \begin{itemize}[noitemsep]
-  \item Dynamic modularization quality
-  \item Semantic modularization quality
-  \item Evolutionary modularization quality
-  \item Average modularization quality
-  \item Total modularization quality
-  \item Dynamic coupling modularity
-  \item Semantic coupling modularity
-  \item Evolutionary coupling modularity
-  \item Average coupling modularity
-  \item Total coupling modularity
+  \item Dynamic Mean Cluster Factor
+  \item Semantic Mean Cluster Factor
+  \item Evolutionary Mean Cluster Factor
+  \item Average Mean Cluster Factor
+  \item Total Mean Cluster Factor
+  \item Dynamic Coupling Modularity
+  \item Semantic Coupling Modularity
+  \item Evolutionary Coupling Modularity
+  \item Average Coupling Modularity
+  \item Total Coupling Modularity
 \end{itemize}
 The \textit{Modularity} metrics are included but not preferred since some
 of our supported graph clustering algorithms use it as their fitness function
@@ -2312,11 +2318,11 @@ which causes the metric to favor them. Nevertheless, both kinds of metrics
 are specifially interesting when combined as high scores in both are a sign of
 a good partition and graph clustering algorithm in general.
 Precisely, the first three of each kind of the above share the same underlying
-equation of calculating the \textit{Modularization Quality} or \textit{Modularity}
+equation of calculating the \textit{Mean Cluster Factor} or \textit{Modularity}
 of their respective coupling graph (e.g. \(G_{semantic}\)).
-The \textit{Average modularization quality} and the \textit{Average coupling modularity}
+The \textit{Average Mean Cluster Factor} and the \textit{Average Coupling Modularity}
 are the arithmetic means of the set of the first three metrics of their kind.
-Lastly, the \textit{Total modularization quality} and \textit{Total coupling modularity}
+Lastly, the \textit{Total Mean Cluster Factor} and \textit{Total Coupling Modularity}
 are the calculations performed on the combined graph \(G_{combined}\).
 
 Specifically this last set is directly answering \textit{RQ2} by offering
