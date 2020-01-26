@@ -179,7 +179,7 @@ proof-of-concept (PoC) are the outputs of this project.
 The latter is introduced in chapter \ref{chap:implementation}.
 The steps that this PoC needs to conduct are derived and tested
 independently via exploratory as well as confirmatory case studies
-in chapter \ref{chap:results} to receive substantive, numeric,
+in chapter \ref{chap:evaluation} to receive substantive, numeric,
 and separate results \cite{easterbrook2008selecting}.
 Moreover, controlled experiments are not feasible as control results
 with their dependent variables for the outcomes are rare and difficult
@@ -188,7 +188,7 @@ to find and measure \cite{easterbrook2008selecting}.
 Finally, the research is validated with real-world monolithic applications.
 A large-scale code base provided by the company hosting this thesis as well as
 large open source software projects were candidates for this.
-The evaluation as part of section \ref{chap:results} is conducted using
+The evaluation as part of section \ref{chap:evaluation} is conducted using
 a custom set of metrics devised in chapter \ref{chap:metrics}.
 
 
@@ -722,13 +722,38 @@ where
   \item \(c_i\) and \(c_j\) represent the clusters of the vertices \(i\) and \(j\),
   \item \(\delta\) is a delta function
 \end{itemize}
-The metric ranges on a scale from \([0.0, 1.0]\), from no clustering structure
+The metric ranges on a scale of \([0.0, 1.0]\), from no clustering structure
 at all to a perfect clustering. Any given graph has a theoretic maximum in terms
 of the achievable \textit{modularity}. However, it is rarely \(1.0\) and finding
 the global maximum is proven to be an NP-complete optimization problem
 \cite{brandes2006maximizing}. Nevertheless, the notion in literature is that
 values over \(0.4\) already resemble a strong clustering structure
 \cite{newman2004fast, fortunato2007resolution}.
+
+\paragraph{Modularization Quality}
+The \textit{Modularization Quality} (MQ) metric was devised by Mitchell and Mancoridis
+\cite{mitchell2006automatic} in a paper that researched a very similar idea to ours ---
+instead of clustering classes to achieve a microservice decomposition, they clustered
+classes of a given application to construct a top\hyp level package structure for it.
+Thus, this metric seems to be well\hyp suited for our methodology.
+It is calculated by determining the \textit{Cluster Factor} (CF) of every
+cluster. This factor is a number on a scale from \([0.0, 1.0]\) with the same
+proposition as the \textit{modularity} metric although just the value for one
+cluster at a time is calculated:
+\[
+  CF(c) = \frac{I(c)}{I + \frac{1}{2}J(c)}
+\]
+while $I$ is a function that calculates the sum of the edge weights of
+all intra\hyp cluster edges of the given cluster $c$ while $J$ does the same
+for inter\hyp cluster edges.
+As the last step, the original paper claims to sum up the \textit{Cluster Factor}
+values of every cluster while this makes no sense when comparing the performance
+of different graph clustering algorithms as the number generally grows with
+rising amounts of clusters hence favoring algorithms that produce higher cluster
+amounts. Consequently, we decided to instead take the average of all of the
+\textit{Cluster Factor} while the ones that yield $infinity$ due to
+division\hyp by\hyp zero are treated as $0.0$. In this way, the final metric value
+ranges is on the scale of \([0.0, 1.0]\) again instead of having no scale.
 
 
 \subsection{Renowned graph clustering algorithms} \label{subsect:renowned-graph-clustering-algorithms}
@@ -861,6 +886,21 @@ The main improvements proposed by Blondel et al. specifially compared
 to the algorithm by Clauset et al. are better runtime complexity, and a solution
 to the \textit{resolution limit problem}, that \textit{Clauset-Newman-Moore}
 faces, by leveraging the aforementioned self-loops \cite{blondel2008modularity}.
+
+\paragraph{Label Propagation \cite{raghavan2007lpa}}
+The \textit{Label Propagation} was devised in 2007 by Raghavan et al.
+as a graph clustering algorithm that works based on similar ideas to \textit{MCL}.
+Just as \textit{MCL} and in difference to e.g. the \textit{Louvain} algorithm,
+it does not use a pre\hyp defined fitness function.
+It instead works by having some labeled vertices or alternatively having
+all the vertices with their own label which is what we are using as no set labels
+are available for our graph clustering problem.
+The next step runs in a loop and propagates the label of a vertex to its neighbors.
+This will cause densly\hyp connected vertices to reach a consensus on a certain label
+quickly hence forming a cluster. If a vertex has to choose between two labels,
+it chooses randomly which causes this algorithm to be non\hyp deterministic.
+This step is then repeated for a previously set number of iterations or until
+convergence is reached \cite{raghavan2007lpa}.
 
 \paragraph{Infomap \cite{rosvall2008infomap}}
 The \textit{Infomap} algorithm was devised in 2008 by Rosvall and Bergstrom
@@ -1859,7 +1899,7 @@ reference implementation.
 The way that classifications are negated was chosen so that $\oplus$
 is a positive feature regarding the utilization as part of our work.
 
-Eventually, apart from the \textit{Girvan-Newman} algorithm, the first six
+Eventually, apart from the \textit{Girvan-Newman} algorithm, the first seven
 respectively seven algorithms from table
 \ref{table:graph-clustering-survey} were selected to be utilized as part of our work.
 We chose to not select \textit{Girvan-Newman} as well despite its positive evaluation as Newman
@@ -1884,6 +1924,7 @@ The citation numbers in the table are also referenced there.
  \cite{pons2005computing}       & \(\mathcal{O}(mn)\)           & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
  \cite{clauset2004modularity}   & \(\mathcal{O}(md \log{n})\)   & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
  \cite{blondel2008modularity}   & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
+ \cite{raghavan2007lpa}   & \(\mathcal{O}(n)\)                  & $\oplus$  & $\oplus$   & $\ominus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
  \cite{rosvall2008infomap}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
  \cite{biemann2006chinese}      & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\ominus$  & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
  \cite{reichardt2004detecting}  & \(\mathcal{O}(n)\)            & $\oplus$  & $\ominus$  & $\ominus$  & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
@@ -1910,6 +1951,7 @@ The citation numbers in the table are also referenced there.
 %   \item \cite{pons2005computing}: Walktrap
 %   \item \cite{clauset2004modularity}: Clauset-Newman-Moore
 %   \item \cite{blondel2008modularity}: Louvain
+%   \item \cite{raghavan2007lpa}: Label Propagation
 %   \item \cite{rosvall2008infomap}: Infomap
 %   \item \cite{biemann2006chinese}: Chinese Whispers
 %   \item \cite{reichardt2004detecting}: Spinglass
@@ -2064,7 +2106,7 @@ and the clustered output respectively.
 Thus, it was important to us to also devise objective metrics, numeric in nature,
 to be able to evaluate the results of our methodology and to answer \textit{RQ2}.
 
-In total, we devised a total of 12 metrics that can be sorted into three sets ---
+In total, we devised a total of 17 metrics that can be sorted into three sets ---
 some of them being more general and overarching while others are more specific
 to the problem at hand by offering a direct order of magnitude regarding the
 quality of the produced output. The three sets of metrics are covered
@@ -2082,6 +2124,11 @@ in the following sections while the devised metrics are the following:
   \item Evolutionary coupling modularity
   \item Average coupling modularity
   \item Total coupling modularity
+  \item Dynamic modularization quality
+  \item Semantic modularization quality
+  \item Evolutionary modularization quality
+  \item Average modularization quality
+  \item Total modularization quality
 \end{itemize}
 
 
@@ -2178,6 +2225,8 @@ This metric is calculated by counting the amount of edges in the combined graph
   \vert E_{inter}(G_{combined}) \vert =
   \vert \{ e_i(v_j, \ v_k) \in E(G_{combined}) \mid C(v_j) \neq C(v_k) \} \vert
 \]
+Hence, this metric is a combination of the \textit{Afferent Coupling} and
+\textit{Efferent Coupling} metrics by Martin \cite{martin2000design}.
 The smaller this value is the less external interfaces the microservice candidate
 recommendations will have thus it is generally preferred for this metric to be
 low however it is not desirable to achieve the lowest as possible as this
@@ -2219,7 +2268,7 @@ the \textit{amount of clusters} metric, depicts the notion of granularity.
 
 
 
-\section{Coupling modularity}
+\section{Modularity metrics}
 
 Finally, the third set of devised metrics is the most interesting one since,
 compared to the second set, it not only answers \textit{RQ2} but also directly
@@ -2227,22 +2276,28 @@ measures the quality of the resulting clustering.
 In contrast to the second set, for the third set is always holds true that
 higher values are better.
 
-This set consists of five metrics based on the \textit{modularity} metric,
-introduced in section \ref{sect:background-graph-clustering}:
+This set consists of ten metrics based on the \textit{Modularity} and
+\textit{Modularization Quality} metrics, introduced in section
+\ref{sect:background-graph-clustering}:
 \begin{itemize}[noitemsep]
   \item Dynamic coupling modularity
   \item Semantic coupling modularity
   \item Evolutionary coupling modularity
   \item Average coupling modularity
   \item Total coupling modularity
+  \item Dynamic modularization quality
+  \item Semantic modularization quality
+  \item Evolutionary modularization quality
+  \item Average modularization quality
+  \item Total modularization quality
 \end{itemize}
-Precisely, the first three of the above share the same underlying equation
-of calculating the \textit{modularity} of their respective coupling graph
-(e.g. \(Q(G_{semantic})\)).
-The \textit{average coupling modularity} is the arithmetic mean
-of the set of the first three metrics.
-Lastly, the \textit{total coupling modularity} is the \textit{modularity}
-calculation performed on the combined graph \(Q(G_{combined})\).
+Precisely, the first three of each kind of the above share the same underlying
+equation of calculating the \textit{Modularity} or \textit{Modularization Quality}
+of their respective coupling graph (e.g. \(G_{semantic}\)).
+The \textit{Average coupling modularity} and the \textit{Average modularization quality}
+are the arithmetic means of the set of the first three metrics of their kind.
+Lastly, the \textit{Total coupling modularity} and \textit{Total modularization quality}
+are the calculations performed on the combined graph \(G_{combined}\).
 
 Specifically this last set is directly answering \textit{RQ2} by offering
 numeric and objective metrics that can directly be translated into how
@@ -2631,6 +2686,7 @@ class can be found in the wiki of \textit{Steinmetz}
     },
     fit=band,
     before computing xy={l=15pt},
+    inner sep=0.75pt,
   }
 [kotlin
   [controller
@@ -2798,6 +2854,7 @@ which are detailed in the following subsections.
 \begin{figure}[htbp]
 \scriptsize
 \centering
+\begin{minipage}{0.5\linewidth}
 \begin{forest}
   for tree={
     font=\ttfamily,
@@ -2817,6 +2874,7 @@ which are detailed in the following subsections.
     },
     fit=band,
     before computing xy={l=15pt},
+    inner sep=0.75pt,
   }
 [analysis
   [clustering
@@ -2829,6 +2887,9 @@ which are detailed in the following subsections.
     [infomap
         [InfomapManager.kt]
     ]
+    [labelpropagation
+        [LabelPropagationManager.kt]
+    ]
     [louvain
         [LouvainManager.kt]
     ]
@@ -2840,6 +2901,7 @@ which are detailed in the following subsections.
         [WalktrapExecutor.kt]
         [WalktrapManager.kt]
     ]
+    [AbstractNeo4jAlgorithmManager.kt]
     [Clusterer.kt]
     [ClusteringAlgorithm.kt]
     [ClusteringAlgorithmManager.kt]
@@ -2877,6 +2939,7 @@ which are detailed in the following subsections.
   [AnalysisController.kt]
 ]
 \end{forest}
+\end{minipage}
 \caption{Structure of the packages containing the logic}
 \caption*{\centering
   The top-level file structure of the packages that contain the implemented
@@ -3067,6 +3130,7 @@ run concurrently.
     },
     fit=band,
     before computing xy={l=15pt},
+    inner sep=0.75pt,
   }
 [extraction.coupling
   [dynamically
@@ -3556,7 +3620,7 @@ this area of research in multiple aspects such as:
     of four software coupling dimensions compared to a maximum
     of two in previous research in this domain.
     \item A conducted survey of graph clustering algorithms to identify feasible
-    ones via an extensive set of criteria. Eventually, six algorithms were
+    ones via an extensive set of criteria. Eventually, seven algorithms were
     selected and incorporated into the methodology compared to a maximum
     of two in previous research in this domain.
     \item A full implementation of the devised methodology with a modern
@@ -3618,7 +3682,7 @@ the two future work improvements are discussed in further detail.
 We detected that a useful next step would be to evaluate our methodology
 with experienced software engineers and software projects that they built
 or maintain. This type of evaluation would allow to corroborate the findings
-of our \textit{\nameref{sect:evaluation}} as part of this thesis as an engineer
+of our \textit{\nameref{chap:evaluation}} as part of this thesis as an engineer
 that knows the software that is getting analyzed can assess if the automated
 output of our methodology matches their expectations. Additionally, we suspect
 that certain patterns might be detected where our methodology falls short oftentimes
