@@ -3536,31 +3536,31 @@ Finally, the six applications seen in table \ref{table:evaluation-projects}
 that fulfill these requirements were selected after an intensive survey
 of possible ones via the search functionality of GitHub and regular searches via Google.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \def\arraystretch{1.55}
 \begin{tabularx}{\textwidth}{|c|c|c|X|}
 \hline
 Project & Project Page & SLOC & Description \\
 \hline\hline
 
+Apache Solr     & \href{https://github.com/apache/lucene-solr}{GitHub Repository} & $203365$ &
+A high-performance, fully\hyp featured text search engine \\\hline
+
+Google Bazel    & \href{https://github.com/bazelbuild/bazel}{GitHub Repository} & $337292$ &
+A fast, scalable, multi-language and extensible build system \\\hline
+
 Heritrix        & \href{https://github.com/internetarchive/heritrix3}{GitHub Repository} & $15454$ &
 The \textit{Internet Archive's} open-source, extensible, web-scale, archival-quality web
 crawler project \\\hline
+
+Picnic Store & \textit{Closed Source} & $26953$ &
+The store back-end of \textit{Picnic} (the host organization of this thesis project) \\\hline
 
 Teammates       & \href{https://github.com/TEAMMATES/teammates}{GitHub Repository} & $42280$ &
 An online tool for managing peer evaluations and other feedback paths of students \\\hline
 
 XWiki           & \href{https://github.com/xwiki/xwiki-platform}{GitHub Repository} & $231349$ &
 An advanced open source enterprise wiki \\\hline
-
-Google Bazel    & \href{https://github.com/bazelbuild/bazel}{GitHub Repository} & $337292$ &
-A fast, scalable, multi-language and extensible build system \\\hline
-
-Apache Solr     & \href{https://github.com/apache/lucene-solr}{GitHub Repository} & $203365$ &
-A high-performance, fully\hyp featured text search engine \\\hline
-
-Picnic Store & \textit{Closed Source} & $26953$ &
-The store back-end of Picnic (the host organization of this thesis project) \\\hline
 
 \end{tabularx}
 \caption{The software projects selected for the evaluation}
@@ -3617,9 +3617,700 @@ well as the others experiments are discussed in more detail in the following sec
 
 
 
-\section{Execution} \label{sect:experiment-execution}
+\section{Experiment execution} \label{sect:experiment-execution}
+
+Before the actual experiments are exhibited, the criteria of each experiment are discussed
+and explained. Table \ref{table:experiment-criteria} shows the five selected criteria that
+every of the following experiments sets.
+
+\begin{table}[ht!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+Criterion & Explanation \\
+\hline\hline
+
+Couplings dimensions            & The coupling dimensions that were used for the analysis (see \ref{sect:software-quality-metrics}) \\\hline
+
+Couplings dimension weights     & The weights that were assigned to each of the utilized dimensions (see \ref{sect:merging-graphs}) \\\hline
+
+Graph clustering algorithms     & The graph clustering algorithms that were used for the experiment (see \ref{sect:background-graph-clustering}) \\\hline
+
+Maximum amount of iterations    & The maximum amount of iterations used for algorithms that require an input parameter (see \ref{graph-clustering-algorithm-survey-amount-of-clusters}) \\\hline
+
+Recorded metrics                & The metrics that were recorded as part of the experiment (see \ref{chap:metrics}) \\\hline
+
+\end{tabularx}
+\caption{Explanation of the criteria of the experiments}
+\label{table:experiment-criteria}
+\end{table}
 
 
+\subsection{Experiments}
+
+\subsubsection{Experiment Nº 1}
+For the first experiment, we analyzed only the test subject \textit{Heritrix} with
+all available dimensions. The reason for this is that due to the nature of
+\textit{Heritrix} it is feasible to record real\hyp world workload regarding the
+\textit{dynamic coupling}. \textit{Heritrix} is a web\hyp crawler which means that
+after being given one or multiple seeds, it generates its work automatically by
+adding newly found links to a queue. Consequently, no workload has to be
+synthetically generated or recorded while the problem discussed in subsection
+\ref{subsect:difficulties} can be circumvented in this way.
+Eventually, we profiled \textit{Heritrix} during its runtime for 48 hours with the
+\textit{Java Flight Recorder} which yielded a recording of over 200 megabytes
+which was used for this experiment.
+Additionally, the \textit{coupling dimension weights} were set to different values.
+These values were set by running the hyper\hyp parameter optimization detailed in
+\ref{subsubsect:hyper-parameter-optimization} to maximize the
+\textit{Average Mean Cluster Factor} metric.
+Finally, the following criteria were determined:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: dynamic, semantic, evolutionary
+    \item Coupling dimension weights: $4 \times dynamic$, $4 \times semantic$, $7 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics: \textit{Average Mean Cluster Factor}
+\end{itemize}
+
+
+\subsubsection{Experiment Nº 2}
+For the second experiment, we analyzed all of the aforementioned test subjects
+with our implementation. In essence, the criteria of this experiment are the
+same as the one of the first one while the \textit{dynamic coupling} dimension
+is left out due to the reasons described in subsection \ref{subsect:difficulties}.
+Instead the \textit{Average Mean Cluster Factor} metric is recorded:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: semantic, evolutionary
+    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics: \textit{Average Mean Cluster Factor}
+\end{itemize}
+
+
+\subsubsection{Experiment Nº 3}
+This experiment was conducted as a mirroring of the second experiment while a
+different metric was acquired:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: semantic, evolutionary
+    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics: \textit{Amount of Clusters}
+\end{itemize}
+
+
+\subsubsection{Experiment Nº 4}
+Similarly, this experiment sets the same criteria as the last two ones while
+recording the \textit{Ratio Inter-Cluster Edge Weights} metric:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: semantic, evolutionary
+    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics: \textit{Ratio Inter-Cluster Edge Weights}
+\end{itemize}
+
+
+\subsubsection{Experiment Nº 5}
+In this last experiment we recorded the average of each metric per graph
+clustering algorithm with the intent to detect which ones generally perform
+overly good or bad:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: semantic, evolutionary
+    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics: Average of \textit{Average Mean Cluster Factor} per algorithm,
+    Average of \textit{Amount of Clusters} per algorithm,
+    Average of \textit{Ratio Inter-Cluster Edge Weights} per algorithm
+\end{itemize}
+
+
+
+
+\chapter{Evaluation} \label{chap:evaluation}
+
+\section{Experiment Nº 1}
+
+The results of experiment Nº 1 can be found in figure \ref{fig:experiment-1}.
+
+
+\begin{sidewaysfigure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=11cm, width=21.5cm,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=100,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
+          AmCF, % Average Mean Cluster Factor
+          DmCF, % Dynamic Mean Cluster Factor
+          SmCF, % Semantic Mean Cluster Factor
+          EmCF,  % Evolutionary Mean Cluster Factor
+          AoC,  % Amount Of Clusters
+          RICEW % Ratio Inter-Cluster Edge Weights
+        },
+        xtick=data,
+        nodes near coords={
+            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (AmCF,21)
+      (DmCF,4)
+      (SmCF,31)
+      (EmCF,27)
+      (AoC,43)
+      (RICEW,24)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (AmCF,60)
+      (DmCF,13)
+      (SmCF,88)
+      (EmCF,79)
+      (AoC,14)
+      (RICEW,13)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (AmCF,63)
+      (DmCF,24)
+      (SmCF,99)
+      (EmCF,66)
+      (AoC,6)
+      (RICEW,2)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (AmCF,47)
+      (DmCF,8)
+      (SmCF,75)
+      (EmCF,59)
+      (AoC,24)
+      (RICEW,22)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (AmCF,58)
+      (DmCF,9)
+      (SmCF,88)
+      (EmCF,78)
+      (AoC,14)
+      (RICEW,14)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (AmCF,59)
+      (DmCF,12)
+      (SmCF,94)
+      (EmCF,73)
+      (AoC,8)
+      (RICEW,1)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (AmCF,60)
+      (DmCF,20)
+      (SmCF,100)
+      (EmCF,60)
+      (AoC,5)
+      (RICEW,1)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 1
+}
+\caption*{\centering\scriptsize
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item AmCF/DmCF/SmCF/EmCF: Average/Dynamic/Semantic/Evolutionary Median Cluster Factor
+    \item AoC: Amount of Clusters
+    \item RICEW: Ratio Inter-Cluster Edge Weights
+  \end{itemize}
+}
+\label{fig:experiment-1}
+\end{sidewaysfigure}
+
+
+
+\section{Experiment Nº 2}
+
+The results of experiment Nº 2 can be found in figure \ref{fig:experiment-2}.
+
+
+\begin{sidewaysfigure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=11cm, width=21.5cm,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=100,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={Average Mean Cluster Factor ($\times100$)},
+        symbolic x coords={
+          Apache Solr,
+          Google Bazel,
+          Heritrix,
+          Picnic Store,
+          Teammates,
+          XWiki,
+        },
+        xtick=data,
+        nodes near coords={
+            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Apache Solr,5)
+      (Google Bazel,2)
+      (Heritrix,29)
+      (Picnic Store,15)
+      (Teammates,9)
+      (XWiki,27)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Apache Solr,50)
+      (Google Bazel,41)
+      (Heritrix,38)
+      (Picnic Store,66)
+      (Teammates,65)
+      (XWiki,82)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Apache Solr,36)
+      (Google Bazel,26)
+      (Heritrix,87)
+      (Picnic Store,56)
+      (Teammates,55)
+      (XWiki,65)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Apache Solr,43)
+      (Google Bazel,35)
+      (Heritrix,68)
+      (Picnic Store,44)
+      (Teammates,50)
+      (XWiki,52)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Apache Solr,50)
+      (Google Bazel,40)
+      (Heritrix,38)
+      (Picnic Store,70)
+      (Teammates,70)
+      (XWiki,81)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Apache Solr,51)
+      (Google Bazel,39)
+      (Heritrix,87)
+      (Picnic Store,60)
+      (Teammates,62)
+      (XWiki,73)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Apache Solr,32)
+      (Google Bazel,22)
+      (Heritrix,86)
+      (Picnic Store,50)
+      (Teammates,0)
+      (XWiki,63)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 2
+}
+\label{fig:experiment-2}
+\end{sidewaysfigure}
+
+
+
+\section{Experiment Nº 3}
+
+The results of experiment Nº 3 can be found in figure \ref{fig:experiment-3}.
+
+
+\begin{sidewaysfigure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=11cm, width=21.5cm,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=500,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={Amount of Clusters},
+        symbolic x coords={
+          Apache Solr,
+          Google Bazel,
+          Heritrix,
+          Picnic Store,
+          Teammates,
+          XWiki
+        },
+        xtick=data,
+        nodes near coords={
+            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Apache Solr,1348)
+      (Google Bazel,2100)
+      (Heritrix,42)
+      (Picnic Store,117)
+      (Teammates,114)
+      (XWiki,484)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Apache Solr,82)
+      (Google Bazel,47)
+      (Heritrix,14)
+      (Picnic Store,16)
+      (Teammates,17)
+      (XWiki,64)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Apache Solr,60)
+      (Google Bazel,30)
+      (Heritrix,10)
+      (Picnic Store,8)
+      (Teammates,6)
+      (XWiki,16)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Apache Solr,281)
+      (Google Bazel,212)
+      (Heritrix,25)
+      (Picnic Store,64)
+      (Teammates,46)
+      (XWiki,410)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Apache Solr,73)
+      (Google Bazel,37)
+      (Heritrix,14)
+      (Picnic Store,16)
+      (Teammates,15)
+      (XWiki,58)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Apache Solr,142)
+      (Google Bazel,146)
+      (Heritrix,9)
+      (Picnic Store,30)
+      (Teammates,8)
+      (XWiki,77)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Apache Solr,100)
+      (Google Bazel,99)
+      (Heritrix,10)
+      (Picnic Store,3)
+      (Teammates,0)
+      (XWiki,15)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 3
+}
+\label{fig:experiment-3}
+\end{sidewaysfigure}
+
+
+
+\section{Experiment Nº 4}
+
+The results of experiment Nº 4 can be found in figure \ref{fig:experiment-4}.
+
+
+\begin{sidewaysfigure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=11cm, width=21.5cm,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=100,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={Ratio Inter-Cluster Edge Weights (\%)},
+        symbolic x coords={
+          Apache Solr,
+          Google Bazel,
+          Heritrix,
+          Picnic Store,
+          Teammates,
+          XWiki
+        },
+        xtick=data,
+        nodes near coords={
+            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Apache Solr,31)
+      (Google Bazel,38)
+      (Heritrix,19)
+      (Picnic Store,37)
+      (Teammates,28)
+      (XWiki,24)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Apache Solr,17)
+      (Google Bazel,21)
+      (Heritrix,8)
+      (Picnic Store,19)
+      (Teammates,27)
+      (XWiki,9)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Apache Solr,14)
+      (Google Bazel,21)
+      (Heritrix,3)
+      (Picnic Store,21)
+      (Teammates,22)
+      (XWiki,1)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Apache Solr,29)
+      (Google Bazel,32)
+      (Heritrix,23)
+      (Picnic Store,40)
+      (Teammates,34)
+      (XWiki,27)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Apache Solr,16)
+      (Google Bazel,22)
+      (Heritrix,8)
+      (Picnic Store,20)
+      (Teammates,30)
+      (XWiki,9)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Apache Solr,20)
+      (Google Bazel,29)
+      (Heritrix,1)
+      (Picnic Store,25)
+      (Teammates,1)
+      (XWiki,3)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Apache Solr,2)
+      (Google Bazel,2)
+      (Heritrix,1)
+      (Picnic Store,1)
+      (Teammates,0)
+      (XWiki,1)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 4
+}
+\label{fig:experiment-4}
+\end{sidewaysfigure}
+
+
+
+\section{Experiment Nº 5}
+
+The results of experiment Nº 5 can be found in figure \ref{fig:experiment-5}.
+
+
+\begin{sidewaysfigure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=11cm, width=21.5cm,
+        bar width=0.60cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=100,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=0.35,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
+          Average of AmCF,
+          Average of AoC,
+          Average of RICEW
+        },
+        xtick=data,
+        nodes near coords={
+            \scriptsize{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Average of AmCF,14.5)
+      (Average of AoC,700.8)
+      (Average of RICEW,29.5)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Average of AmCF,64.5)
+      (Average of AoC,40)
+      (Average of RICEW,16.8)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Average of AmCF,54.2)
+      (Average of AoC,21.7)
+      (Average of RICEW,13.7)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Average of AmCF,48.7)
+      (Average of AoC,171.2)
+      (Average of RICEW,30.8)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Average of AmCF,65.7)
+      (Average of AoC,35.5)
+      (Average of RICEW,17.5)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Average of AmCF,62)
+      (Average of AoC,68.7)
+      (Average of RICEW,13.2)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Average of AmCF,58.8)
+      (Average of AoC,38)
+      (Average of RICEW,1.3)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 5
+}
+\caption*{\centering\scriptsize
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item AmCF: Average Median Cluster Factor
+    \item AoC: Amount of Clusters
+    \item RICEW: Ratio Inter-Cluster Edge Weights
+  \end{itemize}
+}
+\label{fig:experiment-5}
+\end{sidewaysfigure}
 
 
 
