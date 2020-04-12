@@ -4252,7 +4252,9 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
 
 \section{Experiment Nº 3}
 
-The results of experiment Nº 3 can be found in figure \ref{fig:experiment-3}.
+The results of experiment Nº 3 can be found in figures
+\ref{fig:experiment-3.1}, \ref{fig:experiment-3.2}, \ref{fig:experiment-3.3},
+and \ref{fig:experiment-3.4}.
 
 The \textit{Average of Amount of Clusters} is differing a lot, especially considering
 that the \textit{Average of Average Mean Cluster Factor} and the
@@ -4317,8 +4319,236 @@ performs even slightly better with a higher
         ylabel={},
         symbolic x coords={
           Average of AmCF,
+        },
+        xtick=data,
+        nodes near coords={
+            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Average of AmCF,0.145)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Average of AmCF,0.645)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Average of AmCF,0.542)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Average of AmCF,0.487)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Average of AmCF,0.657)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Average of AmCF,0.62)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Average of AmCF,0.588)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 3 (Part 1)
+}
+\caption*{\centering\scriptsize
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item AmCF: Average Median Cluster Factor
+  \end{itemize}
+}
+\label{fig:experiment-3.1}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=\paperheight/2, width=\paperwidth,
+        bar width=0.55cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=0.19,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
           Average of CV(AmCF),
+        },
+        xtick=data,
+        nodes near coords={
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Average of CV(AmCF),71.5)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Average of CV(AmCF),19.9)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Average of CV(AmCF),30.7)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Average of CV(AmCF),22.7)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Average of CV(AmCF),19.7)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Average of CV(AmCF),20.4)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Average of CV(AmCF),49.2)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 3 (Part 2)
+}
+\caption*{\centering\scriptsize
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item CV(AmCF): Coefficient of varition of Average Median Cluster Factor
+  \end{itemize}
+}
+\label{fig:experiment-3.2}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=\paperheight/2, width=\paperwidth,
+        bar width=0.55cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=0.19,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
           Average of AoC,
+        },
+        xtick=data,
+        nodes near coords={
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Average of AoC,700.8)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Average of AoC,40)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Average of AoC,21.7)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Average of AoC,171.2)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Average of AoC,35.5)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Average of AoC,68.7)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Average of AoC,38)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 3 (Part 3)
+}
+\caption*{\centering\scriptsize
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item AoC: Amount of Clusters
+  \end{itemize}
+}
+\label{fig:experiment-3.3}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=\paperheight/2, width=\paperwidth,
+        bar width=0.55cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=0.19,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
           Average of RICEW,
         },
         xtick=data,
@@ -4328,51 +4558,30 @@ performs even slightly better with a higher
     ]
     % Chinese Whispers
     \addplot [draw=none, fill=blue!60] coordinates {
-      (Average of AmCF,14.5)
-      (Average of CV(AmCF),71.5)
-      (Average of AoC,700.8)
       (Average of RICEW,29.5)
     };
     % Clauset-Newman-Moore
     \addplot [draw=none, fill=magenta!60] coordinates {
-      (Average of AmCF,64.5)
-      (Average of CV(AmCF),19.9)
-      (Average of AoC,40)
       (Average of RICEW,16.8)
     };
     % Infomap
     \addplot [draw=none, fill=green!60] coordinates {
-      (Average of AmCF,54.2)
-      (Average of CV(AmCF),30.7)
-      (Average of AoC,21.7)
       (Average of RICEW,13.7)
     };
     % Label Propagation
     \addplot [draw=none, fill=cyan!60] coordinates {
-      (Average of AmCF,48.7)
-      (Average of CV(AmCF),22.7)
-      (Average of AoC,171.2)
       (Average of RICEW,30.8)
     };
     % Louvain
     \addplot [draw=none, fill=red!60] coordinates {
-      (Average of AmCF,65.7)
-      (Average of CV(AmCF),19.7)
-      (Average of AoC,35.5)
       (Average of RICEW,17.5)
     };
     % MCL
     \addplot [draw=none, fill=orange!60] coordinates {
-      (Average of AmCF,62)
-      (Average of CV(AmCF),20.4)
-      (Average of AoC,68.7)
       (Average of RICEW,13.2)
     };
     % Walktrap
     \addplot [draw=none, fill=yellow!60] coordinates {
-      (Average of AmCF,58.8)
-      (Average of CV(AmCF),49.2)
-      (Average of AoC,38)
       (Average of RICEW,1.3)
     };
     \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
@@ -4380,18 +4589,15 @@ performs even slightly better with a higher
 \end{tikzpicture}
 \end{adjustbox}
 \caption{
-  Plotted results of experiment Nº 3
+  Plotted results of experiment Nº 3 (Part 4)
 }
 \caption*{\centering\scriptsize
   The labels represent the following metrics:
   \begin{itemize}[noitemsep]
-    \item AmCF: Average Median Cluster Factor
-    \item CV(AmCF): Coefficient of varition of Average Median Cluster Factor
-    \item AoC: Amount of Clusters
     \item RICEW: Ratio Inter-Cluster Edge Weights
   \end{itemize}
 }
-\label{fig:experiment-3}
+\label{fig:experiment-3.4}
 \end{figure}
 
 
