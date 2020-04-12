@@ -3647,7 +3647,7 @@ Maximum amount of iterations    & The maximum amount of iterations used for algo
 Recorded metrics                & The metrics that were recorded as part of the experiment (see \ref{chap:metrics}) \\\hline
 
 \end{tabularx}
-\caption{Explanation of the criteria of the experiments}
+\caption{Explanations of the criteria of the experiments}
 \label{table:experiment-criteria}
 \end{table}
 
@@ -3697,7 +3697,7 @@ is left out due to the reasons described in subsection \ref{subsect:difficulties
 
 
 \subsubsection{Experiment Nº 3}
-In this third and last experiment we recorded the average of each metric per graph
+In this third and hindmost experiment we recorded the average of each metric per graph
 clustering algorithm with the intent to detect which ones generally perform
 overly good or bad:
 \begin{itemize}[noitemsep]
@@ -3740,19 +3740,19 @@ and $2 \%$ of inter-cluster edge weights while achieving the highest
 its great overall performance in the \textit{Dynamic Mean Cluster Factor} metric
 where most other algorithms did not score well.
 
-\begin{sidewaysfigure}[p]
+\begin{figure}[p]
     \centering
     \begin{adjustbox}{width=\textwidth}
     \begin{tikzpicture}
     \centering
     \begin{axis}[
         ybar, axis on top,
-        height=11cm, width=21.5cm,
+        height=\paperheight/2, width=\paperwidth,
         bar width=0.35cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=100,
+        ymin=0,
         axis x line*=bottom,
         axis y line*=left,
         y axis line style={opacity=0},
@@ -3769,13 +3769,13 @@ where most other algorithms did not score well.
           AmCF, % Average Mean Cluster Factor
           DmCF, % Dynamic Mean Cluster Factor
           SmCF, % Semantic Mean Cluster Factor
-          EmCF,  % Evolutionary Mean Cluster Factor
+          EmCF, % Evolutionary Mean Cluster Factor
           AoC,  % Amount Of Clusters
           RICEW % Ratio Inter-Cluster Edge Weights
         },
         xtick=data,
         nodes near coords={
-            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
         }
     ]
     % Chinese Whispers
@@ -3857,7 +3857,7 @@ where most other algorithms did not score well.
   \end{itemize}
 }
 \label{fig:experiment-1}
-\end{sidewaysfigure}
+\end{figure}
 
 
 
@@ -3915,19 +3915,19 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
 \textit{Teammates} project which is treated as an invalid result by us.
 
 
-\begin{sidewaysfigure}[p]
+\begin{figure}[p]
     \centering
     \begin{adjustbox}{width=\textwidth}
     \begin{tikzpicture}
     \centering
     \begin{axis}[
         ybar, axis on top,
-        height=11cm, width=21.5cm,
+        height=\paperheight/2, width=\paperwidth,
         bar width=0.35cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=100,
+        ymin=0,
         axis x line*=bottom,
         axis y line*=left,
         y axis line style={opacity=0},
@@ -3939,7 +3939,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
             legend columns=-1,
             /tikz/every even column/.append style={column sep=0.5cm}
         },
-        ylabel={Average Mean Cluster Factor ($\times100$)},
+        ylabel={Average Mean Cluster Factor},
         symbolic x coords={
           Apache Solr,
           Google Bazel,
@@ -3950,71 +3950,71 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
         },
         xtick=data,
         nodes near coords={
-            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
         }
     ]
     % Chinese Whispers
     \addplot [draw=none, fill=blue!60] coordinates {
-      (Apache Solr,5)
-      (Google Bazel,2)
-      (Heritrix,29)
-      (Picnic Store,15)
-      (Teammates,9)
-      (XWiki,27)
+      (Apache Solr,0.5)
+      (Google Bazel,0.2)
+      (Heritrix,0.29)
+      (Picnic Store,0.15)
+      (Teammates,0.9)
+      (XWiki,0.27)
     };
     % Clauset-Newman-Moore
     \addplot [draw=none, fill=magenta!60] coordinates {
-      (Apache Solr,50)
-      (Google Bazel,41)
-      (Heritrix,83)
-      (Picnic Store,66)
-      (Teammates,65)
-      (XWiki,82)
+      (Apache Solr,0.50)
+      (Google Bazel,0.41)
+      (Heritrix,0.83)
+      (Picnic Store,0.66)
+      (Teammates,0.65)
+      (XWiki,0.82)
     };
     % Infomap
     \addplot [draw=none, fill=green!60] coordinates {
-      (Apache Solr,36)
-      (Google Bazel,26)
-      (Heritrix,87)
-      (Picnic Store,56)
-      (Teammates,55)
-      (XWiki,65)
+      (Apache Solr,0.36)
+      (Google Bazel,0.26)
+      (Heritrix,0.87)
+      (Picnic Store,0.56)
+      (Teammates,0.55)
+      (XWiki,0.65)
     };
     % Label Propagation
     \addplot [draw=none, fill=cyan!60] coordinates {
-      (Apache Solr,43)
-      (Google Bazel,35)
-      (Heritrix,68)
-      (Picnic Store,44)
-      (Teammates,50)
-      (XWiki,52)
+      (Apache Solr,0.43)
+      (Google Bazel,0.35)
+      (Heritrix,0.68)
+      (Picnic Store,0.44)
+      (Teammates,0.50)
+      (XWiki,0.52)
     };
     % Louvain
     \addplot [draw=none, fill=red!60] coordinates {
-      (Apache Solr,50)
-      (Google Bazel,40)
-      (Heritrix,83)
-      (Picnic Store,70)
-      (Teammates,70)
-      (XWiki,81)
+      (Apache Solr,0.50)
+      (Google Bazel,0.40)
+      (Heritrix,0.83)
+      (Picnic Store,0.70)
+      (Teammates,0.70)
+      (XWiki,0.81)
     };
     % MCL
     \addplot [draw=none, fill=orange!60] coordinates {
-      (Apache Solr,51)
-      (Google Bazel,39)
-      (Heritrix,87)
-      (Picnic Store,60)
-      (Teammates,62)
-      (XWiki,73)
+      (Apache Solr,0.51)
+      (Google Bazel,0.39)
+      (Heritrix,0.87)
+      (Picnic Store,0.60)
+      (Teammates,0.62)
+      (XWiki,0.73)
     };
     % Walktrap
     \addplot [draw=none, fill=yellow!60] coordinates {
-      (Apache Solr,32)
-      (Google Bazel,22)
-      (Heritrix,86)
-      (Picnic Store,50)
-      (Teammates,0)
-      (XWiki,63)
+      (Apache Solr,0.32)
+      (Google Bazel,0.22)
+      (Heritrix,0.86)
+      (Picnic Store,0.50)
+      (Teammates,nan)
+      (XWiki,0.63)
     };
     \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
     \end{axis}
@@ -4024,21 +4024,21 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
   First part of the plotted results of experiment Nº 2
 }
 \label{fig:experiment-2.1}
-\end{sidewaysfigure}
+\end{figure}
 
-\begin{sidewaysfigure}[p]
+\begin{figure}[p]
     \centering
     \begin{adjustbox}{width=\textwidth}
     \begin{tikzpicture}
     \centering
     \begin{axis}[
         ybar, axis on top,
-        height=11cm, width=21.5cm,
+        height=\paperheight/2, width=\paperwidth,
         bar width=0.35cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=500,
+        ymin=0,
         axis x line*=bottom,
         axis y line*=left,
         y axis line style={opacity=0},
@@ -4061,7 +4061,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
         },
         xtick=data,
         nodes near coords={
-            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
         }
     ]
     % Chinese Whispers
@@ -4124,7 +4124,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
       (Google Bazel,99)
       (Heritrix,10)
       (Picnic Store,3)
-      (Teammates,0)
+      (Teammates,nan)
       (XWiki,15)
     };
     \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
@@ -4135,21 +4135,21 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
   Second part of the plotted results of experiment Nº 2
 }
 \label{fig:experiment-2.2}
-\end{sidewaysfigure}
+\end{figure}
 
-\begin{sidewaysfigure}[p]
+\begin{figure}[p]
     \centering
     \begin{adjustbox}{width=\textwidth}
     \begin{tikzpicture}
     \centering
     \begin{axis}[
         ybar, axis on top,
-        height=11cm, width=21.5cm,
+        height=\paperheight/2, width=\paperwidth,
         bar width=0.35cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=100,
+        ymin=0,
         axis x line*=bottom,
         axis y line*=left,
         y axis line style={opacity=0},
@@ -4172,7 +4172,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
         },
         xtick=data,
         nodes near coords={
-            \scriptsize{\pgfmathprintnumber[precision=0]{\pgfplotspointmeta}}
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
         }
     ]
     % Chinese Whispers
@@ -4235,7 +4235,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
       (Google Bazel,2)
       (Heritrix,1)
       (Picnic Store,1)
-      (Teammates,0)
+      (Teammates,nan)
       (XWiki,1)
     };
     \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
@@ -4246,7 +4246,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
   Third part of the plotted results of experiment Nº 2
 }
 \label{fig:experiment-2.3}
-\end{sidewaysfigure}
+\end{figure}
 
 
 
@@ -4290,19 +4290,19 @@ performs even slightly better with a higher
 \textit{Average of Average Mean Cluster Factor} metric of $65.7$ and the lowest
 \textit{coefficient of variation} of \(c_v = 19.7\).
 
-\begin{sidewaysfigure}[p]
+\begin{figure}[p]
     \centering
     \begin{adjustbox}{width=\textwidth}
     \begin{tikzpicture}
     \centering
     \begin{axis}[
         ybar, axis on top,
-        height=11cm, width=21.5cm,
+        height=\paperheight/2, width=\paperwidth,
         bar width=0.55cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=100,
+        ymin=0,
         axis x line*=bottom,
         axis y line*=left,
         y axis line style={opacity=0},
@@ -4323,7 +4323,7 @@ performs even slightly better with a higher
         },
         xtick=data,
         nodes near coords={
-            \tiny{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
         }
     ]
     % Chinese Whispers
@@ -4392,7 +4392,7 @@ performs even slightly better with a higher
   \end{itemize}
 }
 \label{fig:experiment-3}
-\end{sidewaysfigure}
+\end{figure}
 
 
 
@@ -4472,11 +4472,12 @@ Thus, this shortcoming is also addressed in the following section on
 
 \section{Future work} \label{sect:future-work}
 
-While the devised methodology is working and fully-functional, there are two
-main improvements that were detected, with the first one being a possible
-feature addition to \textit{Steinmetz}, while the latter one is a follow-up
-on the methodology exhibited in this thesis. In the following subsections,
-the two future work improvements are discussed in further detail.
+While the devised methodology is working and fully-functional, there are three
+major improvements that were detected, with the first one being an additional
+evaluation, the second one being a possible feature addition to \textit{Steinmetz},
+while the last one is a follow-up on the methodology exhibited in this thesis.
+In the following subsections, the three future work improvements are discussed in
+further detail.
 
 \paragraph{Evaluation study}
 We detected that a useful next step would be to evaluate our methodology
