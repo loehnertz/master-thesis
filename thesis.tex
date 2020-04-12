@@ -2271,6 +2271,10 @@ measures the quality of the resulting clustering.
 In contrast to the second set, for the third set is always holds true that
 higher values are better.
 
+There are no metrics directly measuring the modularity of a microservice
+decomposition. Thus, we looked into related domains and found a certain paper
+over and over again in the reference lists of others
+\cite{maqbool2007hierarchical, praditwong2010software, tsantalis2009identification,  jiang2006visualizing}:
 The \textit{Modularization Quality} (MQ) metric was devised by Mitchell and Mancoridis
 \cite{mitchell2006automatic} in a paper that researched a very similar idea to ours ---
 instead of clustering classes to achieve a microservice decomposition, they cluster
@@ -3661,11 +3665,13 @@ all available dimensions. The reason for this is that due to the nature of
 \textit{dynamic coupling}. \textit{Heritrix} is a web\hyp crawler which means that
 after being given one or multiple seeds, it generates its work automatically by
 adding newly found links to a queue. Consequently, no workload has to be
-synthetically generated or recorded while the problem discussed in subsection
-\ref{subsect:difficulties} can be circumvented in this way.
+synthetically generated or recorded which means that the problem discussed in
+subsection \ref{subsect:difficulties} can be circumvented in this way.
 Eventually, we profiled \textit{Heritrix} during its runtime for 48 hours with the
 \textit{Java Flight Recorder} which yielded a recording of over 200 megabytes
 which was used for this experiment.
+Importantly, this is a proof of concept experiment as we acknowledge that its
+results could be more meaningful with a larger set of test subjects.
 Additionally, the \textit{coupling dimension weights} were set to different values.
 These values were set by running the hyper\hyp parameter optimization detailed in
 \ref{subsubsect:hyper-parameter-optimization} to maximize the
@@ -4021,7 +4027,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
 \end{tikzpicture}
 \end{adjustbox}
 \caption{
-  First part of the plotted results of experiment Nº 2
+  Plotted results of experiment Nº 2 (Part 1)
 }
 \label{fig:experiment-2.1}
 \end{figure}
@@ -4132,7 +4138,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
 \end{tikzpicture}
 \end{adjustbox}
 \caption{
-  Second part of the plotted results of experiment Nº 2
+  Plotted results of experiment Nº 2 (Part 2)
 }
 \label{fig:experiment-2.2}
 \end{figure}
@@ -4243,7 +4249,7 @@ but the \textit{Walktrap} algorithm created only one cluster when clustering the
 \end{tikzpicture}
 \end{adjustbox}
 \caption{
-  Third part of the plotted results of experiment Nº 2
+  Plotted results of experiment Nº 2 (Part 3)
 }
 \label{fig:experiment-2.3}
 \end{figure}
