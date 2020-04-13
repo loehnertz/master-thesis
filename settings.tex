@@ -97,6 +97,10 @@
 \usepackage[htt]{hyphenat}
 \usepackage{sectsty}
 \subsubsectionfont{\large}
+% Don't make the LoF and LoT numbers flow into the text
+\usepackage{tocloft}
+\setlength{\cftfignumwidth}{1.5cm}
+\setlength{\cfttabnumwidth}{1.5cm}
 
 % Page markers
 \newcommand{\phv}{\fontfamily{phv}\fontseries{m}\fontsize{10}{12}\selectfont}
