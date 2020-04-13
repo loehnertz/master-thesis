@@ -677,7 +677,6 @@ of this \textit{evolutionary similarity} measurement \cite{tornhill2015crimescen
 The details of the utilization of this approach as part of our devised methodology
 are explained in chapters \ref{chap:rationale} and \ref{chap:extracting-coupling}.
 
-\smaller
 \begin{lstlisting}[caption=Example Git log, label=git-log, breaklines=true]
 commit 7fa508ea483d45b037ee9507a6e92e5bb2118418
 Author: Jakob Loehnertz <mail@jakob.codes>
@@ -689,7 +688,6 @@ Date:   Tue Jun 18 11:23:33 2019 +0200
 1   0   ../model/metrics/ClusteringQuality.kt
 6   3   ../frontend/src/App.vue
 \end{lstlisting}
-\normalsize
 
 
 
@@ -1611,7 +1609,6 @@ which would distort the result of the \textit{semantic coupling} analysis.
 Thus, every line is parsed separately and language-specific keywords such as
 \code{package} or \code{import} trigger that the line gets discarded.
 
-\smaller
 \begin{lstlisting}[caption=Packages and imports in Java, label=packages-and-imports, language=Java, breaklines=true]
 package codes.jakob.semanticcoupling.parsing
 
@@ -1623,7 +1620,6 @@ import codes.jakob.semanticcoupling.normalization.Lemmatizer
 import codes.jakob.semanticcoupling.normalization.Normalizer
 import codes.jakob.semanticcoupling.normalization.Stemmer
 \end{lstlisting}
-\normalsize
 
 Next, every line of the source code is stripped of non\hyp word characters
 (i.e. \code{W} from regular expressions) which is every character
@@ -2472,7 +2468,6 @@ this information has to be provided when annotating \textit{Relationship} classe
 The rest of the created class are just properties, some of which are mandatory,
 while as many additional ones containing data can be added arbitrarily.
 
-\smaller
 \begin{lstlisting}[caption=Relationship OGM class, label=ogm-relationship, breaklines=true]
 @RelationshipEntity(type = CALLS)
 class CallsRelationship() {
@@ -2496,7 +2491,6 @@ class CallsRelationship() {
     var logicalCouplingScore: Int = 0
 }
 \end{lstlisting}
-\normalsize
 
 The above code example \ref{ogm-relationship}, is implemented in Kotlin,
 as this programming language was used to implement the entire back-end,
@@ -2531,7 +2525,6 @@ Similarly to the \textit{Relationships}, the \textit{Nodes} are also
 created by annotating a class, this time with the \code{@NodeEntity}
 annotation. Again, certain properties on the defined class are mandatory
 while others can be added optionally as seen in code example \ref{ogm-node}.
-\smaller
 \begin{lstlisting}[caption=Node OGM class, label=ogm-node, breaklines=true]
 class Unit(
     var identifier: String,
@@ -2550,7 +2543,6 @@ class Unit(
     var callers: MutableSet<CallsRelationship> = mutableSetOf()
 }
 \end{lstlisting}
-\normalsize
 The \code{@Id} is required once again while the \code{@Relationship}
 annotations are not mandatory, nevertheless a node in a given graph usually
 has outgoing or incoming edges (or unidirectional or undirected ones).
@@ -3522,7 +3514,7 @@ of each input application as well as overall.
 \subsection{Subjects}
 
 As shown in section \ref{sect:background-architecture}, a microservices\hyp based
-architecture only makes sense for large\hyp scale web\hyp based back\hyp end
+architecture only makes sense for large\hyp scale, web\hyp based, back\hyp end
 applications compared to libraries, SDKs, and dedicated GUI software.
 Consequently, software that falls into said category had to be selected which
 is far more difficult compared to the other categories as such software is
@@ -3542,9 +3534,38 @@ another, more distinct set of criteria:
     \item Evolutionary coupling: Being version-controlled via a supported VCS
 \end{itemize}
 
+Based on these basic criteria, we conducted an intensive survey of possible ones
+via the search functionality of GitHub. Precisely, these projects were found via
+the following query \ref{github-query}.
+
+\begin{lstlisting}[caption=GitHub experiment subjects search query, label=github-query, breaklines=true, basicstyle=\scriptsize\ttfamily]
+NOT library NOT framework NOT distributed NOT client NOT android stars:>500 language:Java
+\end{lstlisting}
+
+Sadly, the GitHub search only allows up to five \code{NOT} operators.
+Thus, this query still yields good results overall but still a lot of false positives such as:
+
+\begin{itemize}[noitemsep]
+    \item Libraries or SDKs not filtered out by the query
+    \item Chinese repositories with unknown contents
+    \item Collections of example code or interview questions
+\end{itemize}
+
+After discarding these, the first 50 pages of the search results were anaylyzed
+for software projects of varying sizes with the following properties:
+
+\begin{itemize}[noitemsep]
+    \item standalone
+    \item large\hyp scale
+    \item web\hyp based
+    \item back\hyp end
+    \item monolithic
+\end{itemize}
+
 Finally, the six applications seen in table \ref{table:evaluation-projects}
-that fulfill these requirements were selected after an intensive survey
-of possible ones via the search functionality of GitHub and regular searches via Google.
+that fulfill these requirements were selected.
+Additionally, we added the major back-end application of the host organization
+of this thesis which cannot be found on GitHub directly as its source is closed.
 
 \begin{table}[ht!]
 \def\arraystretch{1.55}

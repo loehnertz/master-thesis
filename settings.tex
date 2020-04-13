@@ -3,7 +3,6 @@
 \usepackage[utf8]{inputenc} % Unicode text
 \usepackage[T1]{fontenc} % German 'Umlaute'
 \usepackage{textcomp} % Euro
-\usepackage[hyphens]{url}
 \usepackage{amsmath} % Advanced mathematical notation
 % \usepackage{amssymb} % Symbols
 \usepackage{emptypage} % Empty pages are now actually empty
@@ -33,6 +32,10 @@
 \usepackage{adjustbox} % scaling
 \usepackage{graphicx} % images
 \usepackage{subfig} % sub-figures
+% Don't make the LoF and LoT numbers flow into the text
+\usepackage[subfigure]{tocloft}
+\setlength{\cftfignumwidth}{1.5cm}
+\setlength{\cfttabnumwidth}{1.5cm}
 \usepackage{wrapfig} % wrapping figures
 \usepackage{listings} % better source code listings
 \usepackage[algoruled,lined,linesnumbered,commentsnumbered]{algorithm2e} % algorithms
@@ -44,7 +47,7 @@
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{forest}
 \usepackage{verbatim}
 \usepackage{pgfplots}
@@ -75,7 +78,7 @@
     language=Kotlin,
     frame=single,
     backgroundcolor=\color{lstgrey},
-    basicstyle=\small\ttfamily,
+    basicstyle=\smaller\ttfamily,
     captionpos=b,
     tabsize=2,
     commentstyle=\color{gray},              % Comments font
@@ -97,10 +100,6 @@
 \usepackage[htt]{hyphenat}
 \usepackage{sectsty}
 \subsubsectionfont{\large}
-% Don't make the LoF and LoT numbers flow into the text
-\usepackage{tocloft}
-\setlength{\cftfignumwidth}{1.5cm}
-\setlength{\cfttabnumwidth}{1.5cm}
 
 % Page markers
 \newcommand{\phv}{\fontfamily{phv}\fontseries{m}\fontsize{10}{12}\selectfont}
