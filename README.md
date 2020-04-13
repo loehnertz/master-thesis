@@ -1,6 +1,6 @@
 # Master Thesis
 
-### Toward automatic decomposition of monolithic software into microservices – Conception of a methodology and its exemplarily implementation
+### Toward automatic decomposition of monolithic software into microservices – Conception of a methodology and its exemplary implementation
 
 <br>
 
