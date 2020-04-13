@@ -3724,7 +3724,8 @@ overly good or bad:
 
 \section{Experiment Nº 1}
 
-The results of experiment Nº 1 can be found in figure \ref{fig:experiment-1}.
+The results of experiment Nº 1 can be found in figures
+\ref{fig:experiment-1.1}, \ref{fig:experiment-1.2}, \ref{fig:experiment-1.3}.
 
 Generally, it can be quickly observed that the \textit{Dynamic Mean Cluster Factor}
 values of most algorithms are fairly low.
@@ -3776,8 +3777,107 @@ where most other algorithms did not score well.
           DmCF, % Dynamic Mean Cluster Factor
           SmCF, % Semantic Mean Cluster Factor
           EmCF, % Evolutionary Mean Cluster Factor
-          AoC,  % Amount Of Clusters
-          RICEW % Ratio Inter-Cluster Edge Weights
+        },
+        xtick=data,
+        nodes near coords={
+            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (AmCF,0.21)
+      (DmCF,0.4)
+      (SmCF,0.31)
+      (EmCF,0.27)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (AmCF,0.60)
+      (DmCF,0.13)
+      (SmCF,0.88)
+      (EmCF,0.79)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (AmCF,0.63)
+      (DmCF,0.24)
+      (SmCF,0.99)
+      (EmCF,0.66)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (AmCF,0.47)
+      (DmCF,0.8)
+      (SmCF,0.75)
+      (EmCF,0.59)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (AmCF,0.58)
+      (DmCF,0.9)
+      (SmCF,0.88)
+      (EmCF,0.78)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (AmCF,0.59)
+      (DmCF,0.12)
+      (SmCF,0.94)
+      (EmCF,0.73)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (AmCF,0.60)
+      (DmCF,0.20)
+      (SmCF,0.100)
+      (EmCF,0.60)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 1 (Part 1)
+}
+\caption*{\centering
+  The labels represent the following metrics:
+  \begin{itemize}[noitemsep]
+    \item AmCF: Average Median Cluster Factor
+    \item DmCF: Dynamic Median Cluster Factor
+    \item SmCF: Semantic Median Cluster Factor
+    \item EmCF: Evolutionary Median Cluster Factor
+  \end{itemize}
+}
+\label{fig:experiment-1.1}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=\paperheight/2, width=\paperwidth,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={},
+        symbolic x coords={
+          Amount Of Clusters
         },
         xtick=data,
         nodes near coords={
@@ -3786,83 +3886,111 @@ where most other algorithms did not score well.
     ]
     % Chinese Whispers
     \addplot [draw=none, fill=blue!60] coordinates {
-      (AmCF,21)
-      (DmCF,4)
-      (SmCF,31)
-      (EmCF,27)
-      (AoC,43)
-      (RICEW,24)
+      (Amount Of Clusters,43)
     };
     % Clauset-Newman-Moore
     \addplot [draw=none, fill=magenta!60] coordinates {
-      (AmCF,60)
-      (DmCF,13)
-      (SmCF,88)
-      (EmCF,79)
-      (AoC,14)
-      (RICEW,13)
+      (Amount Of Clusters,14)
     };
     % Infomap
     \addplot [draw=none, fill=green!60] coordinates {
-      (AmCF,63)
-      (DmCF,24)
-      (SmCF,99)
-      (EmCF,66)
-      (AoC,6)
-      (RICEW,2)
+      (Amount Of Clusters,6)
     };
     % Label Propagation
     \addplot [draw=none, fill=cyan!60] coordinates {
-      (AmCF,47)
-      (DmCF,8)
-      (SmCF,75)
-      (EmCF,59)
-      (AoC,24)
-      (RICEW,22)
+      (Amount Of Clusters,24)
     };
     % Louvain
     \addplot [draw=none, fill=red!60] coordinates {
-      (AmCF,58)
-      (DmCF,9)
-      (SmCF,88)
-      (EmCF,78)
-      (AoC,14)
-      (RICEW,14)
+      (Amount Of Clusters,14)
     };
     % MCL
     \addplot [draw=none, fill=orange!60] coordinates {
-      (AmCF,59)
-      (DmCF,12)
-      (SmCF,94)
-      (EmCF,73)
-      (AoC,8)
-      (RICEW,1)
+      (Amount Of Clusters,8)
     };
     % Walktrap
     \addplot [draw=none, fill=yellow!60] coordinates {
-      (AmCF,60)
-      (DmCF,20)
-      (SmCF,100)
-      (EmCF,60)
-      (AoC,5)
-      (RICEW,1)
+      (Amount Of Clusters,5)
     };
     \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
     \end{axis}
 \end{tikzpicture}
 \end{adjustbox}
 \caption{
-  Plotted results of experiment Nº 1
+  Plotted results of experiment Nº 1 (Part 2)
 }
-\caption*{\centering\scriptsize
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item AmCF/DmCF/SmCF/EmCF: Average/Dynamic/Semantic/Evolutionary Median Cluster Factor
-    \item AoC: Amount of Clusters
-    \item RICEW: Ratio Inter-Cluster Edge Weights
-  \end{itemize}
+\label{fig:experiment-1.2}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tikzpicture}
+    \centering
+    \begin{axis}[
+        ybar, axis on top,
+        height=\paperheight/2, width=\paperwidth,
+        bar width=0.35cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0,
+        axis x line*=bottom,
+        axis y line*=left,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={\%},
+        symbolic x coords={
+          Ratio Inter-Cluster Edge Weights
+        },
+        xtick=data,
+        nodes near coords={
+            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
+        }
+    ]
+    % Chinese Whispers
+    \addplot [draw=none, fill=blue!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,24)
+    };
+    % Clauset-Newman-Moore
+    \addplot [draw=none, fill=magenta!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,13)
+    };
+    % Infomap
+    \addplot [draw=none, fill=green!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,2)
+    };
+    % Label Propagation
+    \addplot [draw=none, fill=cyan!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,22)
+    };
+    % Louvain
+    \addplot [draw=none, fill=red!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,14)
+    };
+    % MCL
+    \addplot [draw=none, fill=orange!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,1)
+    };
+    % Walktrap
+    \addplot [draw=none, fill=yellow!60] coordinates {
+      (Ratio Inter-Cluster Edge Weights,1)
+    };
+    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
+    \end{axis}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{
+  Plotted results of experiment Nº 1 (Part 3)
 }
-\label{fig:experiment-1}
+\label{fig:experiment-1.3}
 \end{figure}
 
 
@@ -4366,7 +4494,7 @@ performs even slightly better with a higher
 \caption{
   Plotted results of experiment Nº 3 (Part 1)
 }
-\caption*{\centering\scriptsize
+\caption*{\centering
   The labels represent the following metrics:
   \begin{itemize}[noitemsep]
     \item AmCF: Average Median Cluster Factor
@@ -4443,7 +4571,7 @@ performs even slightly better with a higher
 \caption{
   Plotted results of experiment Nº 3 (Part 2)
 }
-\caption*{\centering\scriptsize
+\caption*{\centering
   The labels represent the following metrics:
   \begin{itemize}[noitemsep]
     \item CV(AmCF): Coefficient of varition of Average Median Cluster Factor
@@ -4520,7 +4648,7 @@ performs even slightly better with a higher
 \caption{
   Plotted results of experiment Nº 3 (Part 3)
 }
-\caption*{\centering\scriptsize
+\caption*{\centering
   The labels represent the following metrics:
   \begin{itemize}[noitemsep]
     \item AoC: Amount of Clusters
@@ -4597,7 +4725,7 @@ performs even slightly better with a higher
 \caption{
   Plotted results of experiment Nº 3 (Part 4)
 }
-\caption*{\centering\scriptsize
+\caption*{\centering
   The labels represent the following metrics:
   \begin{itemize}[noitemsep]
     \item RICEW: Ratio Inter-Cluster Edge Weights
