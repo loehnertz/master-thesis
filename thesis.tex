@@ -4757,6 +4757,83 @@ performs even slightly better with a higher
 
 
 
+\section{Performance}
+
+The performance results can be found in figures \ref{fig:performance-static},
+\ref{fig:performance-semantic}, \ref{fig:performance-evolutionary},
+and \ref{fig:performance-total}. On purpose, the same scales are used in all
+of the plots such that the results and the runtime complexity can be compared better.
+
+This section presents the results of the performance evalutation of
+the PoC that we implemented as part of this thesis project.
+For the runtime we simply recorded the time each step of the total analysis took
+in seconds. Namely, these are the static, semantic, and evolutionary analyses.
+The first two are compared to the SLOC of the input projects, while the latter
+is compared to the amount of commits. Finally, the total runtime including
+the merging of all three graphs and the insertion into the database was recorded.
+
+The dynamic analysis is not covered in this subsection as we had only a single
+recorded datapoint. However, for the sake of completeness, the dynamic analysis
+of experiment Nº 1 took 64 seconds for a profiler recording of 4500 megabytes in size.
+The clustering runtime was not measured as we have no influence on it,
+since solely the runtime complexity of each of the graph clustering algorithms
+determines that.
+
+As figures \ref{fig:performance-semantic} and \ref{fig:performance-evolutionary}
+show, the semantic and evolutionary analysis have a less than linear runtime complexity.
+The static analysis in \ref{fig:performance-static} is what drives the total runtime
+the most. Nevertheless, the total runtime of the PoC is predictable with
+a bivariate correlation between input size and runtime being a very high \(R = 0.92\).
+Due to this, the small confidence interval, and the slope of the regression line,
+the runtime complexity of the PoC seems to be \(\mathcal{O}(N)\),
+as figure \ref{fig:performance-total} depicts.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/performance-static}
+\caption{The PoC performance of the static coupling analysis}
+\caption*{\centering
+  All analyzed projects are plotted according to their SLOC
+  and how long the static coupling analysis took respectively.
+}
+\label{fig:performance-static}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/performance-semantic}
+\caption{The PoC performance of the semantic coupling analysis}
+\caption*{\centering
+  All analyzed projects are plotted according to their SLOC
+  and how long the semantic coupling analysis took respectively.
+}
+\label{fig:performance-semantic}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/performance-evolutionary}
+\caption{The PoC performance of the evolutionary coupling analysis}
+\caption*{\centering
+  All analyzed projects are plotted according to their amount of commits
+  and how long the evolutionary coupling analysis took respectively.
+}
+\label{fig:performance-evolutionary}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/performance-total}
+\caption{The PoC performance of the entire analysis}
+\caption*{\centering
+  All analyzed projects are plotted according to their SLOC
+  and how long the analysis took in total.
+}
+\label{fig:performance-total}
+\end{figure}
+
+
+
 
 \chapter{Discussion} \label{chap:discussion}
 
