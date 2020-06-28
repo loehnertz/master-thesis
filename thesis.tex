@@ -3682,10 +3682,7 @@ Recorded metrics                & The metrics that were recorded as part of the 
 \label{table:experiment-criteria}
 \end{table}
 
-
-\subsection{Experiments}
-
-\subsubsection{Experiment Nº 1}
+\subsection{Experiment Nº 1}
 For the first experiment, we analyzed only the test subject \textit{Heritrix} with
 all available dimensions. The reason for this is that due to the nature of
 \textit{Heritrix} it is feasible to record real\hyp world workload regarding the
@@ -3695,53 +3692,61 @@ adding newly found links to a queue. Consequently, no workload has to be
 synthetically generated or recorded which means that the problem discussed in
 subsection \ref{subsect:difficulties} can be circumvented in this way.
 Eventually, we profiled \textit{Heritrix} during its runtime for 48 hours with the
-\textit{Java Flight Recorder} which yielded a recording of over 200 megabytes
+\textit{Java Flight Recorder} which yielded a recording of $4.5$ gigabytes
 which was used for this experiment.
 Importantly, this is a proof of concept experiment as we acknowledge that its
 results could be more meaningful with a larger set of test subjects.
 Additionally, the \textit{coupling dimension weights} were set to different values.
 These values were set by running the hyper\hyp parameter optimization detailed in
 \ref{subsubsect:hyper-parameter-optimization} to maximize the
-\textit{Average Mean Cluster Factor} metric.
+\textit{Total Coupling Modularity} metric.
 Finally, the following criteria were determined:
 \begin{itemize}[noitemsep]
-    \item Coupling dimensions: dynamic, semantic, evolutionary
-    \item Coupling dimension weights: $4 \times dynamic$, $4 \times semantic$, $7 \times evolutionary$
+    \item Coupling dimensions: static, dynamic, semantic, evolutionary
+    \item Coupling dimension weights: $7 \times static$, $7 \times dynamic$, $2 \times semantic$, $1 \times evolutionary$
     \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
     \item Maximum amount of iterations: 100
-    \item Recorded metrics: \textit{Average Mean Cluster Factor}
-\end{itemize}
-
-
-\subsubsection{Experiment Nº 2}
-For the second experiment, we analyzed all of the aforementioned test subjects
-with our implementation. In essence, the criteria of this experiment are the
-same as the one of the first one while the \textit{dynamic coupling} dimension
-is left out due to the reasons described in subsection \ref{subsect:difficulties}:
-\begin{itemize}[noitemsep]
-    \item Coupling dimensions: semantic, evolutionary
-    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
-    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
-    \item Maximum amount of iterations: 100
-    \item Recorded metrics: \textit{Average Mean Cluster Factor},
+    \item Recorded metrics:
+    \textit{Total Mean Cluster Factor},
+    \textit{Total Coupling Modularity},
     \textit{Amount of Clusters},
     \textit{Ratio Inter-Cluster Edge Weights}
 \end{itemize}
 
 
-\subsubsection{Experiment Nº 3}
+\subsection{Experiment Nº 2}
+For the second experiment, we analyzed all of the aforementioned test subjects
+with our implementation. In essence, the criteria of this experiment are the
+same as the one of the first one while the \textit{dynamic coupling} dimension
+is left out due to the reasons described in subsection \ref{subsect:difficulties}.
+The goal of this experiment is to determine if the $mCF$ or the $Q$ metric
+generally performs better:
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: static, semantic, evolutionary
+    \item Coupling dimension weights: $1 \times static$, $1 \times semantic$, $1 \times evolutionary$
+    \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
+    \item Maximum amount of iterations: 100
+    \item Recorded metrics:
+    \textit{Total Mean Cluster Factor},
+    \textit{Total Coupling Modularity}
+\end{itemize}
+
+
+\subsection{Experiment Nº 3}
 In this third and hindmost experiment we recorded the average of each metric per graph
 clustering algorithm with the intent to detect which ones generally perform
 overly good or bad:
 \begin{itemize}[noitemsep]
-    \item Coupling dimensions: semantic, evolutionary
-    \item Coupling dimension weights: $1 \times semantic$, $1 \times evolutionary$
+    \item Coupling dimensions: static, semantic, evolutionary
+    \item Coupling dimension weights: $1 \times static$, $1 \times semantic$, $1 \times evolutionary$
     \item Graph clustering algorithms: Chinese Whispers, Clauset-Newman-Moore, Infomap, Label Propagation, Louvain, MCL, Walktrap
     \item Maximum amount of iterations: 100
-    \item Recorded metrics: Average of \textit{Average Mean Cluster Factor} per algorithm,
-    Average of \textit{Coefficient of variation of Average Mean Cluster Factor} per algorithm,
-    Average of \textit{Amount of Clusters} per algorithm,
-    Average of \textit{Ratio Inter-Cluster Edge Weights} per algorithm
+    \item Recorded metrics:
+    \textit{Total Mean Cluster Factor} per algorithm,
+    \textit{Total Coupling Modularity} per algorithm,
+    Correlation between \textit{Total Mean Cluster Factor} and \textit{Total Coupling Modularity} per algorithm,
+    \textit{Amount of Clusters} per algorithm,
+    \textit{Ratio Inter-Cluster Edge Weights} per algorithm
 \end{itemize}
 
 
@@ -3749,298 +3754,158 @@ overly good or bad:
 
 \chapter{Evaluation} \label{chap:evaluation}
 
-\section{Experiment Nº 1}
+\section{Experiments}
+
+In the following three subsections, the results of the three experiments
+that we conducted are presented and discussed.
+
+
+\subsection{Experiment Nº 1}
 
 The results of experiment Nº 1 can be found in figures
-\ref{fig:experiment-1.1}, \ref{fig:experiment-1.2}, \ref{fig:experiment-1.3}.
+\ref{fig:experiment-1.1} and \ref{fig:experiment-1.2}.
 
-Generally, it can be quickly observed that the \textit{Dynamic Mean Cluster Factor}
-values of most algorithms are fairly low.
-We attribute this partly to the fact that the fidelity of the dynamic analysis
-was rather low with $16\%$. Nevertheless, this experiment shows that our methodology
-definitely works better on the other two input dimensions.
+Generally, all available graph clustering algorithms perform good, although
+there is an interesting pattern that the \textit{Dynamic Mean Cluster Factor} is
+a lot lower than the \textit{Dynamic Coupling Modularity}. We have no explanation,
+why this happens. However, at least for the \textit{Coupling Modularity} variations,
+all input dimensions achieve good scores.
+The \textit{Dynamic Analysis Fidelity} is the lowest,
+the \textit{Evolutionary Analysis Fidelity} in the midfield,
+and the \textit{Semantic Analysis Fidelity} is the highest.
+The \textit{Static Analysis Fidelity} does not exist in the sense of the others,
+since it is always $100\%$ as it is the single source of truth which classes can
+reach others.
 
-Apart from the \textit{Chinese Whispers} and \textit{Label Propagation} algorithms,
-all other algorithms perform similarly achieving \textit{Average Mean Cluster Factor}
-recordings around the mark of $60$.
+In both clustering metrics, the \textit{Clauset-Newman-Moore} algorithm performs
+the best. It also achieves the second lowest \textit{Ratio of Inter-Cluster Edge Weights (\%)}.
+The resulting clustering is rendered in figure \ref{fig:experiment-1.2},
+which also looks reasonable in the visual and textual view.
 
-The last interesting key point is that the algorithms scored fairly different
-values for the metrics \textit{Amount of Clusters} and
-\textit{Ratio Inter-Cluster Edge Weights} while reaching very similar
-\textit{Average Mean Cluster Factor} scores, as just mentioned.
-Specifically the \textit{Infomap} algorithm stands out with only $6$ clusters
-and $2 \%$ of inter-cluster edge weights while achieving the highest
-\textit{Average Mean Cluster Factor} score which can be mainly attributed to
-its great overall performance in the \textit{Dynamic Mean Cluster Factor} metric
-where most other algorithms did not score well.
+We can conclude that \textit{Steinmetz} works as expected.
+It correctly analyzes the four input dimensions, builds a weighted graph out of them,
+and clusters it with all seven available graph clustering algorithms.
+This directly answers RQ1 and presents our solution as a working methodology.
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          AmCF, % Average Mean Cluster Factor
-          DmCF, % Dynamic Mean Cluster Factor
-          SmCF, % Semantic Mean Cluster Factor
-          EmCF, % Evolutionary Mean Cluster Factor
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (AmCF,0.21)
-      (DmCF,0.4)
-      (SmCF,0.31)
-      (EmCF,0.27)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (AmCF,0.60)
-      (DmCF,0.13)
-      (SmCF,0.88)
-      (EmCF,0.79)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (AmCF,0.63)
-      (DmCF,0.24)
-      (SmCF,0.99)
-      (EmCF,0.66)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (AmCF,0.47)
-      (DmCF,0.8)
-      (SmCF,0.75)
-      (EmCF,0.59)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (AmCF,0.58)
-      (DmCF,0.9)
-      (SmCF,0.88)
-      (EmCF,0.78)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (AmCF,0.59)
-      (DmCF,0.12)
-      (SmCF,0.94)
-      (EmCF,0.73)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (AmCF,0.60)
-      (DmCF,0.20)
-      (SmCF,0.100)
-      (EmCF,0.60)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 1 (Part 1)
-}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_1-1}
+\caption{The overview over all the results of the first experiment}
 \caption*{\centering
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item AmCF: Average Median Cluster Factor
-    \item DmCF: Dynamic Median Cluster Factor
-    \item SmCF: Semantic Median Cluster Factor
-    \item EmCF: Evolutionary Median Cluster Factor
-  \end{itemize}
+  Each of the first seven boxes depicts all the metrics for each of graph clustering algorithms for the \textit{Heritrix} project with all the four input dimensions.
 }
 \label{fig:experiment-1.1}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          Amount Of Clusters
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Amount Of Clusters,43)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Amount Of Clusters,14)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Amount Of Clusters,6)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Amount Of Clusters,24)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Amount Of Clusters,14)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Amount Of Clusters,8)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Amount Of Clusters,5)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 1 (Part 2)
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_1-2}
+\caption{The highest scoring clustering of the first experiment}
+\caption*{\centering
+  This clustering was produced by the \textit{Clauset-Newman-Moore} graph clustering algorithm with a score of $0.94$ in the $mCF$ and $0.76$ in the $Q$ metric.
 }
 \label{fig:experiment-1.2}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={\%},
-        symbolic x coords={
-          Ratio Inter-Cluster Edge Weights
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,24)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,13)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,2)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,22)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,14)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,1)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Ratio Inter-Cluster Edge Weights,1)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 1 (Part 3)
-}
-\label{fig:experiment-1.3}
+
+\subsection{Experiment Nº 2}
+
+The results of experiment Nº 3 can be found in figures \ref{fig:experiment-2.1_mCF},
+\ref{fig:experiment-2.1_Q}, \ref{fig:experiment-2.2}, \ref{fig:experiment-2.3_mCF},
+and \ref{fig:experiment-2.3_Q}.
+
+It can be deducted from the heatmaps that the $mCF$ metric
+only uses a small range of scores and generally awards high scores.
+It also reaches a perfect score of $1.0$ when only a single cluster is generated,
+which is not preferable.
+On the other hand, the range of scores of the $Q$ metric is broader and more pronounced.
+It also awards very low scores to some clusterings.
+Generally, the two metrics have a positive bivariate correlation of \(R = 0.48\) while
+this is mainly not even higher due to some clusterings that achieve very high scores
+in the $mCF$ metric while having very low scores in the $Q$ metric --- they can be
+seen in the lower right hand corner of figure \ref{fig:experiment-2.2}.
+To determine which metric is more wrong for these clusterings, we manually studied
+said clusterings. Figure \ref{fig:experiment-2.4} shows the most extreme of these cases.
+It can be seen that the clustering just consists of one huge microservice with seven
+smaller ones directly attached to it. Objectively, this is not a good clustering
+as it the \textit{micro}\hyp aspect of microservices is not satisfied.
+
+Thus, we can deduct that the $Q$ metric is more suitable for assessing the output
+quality of microservice decomposition methodologies than the $mCF$, which directly answers RQ2.
+Additionally, as figures \ref{fig:experiment-2.3_mCF} and \ref{fig:experiment-2.3_Q}
+depict, the $mCF$ metric is more highly correlated with the
+\textit{Ratio of Inter-Cluster Edge Weights (\%)}, a metric that should neither
+be very high, nor very low. Comparatively, the $Q$ metric only shows a weak correlation.
+A lower \textit{Ratio of Inter-Cluster Edge Weights (\%)} makes a lot of sense
+intuitively as it generally lowers the coupling between microservices.
+However, it is not desirable to optimize toward the least possible
+\textit{Ratio of Inter-Cluster Edge Weights (\%)}
+as this generally will lead to a few, huge microservices.
+Both of the main clustering metrics are negatively correlated to the
+\textit{Ratio of Inter-Cluster Edge Weights (\%)}, while apparently
+giving an edge over that metric since the correlation is not perfect.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-1_mCF}
+\caption{Heatmap of the $mCF$ metric for each of the input projects per graph clustering algorithm}
+\label{fig:experiment-2.1_mCF}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-1_Q}
+\caption{Heatmap of the $Q$ metric for each of the input projects per graph clustering algorithm}
+\label{fig:experiment-2.1_Q}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-2}
+\caption{Bivariate correlation between the $mCF$ and the $Q$ metric for all results}
+\label{fig:experiment-2.2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-3_mCF}
+\caption{Bivariate correlation between the $mCF$ and the \textit{Ratio of Inter-Cluster Edge Weights (\%)} metric for all results}
+\label{fig:experiment-2.3_mCF}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-3_Q}
+\caption{Bivariate correlation between the $Q$ and the \textit{Ratio of Inter-Cluster Edge Weights (\%)} metric for all results}
+\label{fig:experiment-2.3_Q}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_2-4}
+\caption{The clustering with the largest difference between the $mCF$ and $Q$ metrics}
+\label{fig:experiment-2.4}
 \end{figure}
 
 
+\subsection{Experiment Nº 3}
 
-\section{Experiment Nº 2}
-
-The results of experiment Nº 2 can be found in figures \ref{fig:experiment-2.1},
-\ref{fig:experiment-2.2}, and \ref{fig:experiment-2.3}.
+The results of experiment Nº 3 can be found in figures and tables
+\ref{fig:experiment-3.1_mCF}, \ref{fig:experiment-3.1_Q}, \ref{fig:experiment-3.2},
+\ref{fig:experiment-3.3}, \ref{fig:experiment-3.4}, and \ref{fig:experiment-3.3}.
 
 It can be noticed quickly that the \textit{Chinese Whispers} algorithm performs
 bad overall. Its performance is far worse than that of any other algorithm.
 Furthermore, some algorithms perform better or worse on different projects,
 while the \textit{Chinese Whispers} algorithm is consistently underperforming.
 In the same vein, the \textit{Chinese Whispers} algorithm
-stands out with yielding a grotesque amount of clusters --- which lead to
-its low values in the \textit{Average Mean Cluster Factor} metric.
-In the case of the test subjects \textit{Apache Solr} and \textit{Google Bazel},
-it did not even fit into the figure anymore but clustered the projects into
-$1348$ and $2100$ clusters respectively.
-Consequently, the same is true for the last metric, \textit{Ratio Inter-Cluster Edge Weights},
-where low values are better.
+stands out with yielding a grotesque amount of clusters,
+going over the threshold of $1,000$, as seen in figure \ref{fig:experiment-3.3}.
+Additionally, the \textit{Infomap}, \textit{Walktrap},
+and \textit{Label Propagation} algorithms are performing not very consistently,
+achieving both very good as well as very bad results.
 
-Additionally, it can be observed that the algorithms \textit{Clauset-Newman-Moore}
+On the other hand, it can be observed that the algorithms \textit{Clauset-Newman-Moore}
 and \textit{Louvain} perform very similarly in all of the three recorded metrics,
 which is due to the fact that they are both heuristic algorithms optimizing toward
 the \textit{Modularity} metric \ref{subsect:renowned-graph-clustering-algorithms}.
@@ -4048,718 +3913,95 @@ Interestingly, in most occasions however, the \textit{Louvain} algorithm perform
 slightly better which is a confirmation of the fact that it was developed after
 the \textit{Clauset-Newman-Moore} algorithm and is seen as an improvement upon it
 by literature \cite{lancichinetti2009community}.
+The \textit{MCL} performs somewhere in the middle, but not badly.
+All of these results can be found in figures \ref{fig:experiment-3.1_mCF} and
+\ref{fig:experiment-3.1_Q}.
 
-Regarding the test subjects, we saw that generally projects with lower \textit{SLOC} counts
-(i.e. smaller projects) could achieve better metric values and were easier to cluster
-by all of the algorithms. This becomes specifially apparent for two of the larger
-projects, \textit{Apache Solr} and \textit{Google Bazel}, which achieved lower
-\textit{Average Mean Cluster Factor} values than all of the other test subjects.
-The test subject \textit{XWiki} being the second largest in terms of \textit{SLOC} while
-achieving good \textit{Average Mean Cluster Factor} values does not confirm the
-theory that our methodology performs worse on larger input projects.
-Additionally, we verified this conjecture by calculating the
-\textit{Pearson correlation coefficient} \cite{everitt2002cambridge}
-between the \textit{Average Mean Cluster Factor}
-recordings and the \textit{SLOC} of the recorded test subject and the result is only
-a slight negative correlation of \(r = -0.261\) --- meaning that when the \textit{SLOC} is
-rising, the \textit{Average Mean Cluster Factor} is falling, albeit not in a meaningful manner.
-Similarly, the correlation between the \textit{Amount of Clusters} and the \textit{SLOC}
-of a test subject is not very indicative either with \(r = 0.363\).
+Thus, we can deduct that both the \textit{Clauset-Newman-Moore} as well as the
+\textit{Louvain} algorithms are the most suitable for generating microservice
+recommendations, which directly answers RQ3.
+This notion can still be supported when looking at the additional figures
+\ref{fig:experiment-3.2} and \ref{fig:experiment-3.4}.
+Both of the best performing algorithms have high bivariate correlations between
+their scores in the two main clustering metrics with \(R = 0.90\) and \(R = 0.89\)
+for \textit{Clauset-Newman-Moore} and \textit{Louvain} respectively.
+Other algorithms such as \textit{Chinese Whispers} also achieve a high correlation
+of \(R = 0.75\) but in this case, both main metrics agree upon that it performs badly.
+Likewise, the bivariate correlation between the \textit{Total Coupling Modularity}
+and the \textit{Ratio of Inter-Cluster Edge Weights (\%)} per algorithm is strongly
+negatively correlating for the two best performing algorithms.
+This indicates that lower inter-cluster edges weights are resulting
+in better microservice recommendations which makes intuitively sense given that ideally,
+microservices should be only coupled to a minimum to each other. As shown in
+the subsection on experiment Nº 2, some negative correlation in this regard is
+expected and positive. This can be confirmed by the fact that algorithms that
+already achieved bad scores in the main clustering metrics even have positive
+bivariate correlations to the \textit{Ratio of Inter-Cluster Edge Weights (\%)}
+which intuitively does not make any sense since more coupling between microservices
+is never desired.
 
-Positively, apart from the \textit{Apache Solr} and \textit{Google Bazel} projects,
-all other projects could be clustered into microservice recommendations with
-solid metric results. Unfortunately, we have no explanation why these two projects
-score so much worse compared to the others.
+Finally, there is an interesting insight. The bivariate correlation between
+the \textit{Total Coupling Modularity} metric and the \textit{Amount of Clusters}
+is positively correlated for the \textit{Clauset-Newman-Moore} and \textit{Louvain}
+algorithms, compared to others. Although we have no other sources of information
+to confirm or deny this it seems that generally speaking, higher amounts of clusters
+(i.e., finer microservice granularity) is better.
+These results can be found in table \ref{table:experiment-3.5}.
 
-Finally, this was the only occasion that this ever happened during our experiments,
-but the \textit{Walktrap} algorithm created only one cluster when clustering the
-\textit{Teammates} project which is treated as an invalid result by us.
-
-
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={Average Mean Cluster Factor},
-        symbolic x coords={
-          Apache Solr,
-          Google Bazel,
-          Heritrix,
-          Picnic Store,
-          Teammates,
-          XWiki,
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Apache Solr,0.5)
-      (Google Bazel,0.2)
-      (Heritrix,0.29)
-      (Picnic Store,0.15)
-      (Teammates,0.9)
-      (XWiki,0.27)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Apache Solr,0.50)
-      (Google Bazel,0.41)
-      (Heritrix,0.83)
-      (Picnic Store,0.66)
-      (Teammates,0.65)
-      (XWiki,0.82)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Apache Solr,0.36)
-      (Google Bazel,0.26)
-      (Heritrix,0.87)
-      (Picnic Store,0.56)
-      (Teammates,0.55)
-      (XWiki,0.65)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Apache Solr,0.43)
-      (Google Bazel,0.35)
-      (Heritrix,0.68)
-      (Picnic Store,0.44)
-      (Teammates,0.50)
-      (XWiki,0.52)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Apache Solr,0.50)
-      (Google Bazel,0.40)
-      (Heritrix,0.83)
-      (Picnic Store,0.70)
-      (Teammates,0.70)
-      (XWiki,0.81)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Apache Solr,0.51)
-      (Google Bazel,0.39)
-      (Heritrix,0.87)
-      (Picnic Store,0.60)
-      (Teammates,0.62)
-      (XWiki,0.73)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Apache Solr,0.32)
-      (Google Bazel,0.22)
-      (Heritrix,0.86)
-      (Picnic Store,0.50)
-      (Teammates,nan)
-      (XWiki,0.63)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 2 (Part 1)
-}
-\label{fig:experiment-2.1}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_3-1_mCF}
+\caption{Violin plot of the $mCF$ metric over all of the graph clustering algorithms}
+\label{fig:experiment-3.1_mCF}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={Amount of Clusters},
-        symbolic x coords={
-          Apache Solr,
-          Google Bazel,
-          Heritrix,
-          Picnic Store,
-          Teammates,
-          XWiki
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Apache Solr,1348)
-      (Google Bazel,2100)
-      (Heritrix,42)
-      (Picnic Store,117)
-      (Teammates,114)
-      (XWiki,484)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Apache Solr,82)
-      (Google Bazel,47)
-      (Heritrix,14)
-      (Picnic Store,16)
-      (Teammates,17)
-      (XWiki,64)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Apache Solr,60)
-      (Google Bazel,30)
-      (Heritrix,10)
-      (Picnic Store,8)
-      (Teammates,6)
-      (XWiki,16)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Apache Solr,281)
-      (Google Bazel,212)
-      (Heritrix,25)
-      (Picnic Store,64)
-      (Teammates,46)
-      (XWiki,410)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Apache Solr,73)
-      (Google Bazel,37)
-      (Heritrix,14)
-      (Picnic Store,16)
-      (Teammates,15)
-      (XWiki,58)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Apache Solr,142)
-      (Google Bazel,146)
-      (Heritrix,9)
-      (Picnic Store,30)
-      (Teammates,8)
-      (XWiki,77)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Apache Solr,100)
-      (Google Bazel,99)
-      (Heritrix,10)
-      (Picnic Store,3)
-      (Teammates,nan)
-      (XWiki,15)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 2 (Part 2)
-}
-\label{fig:experiment-2.2}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_3-1_Q}
+\caption{Violin plot of the $Q$ metric over all of the graph clustering algorithms}
+\label{fig:experiment-3.1_Q}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.35cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=true,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={Ratio Inter-Cluster Edge Weights (\%)},
-        symbolic x coords={
-          Apache Solr,
-          Google Bazel,
-          Heritrix,
-          Picnic Store,
-          Teammates,
-          XWiki
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Apache Solr,31)
-      (Google Bazel,38)
-      (Heritrix,19)
-      (Picnic Store,37)
-      (Teammates,28)
-      (XWiki,24)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Apache Solr,17)
-      (Google Bazel,21)
-      (Heritrix,8)
-      (Picnic Store,19)
-      (Teammates,27)
-      (XWiki,9)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Apache Solr,14)
-      (Google Bazel,21)
-      (Heritrix,3)
-      (Picnic Store,21)
-      (Teammates,22)
-      (XWiki,1)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Apache Solr,29)
-      (Google Bazel,32)
-      (Heritrix,23)
-      (Picnic Store,40)
-      (Teammates,34)
-      (XWiki,27)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Apache Solr,16)
-      (Google Bazel,22)
-      (Heritrix,8)
-      (Picnic Store,20)
-      (Teammates,30)
-      (XWiki,9)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Apache Solr,20)
-      (Google Bazel,29)
-      (Heritrix,1)
-      (Picnic Store,25)
-      (Teammates,1)
-      (XWiki,3)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Apache Solr,2)
-      (Google Bazel,2)
-      (Heritrix,1)
-      (Picnic Store,1)
-      (Teammates,nan)
-      (XWiki,1)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 2 (Part 3)
-}
-\label{fig:experiment-2.3}
-\end{figure}
-
-
-
-\section{Experiment Nº 3}
-
-The results of experiment Nº 3 can be found in figures
-\ref{fig:experiment-3.1}, \ref{fig:experiment-3.2}, \ref{fig:experiment-3.3},
-and \ref{fig:experiment-3.4}.
-
-The \textit{Average of Amount of Clusters} is differing a lot, especially considering
-that the \textit{Average of Average Mean Cluster Factor} and the
-\textit{Average of Ratio Inter-Cluster Edge Weights} are fairly similar.
-Specifically interesting is the case of the \textit{MCL} algorithm which yields
-a lot of clusters on average while achieving the second best
-\textit{Average of Ratio Inter-Cluster Edge Weights} and the third best
-\textit{Average of Average Mean Cluster Factor} values.
-This shows that the problem domain is filled with many local optima as different
-algorithms can achieve good results with very divergent cluster amounts.
-
-A similar case regarding the \textit{Average of Ratio Inter-Cluster Edge Weights}
-goes for the \textit{Walktrap} algorithm who really stands out in that metric.
-It scores good overall performance in the main
-\textit{Average of Average Mean Cluster Factor} metric while recording only about
-$1 \%$ of \textit{Average of Ratio Inter-Cluster Edge Weights}, an impressive value.
-
-Additionally, the \textit{Average of Average Mean Cluster Factor} metrics were satisfactory
-across\hyp the\hyp board, with a \textit{coefficient of variation}
-\cite{everitt2002cambridge} of \(c_v = 33.9\) and even \(c_v = 11.1\) when leaving out
-the distorting \textit{Chinese Whispers} algorithm.
-
-Finally, the following two takeaways directly answer the third research question:
-The first key point in this experiment is that the the \textit{Chinese Whispers},
-\textit{Label Propagation}, and \textit{Walktrap} algorithms are performing the
-worst overall and generally do not seem to be suitable for clustering graphs
-representing software specifially when observing the recorded
-\textit{Amount of Clusters} values which are irrationally
-high with $700.83$ and $171.17$ respectively for the \textit{Chinese Whispers} and
-\textit{Label Propagation} algorithms. The \textit{Walktrap} algorithm on the other
-hand performs erraticly with a \textit{coefficient of variation} of \(c_v = 49.2\).
-The second key point is that overall, the algorithms of \textit{Clauset-Newman-Moore}
-and \textit{Louvain} perform the best while the \textit{Louvain} algorithm
-performs even slightly better with a higher
-\textit{Average of Average Mean Cluster Factor} metric of $65.7$ and the lowest
-\textit{coefficient of variation} of \(c_v = 19.7\).
-
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.55cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=0.19,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          Average of AmCF,
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=2]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Average of AmCF,0.145)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Average of AmCF,0.645)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Average of AmCF,0.542)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Average of AmCF,0.487)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Average of AmCF,0.657)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Average of AmCF,0.62)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Average of AmCF,0.588)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 3 (Part 1)
-}
-\caption*{\centering
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item AmCF: Average Median Cluster Factor
-  \end{itemize}
-}
-\label{fig:experiment-3.1}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.55cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=0.19,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          Average of CV(AmCF),
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Average of CV(AmCF),71.5)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Average of CV(AmCF),19.9)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Average of CV(AmCF),30.7)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Average of CV(AmCF),22.7)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Average of CV(AmCF),19.7)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Average of CV(AmCF),20.4)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Average of CV(AmCF),49.2)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 3 (Part 2)
-}
-\caption*{\centering
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item CV(AmCF): Coefficient of varition of Average Median Cluster Factor
-  \end{itemize}
-}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_3-2}
+\caption{Bivariate correlation between the $mCF$ and the $Q$ metric for all of the graph clustering algorithms}
 \label{fig:experiment-3.2}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.55cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=0.19,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          Average of AoC,
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Average of AoC,700.8)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Average of AoC,40)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Average of AoC,21.7)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Average of AoC,171.2)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Average of AoC,35.5)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Average of AoC,68.7)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Average of AoC,38)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 3 (Part 3)
-}
-\caption*{\centering
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item AoC: Amount of Clusters
-  \end{itemize}
-}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_3-3}
+\caption{Bivariate correlation between the $Q$ metric and the \textit{Amount of Clusters} for all of the graph clustering algorithms}
 \label{fig:experiment-3.3}
 \end{figure}
 
-\begin{figure}[p]
-    \centering
-    \begin{adjustbox}{width=\textwidth}
-    \begin{tikzpicture}
-    \centering
-    \begin{axis}[
-        ybar, axis on top,
-        height=\paperheight/2, width=\paperwidth,
-        bar width=0.55cm,
-        ymajorgrids, tick align=inside,
-        major grid style={draw=white},
-        enlarge y limits={value=.1,upper},
-        ymin=0,
-        axis x line*=bottom,
-        axis y line*=left,
-        y axis line style={opacity=0},
-        tickwidth=0pt,
-        enlarge x limits=0.19,
-        legend style={
-            at={(0.5,-0.2)},
-            anchor=north,
-            legend columns=-1,
-            /tikz/every even column/.append style={column sep=0.5cm}
-        },
-        ylabel={},
-        symbolic x coords={
-          Average of RICEW,
-        },
-        xtick=data,
-        nodes near coords={
-            \rot{\small{\pgfmathprintnumber[precision=1]{\pgfplotspointmeta}}}
-        }
-    ]
-    % Chinese Whispers
-    \addplot [draw=none, fill=blue!60] coordinates {
-      (Average of RICEW,29.5)
-    };
-    % Clauset-Newman-Moore
-    \addplot [draw=none, fill=magenta!60] coordinates {
-      (Average of RICEW,16.8)
-    };
-    % Infomap
-    \addplot [draw=none, fill=green!60] coordinates {
-      (Average of RICEW,13.7)
-    };
-    % Label Propagation
-    \addplot [draw=none, fill=cyan!60] coordinates {
-      (Average of RICEW,30.8)
-    };
-    % Louvain
-    \addplot [draw=none, fill=red!60] coordinates {
-      (Average of RICEW,17.5)
-    };
-    % MCL
-    \addplot [draw=none, fill=orange!60] coordinates {
-      (Average of RICEW,13.2)
-    };
-    % Walktrap
-    \addplot [draw=none, fill=yellow!60] coordinates {
-      (Average of RICEW,1.3)
-    };
-    \legend{Chinese Whispers,Clauset-Newman-Moore,Infomap,Label Propagation,Louvain,MCL,Walktrap}
-    \end{axis}
-\end{tikzpicture}
-\end{adjustbox}
-\caption{
-  Plotted results of experiment Nº 3 (Part 4)
-}
-\caption*{\centering
-  The labels represent the following metrics:
-  \begin{itemize}[noitemsep]
-    \item RICEW: Ratio Inter-Cluster Edge Weights
-  \end{itemize}
-}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_3-4}
+\caption{Bivariate correlation between the $Q$ metric and the \textit{Ratio of Inter-Cluster Edge Weights (\%)} for all of the graph clustering algorithms}
 \label{fig:experiment-3.4}
 \end{figure}
+
+\begin{table}[ht!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|c|}
+\hline
+Graph Clustering Algorithm & Correlation (R) & Significance (p) \\
+\hline\hline
+
+Chinese Whispers      & $-0.31$ & $0.29$  \\\hline
+Clauset-Newman-Moore  & $0.46$  & $0.1$   \\\hline
+Infomap               & $0.6$   & $0.02$  \\\hline
+Label Propagation     & $0.08$  & $0.78$  \\\hline
+Louvain               & $0.51$  & $0.07$  \\\hline
+MCL                   & $-0.18$ & $0.54$  \\\hline
+Walktrap              & $-0.78$ & $0.0$   \\\hline
+
+\end{tabularx}
+\caption{Bivariate correlation between the \textit{Total Coupling Modularity} and the \textit{Amount of Clusters}}
+\label{table:experiment-3.5}
+\end{table}
 
 
 
@@ -4768,7 +4010,7 @@ performs even slightly better with a higher
 The performance results can be found in figures \ref{fig:performance-static},
 \ref{fig:performance-semantic}, \ref{fig:performance-evolutionary},
 and \ref{fig:performance-total}. On purpose, the same scales are used in all
-of the plots such that the results and the runtime complexity can be compared better.
+of the plots such that the results and the runtime complexity can be compared.
 
 This section presents the results of the performance evalutation of
 the PoC that we implemented as part of this thesis project.
@@ -4780,7 +4022,7 @@ the merging of all three graphs and the insertion into the database was recorded
 
 The dynamic analysis is not covered in this subsection as we had only a single
 recorded datapoint. However, for the sake of completeness, the dynamic analysis
-of experiment Nº 1 took 64 seconds for a profiler recording of 4500 megabytes in size.
+of the first experiment took 64 seconds for a profiler recording of 4500 megabytes in size.
 The clustering runtime was not measured as we have no influence on it,
 since solely the runtime complexity of each of the graph clustering algorithms
 determines that.
@@ -4846,11 +4088,7 @@ as figure \ref{fig:performance-total} depicts.
 \section{Results}
 
 Coming back to the introduction of this thesis and the posed research questions,
-we created a full methodology that gets any monolithic software as its input,
-outputting microservice candidate recommendations in various formats.
-Furthermore, a large set of metrics were devised that measure the input and
-output quality of said methodology.
-In conclusion, we devised a methodology that improves upon similar ones in
+we devised a full methodology that improves upon similar ones in
 this area of research in multiple aspects such as:
 
 \begin{itemize}
