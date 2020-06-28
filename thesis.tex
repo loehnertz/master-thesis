@@ -28,7 +28,7 @@ Conception of a methodology and its exemplary implementation
 
 
 \begin{abstract}
-The microservices paradigm gets more and more traction and many companies choose to adopt it
+The microservices paradigm gains more and more traction and many companies choose to adopt it
 for new developments as well as to transform existing monolithic software to be
 microservices\hyp based instead.
 However, the latter approach bears many difficulties that involve much manual work,
@@ -39,7 +39,7 @@ providing a framework to determine said boundaries manually, with \textit{Domain
 Eric Evans laying the foundation for this entire domain of research.
 
 This thesis devises a methodology that automatically generates microservice candidate recommendations
-for any given piece of monolithic software without any further user input but the software itself.
+for any given piece of monolithic software.
 To do this, four dimensions of coupling are calculated out of the input software that each
 construct a weighted graph with the edges resembling coupling between the units of the software.
 Next, the four graphs are merged into one before being clustered by specifically surveyed and assessed
@@ -1074,7 +1074,7 @@ complete methodology is developed to convert a certain input to microservice
 recommendations. They initially devised the idea to build a graph out of this
 input that is then clustered using a graph clustering algorithm to create clusters
 that reflect the microservice recommendations.
-Future work in the domain \cite{mazlami2017extraction}\cite{kruidenberg2018monoliths}
+Future work in the domain \cite{mazlami2017extraction, kruidenberg2018monoliths}
 together with ours is following this idea.
 However, not every analyzed work uses this approach.
 Therefore in this subsection, only works that do use it are analyzed in detail
@@ -1237,7 +1237,7 @@ in a given application \cite{newman2015building, ms-fowler}.
 
 Thus, a \textit{task} has no distinct upper limit regarding its size.
 One service should encapsulate one \textit{bounded context} while trying to
-keep them as small as reasonable possible to still satisfy the idea of having
+keep them as small as reasonably possible to still satisfy the idea of having
 \textit{microservices} such that size, complexity, and maintenance stay manageable
 \cite{newman2015building, ms-fowler}.
 
@@ -1705,7 +1705,10 @@ structure as the other ones such that the vertices \(v_i \in V\) are the classes
 extracted from the VCS log file while the edges \(e_i \in E\) are resembling
 that two classes have overlapping software development life cycles.
 The weight of the edges is a percentage that indicates how much the
-life cycles overlap \(W(e_i) \in [0.0, 1.0]\).
+life cycles overlap \(W(e_i) \in [0.0, 1.0]\). Owing to the fact that two
+classes can have different \textit{evolutionary coupling} values depending on
+which direction is calculated, as seen in figure \ref{fig:vcs-log-timeline},
+we take the average of these two values if this is the case.
 
 Finally, as discussed in subsection \ref{subsect:evolutionary-similarity},
 we use a threshold for this extraction step to filter out noise.
@@ -2097,7 +2100,7 @@ and the clustered output respectively.
 Thus, it was important to us to also devise objective metrics, numeric in nature,
 to be able to evaluate the results of our methodology and to answer \textit{RQ2}.
 
-In total, we devised a total of 17 metrics that can be sorted into three sets ---
+In total, we devised a total of 16 metrics that can be sorted into three sets ---
 some of them being more general and overarching while others are more specific
 to the problem at hand by offering a direct order of magnitude regarding the
 quality of the produced output. The three sets of metrics are covered
@@ -2109,7 +2112,6 @@ in the following sections while the devised metrics are the following:
   \item Amount of clusters
   \item Amount of inter-cluster edges
   \item Ratio of inter-cluster edge weight
-  \item Mean cluster size
   \item Dynamic Mean Cluster Factor
   \item Semantic Mean Cluster Factor
   \item Evolutionary Mean Cluster Factor
@@ -3510,6 +3512,8 @@ provided by the host organization of this thesis project were chosen to be run t
 The goal is to determine which graph clustering algorithm performed the best in the case
 of each input application as well as overall.
 
+Additionally, the performance of the PoC that we implemented was analyzed.
+
 
 \subsection{Subjects}
 
@@ -3539,9 +3543,11 @@ via the search functionality of GitHub. Precisely, these projects were found via
 the following query \ref{github-query}.
 
 \begin{lstlisting}[caption=GitHub experiment subjects search query, label=github-query, breaklines=true, basicstyle=\scriptsize\ttfamily]
-NOT library NOT framework NOT distributed NOT client NOT android stars:>500 language:Java
+NOT library NOT framework NOT android NOT distributed NOT client stars:>500 language:Java
 \end{lstlisting}
 
+We examined projects with at least 500 stars to filter out educational projects
+that are most likely not peer-reviewed.
 Sadly, the GitHub search only allows up to five \code{NOT} operators.
 Thus, this query still yields good results overall but still a lot of false positives such as:
 
@@ -3607,7 +3613,7 @@ Furthermore, the \textit{dynamic coupling} involves another difficulty which
 was already discussed in subsection \ref{subsect:background-dynamic-analysis} ---
 owing to the fact that the software has to be executed in order to conduct
 \textit{dynamic program analysis}, this input dimension involves a lot more work
-than any of the other.
+than any of the others.
 
 Moreover, another problem arises which is more specific to
 our use case: The dynamic coupling between units of the application that should
@@ -3638,7 +3644,7 @@ Due to this difficulty and its possible repercussions, we decided to leave the
 \textit{dynamic coupling} dimension out of most of the experiments.
 Nevertheless, owing to the fact that our implementation allows for one input dimension
 to be left out when conducting an analysis, this difficulty could be circumvented
-during the first experiment.
+in all of the experiments.
 
 Finally, to test that the entirety of our implemented methodology was working as designed,
 we conducted the first experiment by analyzing one of the projects with all the available
