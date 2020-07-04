@@ -11,7 +11,7 @@ Toward automatic decomposition of monolithic software into microservices
 Conception of a methodology and its exemplary implementation
 }
 \newcommand{\thesisauthor}{Jakob L{\"o}hnertz}
-\newcommand{\thesisdate}{31/01/2020}
+\newcommand{\thesisdate}{31/07/2020}
 \newcommand{\thesislocation}{Amsterdam}
 \newcommand{\firstmarker}{Dr.\ Ana Oprescu}
 \newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
@@ -331,9 +331,8 @@ between.
 Finally, Conway's law \cite{conway1968law} is more important than ever in a
 microservices landscape as overly dependent life cycles between services will
 lead to nothing more than a \textit{distributed monolith} in the long run.
-\newline
 
-\noindent In summary, the larger and more complicated the underlying business
+In summary, the larger and more complicated the underlying business
 logic becomes, the more the application can benefit from a microservices\hyp
 based architecture. Specifically when developing the overarching application in
 agile teams, microservices offer natural boundaries for this organizational
@@ -1012,27 +1011,41 @@ Fritzsch et al. \cite{fritzsch2018monolith}.
 \subsection*{Approaches}
 
 In the following paragraphs, the approaches used as matrix columns are
-explained in more detail. \paragraph{SE model analysis} The term \textit{
-Software Engineering (SE) models} subsumes non\hyp source code artifacts out of
-the domain of SE. For instance, this category includes use case models and
-entity-relationship models (ERM). \paragraph{Static analysis} Static analysis
-covers any form of non\hyp runtime analysis of the given codebase. This
-includes dependency graphs, class graphs, the connection of source code via
+explained in more detail.
+
+\paragraph{SE model analysis}
+The term \textit{Software Engineering (SE) models} subsumes non\hyp source code
+artifacts out of the domain of SE.
+For instance, this category includes use case models and
+entity-relationship models (ERM).
+
+\paragraph{Static analysis}
+Static analysis covers any form of non\hyp runtime analysis of the given codebase.
+This includes dependency graphs, class graphs, the connection of source code via
 shared terms (i.e., words in the identifier of classes that might tie them
-together), etc. \paragraph{Dynamic analysis} Dynamic analysis is about
+together), etc.
+
+\paragraph{Dynamic analysis}
+Dynamic analysis is about
 analyzing the existing monolithic software during its execution. This covers
 profiling it, tracing data inside of the application as well as analyzing
-access logs such as web traffic logs. \paragraph{Data model analysis} Since one
-principle of the microservices architecture is about separating data stores
+access logs such as web traffic logs.
+
+\paragraph{Data model analysis}
+As one principle of the microservices architecture is about separating data stores
 \cite{ms-microservices}, the approach to analyze the data models (e.g.,
 schemes) of existing database tables is, generally speaking, an important one.
 This approach would cover the direct analysis of database tables as well as the
 analysis of \textit{object relational mappings} (ORM) if those were already in
-use in the existing application. \paragraph{VCS mining} The repositories of
+use in the existing application.
+
+\paragraph{VCS mining} The repositories of
 existing solutions are usually part of a \textit{version control system} (VCS)
 such as Git. Consequently, revisions and merges can be analyzed to determine
-e.g., the coupling of specific files, modules, or classes. \paragraph{External
-interface analysis} The external interfaces (i.e., the Web-APIs) of existing
+e.g., the coupling of specific files, modules, or classes.
+
+\paragraph{External interface analysis}
+The external interfaces (i.e., the Web-APIs) of existing
 solutions can be analyzed to get a sense of existing modularization and
 cohesion within the solution.
 
@@ -1308,9 +1321,10 @@ mapped to microservices-based architecture best practices, which allows us to
 reason about how and why the output of our methodology makes any sense, all
 based on the fact that it processes input mapped to said best practices.
 
-Eventually, we found that three main types of coupling in software systems map
+Eventually, we found that four main types of coupling in software systems map
 to the above-mentioned principles:
 \begin{enumerate}
+  \item Static coupling
   \item Dynamic coupling
   \item Semantic coupling
   \item Evolutionary coupling
@@ -1321,7 +1335,7 @@ to the above-mentioned principles:
   the strength of the relationships between them."
   }~\cite{swebok}
 \end{displayquote}
-Precisely, the three types of coupling above are subcategories of the notion of
+Precisely, the four types of coupling above are subcategories of the notion of
 \textit{coupling}. Moreover, these types, as well as how they map to the
 \textit{principles of microservices}, are showcased in figure
 \ref{fig:principles-of-microservices} and the subsections below.
@@ -1334,7 +1348,7 @@ our methodology are discussed in chapter \ref{chap:extracting-coupling}.
 \caption{Mapping design principles of microservices to coupling types}
 \caption*{\centering
   We detected that three of the most important design principles of the
-  microservices paradigm map directly to three main types of coupling.
+  microservices paradigm map directly to four main types of coupling.
 }
 \label{fig:principles-of-microservices}
 \end{figure}
@@ -1398,7 +1412,7 @@ which would otherwise violate the third principle.
 An important argument of our approach is that the coupling information
 exhibited in chapter \ref{chap:rationale} are extracted out of the input
 monolithic application automatically without any further user input. In this
-chapter, it is detailed which inputs need to be supplied and how the three
+chapter, it is detailed which inputs need to be supplied and how the four
 types of coupling are extracted out of them. Additionally, static program
 analysis is conducted as covered in this chapter.
 
@@ -1763,7 +1777,7 @@ was extracted out of the static analysis into a directed graph.
 \section{Representing software as weighted graphs} \label{sect:software-as-weighted-graph}
 
 Our methodology works by clustering a weighted graph; hence we need to
-construct it first. As discussed in chapter \ref{chap:rationale}, three general
+construct it first. As discussed in chapter \ref{chap:rationale}, four general
 coupling types were chosen to be leveraged for devising the microservice
 candidates' recommendations. Precisely, the input monolithic application gets
 analyzed from the view of each of these coupling types, called dimensions from
@@ -1773,15 +1787,15 @@ Out of each of the input dimensions, a weighted graph is constructed with the
 classes as the vertices \(v_i \in V\) and the coupling values between the
 classes as the weighted edges \(e_i \in E\) representing a percentage \(W(e_i)
 \in [0.0, 1.0]\) --- resulting in a weighted graph \(G = (V, E)\).
-Consequently, we receive three separate weighted graphs with the different
+Consequently, we receive four separate weighted graphs with the different
 input dimensions as the edge weights.
 
 However, the other extraction methods (i.e., dimensions) covered in the
 sections below entail one problem that would discredit our whole
 methodology --- they oftentimes do not cover the entirety of the input
 monolithic application in regard to featuring every class of it as vertices in
-the resulting weighted graph. As a consequence, it is possible that all three
-weighted graphs constructed out of the three coupling types are not complete in
+the resulting weighted graph. As a consequence, it is possible that all four
+weighted graphs constructed out of the four coupling types are not complete in
 the sense that they cover the entirety of the input application. As this would
 defeat the purpose of our approach, an additional static call graph is
 constructed to be sure that the final graph covers the whole application.
@@ -1847,7 +1861,7 @@ edge \(\forall e_i \in E_{combined}\) in the combined graph \(G_{combined}\).
 Owing to the fact, that the \textit{static coupling} dimension does not yield
 edge weights as covered in section \ref{sect:static-coupling-extraction}, it is
 excluded from the \textit{edge weighting formula}:
-\small
+\tiny
 \begin{equation*}
 \begin{split}
   W_{combined}(wf_{static}, wf_{dynamic}, wf_{semantic}, wf_{evolutionary}) = \\
@@ -1867,12 +1881,13 @@ excluded from the \textit{edge weighting formula}:
 \normalsize
 In the above formula, the weight factors \(w_x\) can then be substituted with custom
 factors. Our default setting is an average with all the weight factors being \(1\).
-\newline
+
 Once the combined graph \(G_{combined}\) has been constructed,
 the next step is to apply graph clustering to it such that groups of vertices
 that have strong coupling, resembled by the combined edge weights
-\(W_{combined}(wf_{dynamic}, wf_{semantic}, wf_{evolutionary})\) in between them,
-are more likely to end up in the same cluster. These clusters would then mirror
+\(W_{combined}(wf_{static}, wf_{dynamic}, wf_{semantic}, wf_{evolutionary})\)
+in between them, are more likely to end up in the same cluster.
+These clusters would then mirror
 the notion of the \textit{bounded contexts}, introduced in subsection
 \ref{subsect:ms-principle-2}. Thus, each cluster then resembles one microservice
 candidate recommendation.
@@ -1914,7 +1929,7 @@ The citation numbers in the table are also referenced there.
 
 \begin{table}[ht!]
 \def\arraystretch{1.60}
-\begin{tabularx}{\textwidth}{|Y||p{2.5cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
+\begin{tabularx}{\textwidth}{|Y||p{2.4cm}|Y|Y|Y|Y|Y|Y|Y|Y|Y|}
  \hline
  \rot{Citations~} & \rot{Runtime complexity~} & \rot{Implementation available~} & \rot{Does not require number of clusters~} & \rot{Deterministic~} & \rot{Considers weighted edges~} & \rot{Hard clustering~} & \rot{Hierarchical~} \\
  \hline\hline
@@ -1960,8 +1975,7 @@ The citation numbers in the table are also referenced there.
 \label{table:graph-clustering-survey}
 \end{table}
 
-The characteristics chosen for the survey are discussed in the following
-paragraphs.
+The characteristics chosen for the survey are discussed in the following paragraphs.
 
 \paragraph{Runtime complexity}
 The runtime complexity of a graph clustering
@@ -2162,7 +2176,7 @@ output, but the confidence that it is any good is low.
 
 There is no threshold of the \textit{input fidelity} being too low. We instead
 devised it as a supporting measurement to corroborate the outputs of our
-methodology. All three of the input dimensions have different considerations in
+methodology. The three input dimensions have different considerations in
 regard to achieving a high \textit{input fidelity} value.
 
 \paragraph{Dynamic coupling}
@@ -2488,13 +2502,16 @@ class CallsRelationship() {
     var callee: Unit
 
     @Property
-    var dynamiCouplingScore: Int = 0
+    var staticCouplingScore: Int = 0
+
+    @Property
+    var dynamicCouplingScore: Int = 0
 
     @Property
     var semanticCouplingScore: Int = 0
 
     @Property
-    var logicalCouplingScore: Int = 0
+    var evolutionaryCouplingScore: Int = 0
 }
 \end{lstlisting}
 
@@ -2752,7 +2769,7 @@ class can be found in the wiki of \textit{Steinmetz}
 
 \subsection{API resources} \label{subsect:api-resources}
 
-Namely, there are three resource endpoints for adding new projects, retrieving
+Namely, there are five resource endpoints for adding new projects, retrieving
 them, and to eventually cluster them:
 \begin{enumerate}[noitemsep]
     \item \code{GET \quad  "/analysis/"}
@@ -2781,8 +2798,8 @@ mandates is depicted in table \ref{table:data-resource-1}. Additionally, table
 table \ref{table:data-resource-1} have to be in the example case that \code{
 "JAVA"} was chosen as the \code{projectPlatform}. Finally, we added a feature
 that allows for one of the three following data fields to be missing during the
-upload owing to the fact that sometimes it is difficult to supply all three (
-specifically the \code{dynamicAnalysisFile}) while the analysis can still be
+upload owing to the fact that sometimes it is difficult to supply all three
+(specifically the \code{dynamicAnalysisFile}) while the analysis can still be
 performed albeit with lower quality:
 \begin{itemize}[noitemsep]
   \item \code{dynamicAnalysisFile}
@@ -3237,8 +3254,9 @@ number of clusters a priori, we implemented a similar idea for the hyper\hyp
 parameters of our methodology, namely the coupling type weights.
 
 To keep the runtimes of the optimization acceptable, we opted to implement a
-genetic algorithm that optimizes the hyper\hyp parameters \cite{
-eiben2003introduction}. It serializes the three parameters (i.e. \textit{
+genetic algorithm that optimizes the hyper\hyp parameters \cite{eiben2003introduction}.
+It serializes the four parameters
+(i.e. \textit{static coupling weight}, \textit{
 dynamic coupling weight}, \textit{semantic coupling weight}, \textit{
 evolutionary coupling weight}) into a chromosome. By default, a population of
 size 100 is evolved over 100 generations. To get out of local minima, the
@@ -3333,7 +3351,7 @@ fulfill the following tasks:
         additional input parameter that determines the granularity of the
         resulting clustering. In that case, these algorithms are maximally run
         as often as the slider specifies in a concurrent manner.
-  \item Changing the weighting for the three input dimensions. By default,
+  \item Changing the weighting for the four input dimensions. By default,
         every dimension is weighted the same; however, this can be changed by
         the user.
   \item The rendered graph either plain or clustered; every cluster then depicts
@@ -3539,7 +3557,7 @@ Additionally, the selected applications had to be implemented with the Java
 programming language as the first version of \textit{Steinmetz} that we
 implemented for now only supports input software that was written in Java.
 
-Furthermore, to be able to analyze all three of the input dimensions covered in
+Furthermore, to be able to analyze all four of the input dimensions covered in
 section \ref{sect:software-quality-metrics}, the selected applications had to
 fulfill another, more distinct set of criteria:
 
@@ -3641,7 +3659,7 @@ An advanced open source enterprise wiki \\\hline
 \subsection{Difficulties} \label{subsect:difficulties}
 
 As discussed in the previous section, the selected applications have to fulfill
-a set of requirements for each of the three input dimensions. Furthermore, the
+a set of requirements for each of the four input dimensions. Furthermore, the
 \textit{dynamic coupling} involves another difficulty, which was already
 discussed in subsection \ref{subsect:background-dynamic-analysis} --- owing to
 the fact that the software has to be executed in order to conduct \textit{
@@ -3728,7 +3746,7 @@ multiple seeds, it generates its work automatically by adding newly found links
 to a queue. Consequently, no workload has to be synthetically generated or
 recorded, which means that the problem discussed in subsection
 \ref{subsect:difficulties} can be circumvented in this way.
-Eventually, we profiled \textit{ Heritrix} during its runtime
+Eventually, we profiled \textit{Heritrix} during its runtime
 for 48 hours with the \textit{Java Flight Recorder},
 which yielded a recording of $4.5$ gigabytes, which was used for
 this experiment. Importantly, this is a proof of concept experiment as we
@@ -4058,7 +4076,7 @@ recorded the time each step of the complete analysis took in seconds. Namely,
 these are the static, semantic, and evolutionary analyses. The first two are
 compared to the SLOC of the input projects, while the latter is compared to the
 number of commits. Finally, the total runtime, including the merging of all
-three graphs and the insertion into the database, was recorded.
+four graphs and the insertion into the database, was recorded.
 
 The dynamic analysis is not covered in this subsection, as we had only a single
 recorded data point. However, for the sake of completeness, the dynamic
@@ -4159,7 +4177,8 @@ this area of research in multiple aspects such as:
 
 \section{Threats to validity} \label{sect:threats-to-validity}
 
-\paragraph{Missing dynamic coupling} The main threat to validity was exhibited
+\paragraph{Missing dynamic coupling}
+The main threat to validity was exhibited
 in subsection \ref{subsect:difficulties}, which is that the input dimension
 regarding the \textit{dynamic coupling} cannot be analyzed very well in an
 experimental environment which decreased the significance of our evaluation. On
@@ -4255,7 +4274,7 @@ to further improve upon existing approaches.
 Thus, we showed how a rationale can tie the input to the output, to be able to
 assert that the final microservice recommendations were generated via the means
 of an input that leads to \textit{good} microservice boundaries which were
-extracted out of the input --- the three dimensions of coupling in the case of
+extracted out of the input --- the four dimensions of coupling in the case of
 our methodology. Furthermore, it became apparent that a multitude of graph
 clustering algorithms is available to be utilized for creating microservice
 recommendations which offered more in-depth insights into which are feasible
