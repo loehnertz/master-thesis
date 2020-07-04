@@ -1447,6 +1447,38 @@ result in an edge connecting the instantiating or invoking class vertex to the
 one it is instantiating or invoking --- algorithm \ref{algo:class-walk} depicts
 this process.
 
+For Java applications, both source code, as well as compiled bytecode, can be
+utilized as the input to algorithm \ref{algo:class-walk}. For both approaches,
+libraries exist that can access and iterate over the classes and methods as
+detailed in chapter \ref{chap:implementation}.
+
+The resulting static call graph is theoretically directed in the manner that it
+gets constructed in algorithm \ref{algo:class-walk}, the first class in the
+class pairs that are getting returned, is the vertex the edge is pointing away
+from. We construct a directed, weighted graph ---
+although the directions are ignored in most cases, as discussed in
+more detail in section \ref{sect:implementation-database}.
+
+Compared to other types of program analysis, static coupling does not bear an
+intuitive notion of strength.
+To counteract this problem, we use a modification of the
+\textit{Response for a class} (RFC) metric \cite{briand1999unified}.
+Other popular metrics, like CBO, are not as feasible
+as they cannot be geared toward calculating a coupling percentage between
+a pair of classes.
+\(\text{RFC}_\alpha\) of a class counts all methods that can be invoked with
+a stack depth of \(\alpha\). The default is \(\alpha = 0\),
+counting the directly accessible methods of a class
+(i.e., the compiler allows them to be called).
+We calculate $\text{RFC}_0$ values for every pair of classes that are statically
+coupled via method invocations or instantiations.
+The percentage reflects the strength of coupling between two classes $c_1$ and $c_2$:
+\[
+  \text{RFC}_{0}(c_1, c_2) = \frac{\vert (\text{IM}(c_1, c_2) \cup \text{IM}(c_2, c_1)) \vert}{\vert (\text{AM}(c_1, c_2) \cup \text{AM}(c_2, c_1)) \vert}
+\]
+where \(\text{IM}(c_i, c_j)\) is the set of methods $c_i$ invokes on $c_j$,
+and \(\text{AM}(c_i, c_j)\) is the set of methods $c_i$ can access in $c_j$.
+
 \begin{algorithm}[ht]
 \caption{Recursive walk trough classes and methods}
 \label{algo:class-walk}
@@ -1469,7 +1501,7 @@ this process.
     $vc$ $\leftarrow$ pop class to visit next from queue $cq$\;
     \ForEach{method $vm$ of class $vc$}{
       \ForEach{class $ic$ instantiated or invoked from method $vm$}{
-        add pair of $vc$ and $ic$ to call graph list $cg$\;
+        add pair of $vc$ and $ic$ to call graph list $cg$ while recording their $RFC_0$ value\;
         \If{$ic$ is not in set of already visited classes $av$}{
           push class $ic$ onto class queue $cq$\;
           add class $ic$ to set of already visited classes $av$\;
@@ -1480,27 +1512,6 @@ this process.
   \BlankLine
   \Return{call graph list $cq$}\;
 \end{algorithm}
-
-For Java applications, both source code, as well as compiled bytecode, can be
-utilized as the input to algorithm \ref{algo:class-walk}. For both approaches,
-libraries exist that can access and iterate over the classes and methods as
-detailed in chapter \ref{chap:implementation}.
-
-The resulting static call graph is theoretically directed in the manner that it
-gets constructed in algorithm \ref{algo:class-walk}, the first class in the
-class pairs that are getting returned, is the vertex the edge is pointing away
-from. Furthermore, it would be possible to count how often a class instantiates
-or invokes another and accumulate this value as a weighted edge. However, we
-opted to discard weights and to construct a directed, unweighted graph
-instead --- although the directions are ignored in most cases, as discussed in
-more detail in section \ref{sect:implementation-database}. The weights
-associated with a \textit{static coupling} graph do not have much meaning since
-the range of the weights is not very significant as certain business logic may
-instantiate a lot of other classes, yet this does not strictly increase their
-coupling. Specifically, when compared to the other coupling types, potential
-edge weights of the \textit{static coupling} graph are not very relevant; thus,
-this graph is plainly used for being able to obtain a final graph that covers
-the entirety of the input monolithic application, as mentioned earlier.
 
 
 
@@ -1857,10 +1868,7 @@ However, the edge weights should not just be added up as all
 of them resemble percentages. Instead, we use a modifiable \textit{edge
 weighting formula} which is defining factors for each input dimension to
 increase or decrease its importance in calculating the combined weight of each
-edge \(\forall e_i \in E_{combined}\) in the combined graph \(G_{combined}\).
-Owing to the fact, that the \textit{static coupling} dimension does not yield
-edge weights as covered in section \ref{sect:static-coupling-extraction}, it is
-excluded from the \textit{edge weighting formula}:
+edge \(\forall e_i \in E_{combined}\) in the combined graph \(G_{combined}\):
 \tiny
 \begin{equation*}
 \begin{split}
