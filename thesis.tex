@@ -11,7 +11,7 @@ Toward automatic decomposition of monolithic software into microservices
 Conception of a methodology and its exemplary implementation
 }
 \newcommand{\thesisauthor}{Jakob L{\"o}hnertz}
-\newcommand{\thesisdate}{31/07/2020}
+\newcommand{\thesisdate}{26/08/2020}
 \newcommand{\thesislocation}{Amsterdam}
 \newcommand{\firstmarker}{Dr.\ Ana Maria Oprescu}
 \newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
@@ -933,6 +933,36 @@ that it shares the most edges with \cite{biemann2006chinese}.
 Owing to the fact that this algorithm is incorporating randomness, it is
 non\hyp deterministic. Moreover, it yields a flat clustering (i.e. non\hyp
 hierarchical) \cite{biemann2006chinese}.
+
+
+\section{Multi-objective optimization}
+
+As part of our \textit{\nameref{chap:evaluation}}, we conduct
+multi\hyp objective optimization to generate optimal input settings for our
+methodology as well as to find interesting patterns in the experiment results.
+
+Multi-objective optimization, also known as Pareto optimization, is an area
+out of the domain of mathematical optimization problems, summarized as:
+\begin{displayquote}
+  \emph{
+  "Optimization is the task of finding one or more solutions which correspond to
+  minimizing (or maximizing) one or more specified objectives and which satisfy
+  all constraints (if any). [...] On the other hand, a multiobjective
+  optimization task considers several conflicting objectives simultaneously.
+  In such a case, there is usually no single optimal solution, but a set of
+  alternatives with different trade-offs, called Pareto optimal solutions,
+  or non-dominated solutions."
+  }~\cite{deb2014multi}
+\end{displayquote}
+
+As a result, a so-called \textit{Pareto frontier} can be approximated which
+contains solutions to the optimization problem that can only be improved
+regarding any of the given objectives by sacrificing one or more of the other
+objectives --- they are Pareto\hyp optimal \cite{deb2014multi}.
+
+Usually, the computation of a \textit{Pareto frontier} is done by the means of
+\textit{evolutionary algorithms}, and often more specifically via
+\textit{genetic algorithms} \cite{deb2014multi}.
 
 
 
@@ -3283,19 +3313,15 @@ run multiple times concurrently to counteract the fact that they require the
 number of clusters a priori, we implemented a similar idea for the hyper\hyp
 parameters of our methodology, namely the coupling type weights.
 
-To keep the runtimes of the optimization acceptable, we opted to implement a
-genetic algorithm that optimizes the hyper\hyp parameters \cite{eiben2003introduction}.
-It serializes the four parameters
-(i.e. \textit{static coupling weight}, \textit{
-dynamic coupling weight}, \textit{semantic coupling weight}, \textit{
-evolutionary coupling weight}) into a chromosome. By default, a population of
-size 100 is evolved over 100 generations. To get out of local minima, the
-longer no better parameters were found, the higher the mutation chance gets
-according to the following formula while the $chanceToMutateInPercent$ is set
-to 1 by default and the $mutationChance$ is capped to 50\%:
-\[
-  \frac{(chanceToMutateInPercent \times generationsWithoutImprovement)}{2}
-\]
+To keep the runtimes of the optimization acceptable, we opted to use the
+state\hyp of\hyp the\hyp art genetic algorithm \textit{NSGA-II}
+\cite{zitzler2001spea2, li2008multiobjective}, as it performed faster than
+comparitive algorithms, such as \textit{$\epsilon$NSGA-II} or \textit{MOEA/D}.
+The \textit{MOEA Framework} was incorporated into \textit{Steinmetz} to be able
+to utilize reference implementations of the genetic algorithms
+\cite{hadka2016beginner}.
+The population size of \textit{NSGA-II} is set to 100 and binary
+tournament selection with replacements is enabled \cite{hadka2016beginner}.
 
 In the front\hyp end, the user can select which graph clustering algorithm is
 utilized for the fitness function of the genetic algorithm.
@@ -3823,7 +3849,7 @@ determine if the $mCF$ or the $Q$ metric generally performs better:
 
 \subsection{Experiment Nº 3}
 
-In this third and hindmost experiment we recorded
+In this third experiment, we recorded
 the average of each metric per graph clustering algorithm with the intent to
 detect which ones generally perform overly good or bad:
 \begin{itemize}[noitemsep]
@@ -3837,6 +3863,49 @@ detect which ones generally perform overly good or bad:
     Correlation between \textit{Total Mean Cluster Factor} and \textit{Total Coupling Modularity} per algorithm,
     \textit{Amount of Clusters} per algorithm,
     \textit{Ratio Inter-Cluster Edge Weights} per algorithm
+\end{itemize}
+
+
+\subsection{Experiment Nº 4}
+
+In the fourth and hindmost experiment, we approximated the
+\textit{Pareto frontiers} of each of the inputs regarding the coupling dimension
+weights as the variables. We maximized the counterparts of the weights in form
+of the dimensional coupling metrics. Concretely, this means that an optimal
+solution is one were each of the input dimensional objectives achieve
+Pareto\hyp optimality. We defined the input variable search space to be
+floating\hyp numbers in the range \([0.0, 1.0]\) that are then divided by
+the sum of them to relativize them.
+
+We utilized the \textit{NSGA-II} algorithm by Deb et al. \cite{deb2002fast}.
+This algorithm was chosen as studies identified
+it as one of the state\hyp of\hyp the\hyp art genetic algorithms
+\cite{zitzler2001spea2, li2008multiobjective}. Next to other candidate
+algorithms, such as \textit{$\epsilon$NSGA-II} or \textit{MOEA/D},
+\textit{NSGA-II} performed faster regarding our optimization problem,
+which was of importance to us as clusterings taking up to one minute to converge
+are not seldom with the input sizes we use. Thus, shorter runtimes were of
+importance.
+We set the population size of \textit{NSGA-II} to 100 and enabled
+binary tournament selection with replacements \cite{hadka2016beginner}.
+
+We used the inputs that have only recorded static, semantic, and
+evolutionary dimensions as they are the majority, making our sampling size
+larger. Thus, our optimization problem is three\hyp dimensional in nature.
+Nevertheless, we also verified that this experiment works with all
+four dimensions resulting in a four\hyp dimensional optimization problem.
+\begin{itemize}[noitemsep]
+    \item Coupling dimensions: static, semantic, evolutionary
+    \item Coupling dimension weights: static, semantic, evolutionary
+    \item Graph clustering algorithms: Clauset-Newman-Moore
+    \item Maximum number of solution evaluations: 10000
+    \item Recorded:
+    \textit{Static Coupling Weight},
+    \textit{Semantic Coupling Weight},
+    \textit{Evolutionary Coupling Weight}
+    \textit{Static Coupling Modularity},
+    \textit{Semantic Coupling Modularity},
+    \textit{Evolutionary Coupling Modularity}
 \end{itemize}
 
 
@@ -4078,7 +4147,7 @@ results can be found in table \ref{table:experiment-3.5}.
 \def\arraystretch{1.55}
 \begin{tabularx}{\textwidth}{|X|c|c|}
 \hline
-Graph Clustering Algorithm & Correlation (R) & Significance (p) \\
+Graph Clustering Algorithm & Correlation ($R$) & Significance ($p$) \\
 \hline\hline
 
 Chinese Whispers      & $-0.31$ & $0.29$  \\\hline
@@ -4090,9 +4159,320 @@ MCL                   & $-0.18$ & $0.54$  \\\hline
 Walktrap              & $-0.78$ & $0.0$   \\\hline
 
 \end{tabularx}
-\caption{Bivariate correlation between the \textit{Total Coupling Modularity} and the \textit{Amount of Clusters}}
+\caption{Bivariate correlations between the \textit{Total Coupling Modularity} and the \textit{Amount of Clusters}}
 \label{table:experiment-3.5}
 \end{table}
+
+
+\subsection{Experiment Nº 4}
+
+We conducted this last experiment utilizing the \textit{Clauset-Newman-Moore}
+algorithm as the fitness function, as well as the dimensional $Q$ metrics
+as the metrics to optimize (i.e., the metrics that measure the objectives).
+These were chosen as the above experiments show that this graph clustering
+algorithm and clustering metric are preferred.
+
+In total, we obtained the \textit{Pareto frontiers} of our 14 inputs.
+Only the input project \textit{Red5} only always yielded a single solution
+with exactly the same objective values (seven digits after the decimal point),
+even when optimized with other genetic algorithms than \textit{NSGA-II} and
+over the duration of multiple runs with different seeds.
+We conclude that this happens due to the small project
+size of \textit{Red5}, indicating that all the genetic algorithms
+likely found not only a Pareto\hyp optimal solution but the globally optimal
+solution to the clustering problem of this input.
+For all the other 13 inputs, traditional \textit{Pareto frontiers} were
+generated.
+
+After analyzing the results, we made four major findings:
+\begin{enumerate}
+  \item The majority of input projects share a very similar \textit{Pareto frontier} shape.
+  \item In these same projects, the static and semantic objectives are highly positively correlated.
+        Similarly, the evolutionary objective is negatively correlated to the other two.
+  \item The majority of the variable combinations are having high evolutionary weight, while having lower static and semantic weights.
+  \item The semantic objective can still achieve high values with an extremely low respective weight variable.
+        The picture is similar, albeit less pronounced, for the static objective.
+        At the same time, the evolutionary objective requires higher weight variable values to achieve Pareto\hyp optimal solutions.
+\end{enumerate}
+
+Firstly, the frontiers of all the input projects are very similar in shape.
+Apart from \textit{Halo}, \textit{Heritrix}, \textit{OpenTripPlanner},
+\textit{Traccar}, and \textit{XWiki}, the other eight input projects retain
+frontiers that look very similar to the example of \textit{KeyCloak},
+the largest input, as seen in figure \ref{fig:experiment-4.1}.
+The frontier runs in a half\hyp arc curve that originates from the zero points
+of the static and semantic objectives, smoothly rising in their values with
+an increasing steepness of the curve, decreasing the evolutionary objective
+value at the same time, resulting in a sharp drop at the end.
+We have no definitive explanation why this could be as we discovered no
+measurable correlating attributes that would distinct these five input projects
+from the other eight. We can only conclude that their software architectures
+or commit strategies seem to be different which shows as well in the following
+findings.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-1}
+\caption{The \textit{Pareto frontier} of the \textit{KeyCloak} input, optimizing the input dimensional $Q$ metrics}
+\label{fig:experiment-4.1}
+\end{figure}
+
+We can deduct that the static and semantic dimensions are highly positively
+correlated which is corroborated by their Pearson $R$ values, as shown by
+the top part of table \ref{table:experiment-4.1}.
+Only \textit{Apache Solr} has a greatly decreased correlation, while showing
+the same frontier shape.
+At the same time, the same correlations for the other five above\hyp mentioned
+input projects are significantly lower throughout, as the bottom of table
+\ref{table:experiment-4.1} depicts.
+Similarly, the evolutionary objective is negatively correlated toward the static
+and semantic objective respectively, as the top parts of tables
+\ref{table:experiment-4.2} and \ref{table:experiment-4.3} show.
+Interestingly, in this regard, also the five projects that had only a low
+positive correlation between the static and semantic objectives show a high
+negative correlation between the evolutionary and static objectives,
+as seen in bottom part of table \ref{table:experiment-4.2}.
+On the other hand, toward the semantic objective, the evolutionary objective
+is a lot less highly negatively correlated, as depicted in the bottom of table
+\ref{table:experiment-4.3}.
+We conclude that this likely happens as the static and semantic dimensions are
+extracted out of the same input, the source code, while the evolutionary
+dimension is derived from VCS logs. Additionally, we saw in the initial dataset
+after generating the separate graphs out of the inputs that the evolutionary
+input fidelity is usually lower than the semantic one, which might make a
+resulting clustering less precise in the evolutionary dimension.
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|}
+\hline
+Input Project & Correlation ($R$) \\
+\hline\hline
+
+Apache OpenMeetings & $0.70$  \\\hline
+Apache Solr         & $0.33$  \\\hline
+BigBlueButton       & $0.60$  \\\hline
+Google Bazel        & $0.38$  \\\hline
+KeyCloak            & $0.83$  \\\hline
+OpenCMS             & $0.87$  \\\hline
+Openfire            & $0.86$  \\\hline
+Teammates           & $0.79$  \\\hline
+\hline\hline
+Halo                & $0.01$  \\\hline
+Heritrix            & $0.30$  \\\hline
+OpenTripPlanner     & $0.42$  \\\hline
+Traccar             & $0.57$  \\\hline
+XWiki               & $0.51$  \\\hline
+
+\end{tabularx}
+\caption{Bivariate correlations ($p < 0.001$) (\textit{Halo}: $p = 0.33$) between the \textit{Static Coupling Modularity} and the \textit{Semantic Coupling Modularity} objectives for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.1}
+\end{table}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|}
+\hline
+Input Project & Correlation ($R$) \\
+\hline\hline
+
+Apache OpenMeetings & $-0.70$  \\\hline
+Apache Solr         & $-0.64$  \\\hline
+BigBlueButton       & $-0.82$  \\\hline
+Google Bazel        & $-0.73$  \\\hline
+KeyCloak            & $-0.81$  \\\hline
+OpenCMS             & $-0.84$  \\\hline
+Openfire            & $-0.85$  \\\hline
+Teammates           & $-0.80$  \\\hline
+\hline\hline
+Halo                & $-0.67$  \\\hline
+Heritrix            & $-0.85$  \\\hline
+OpenTripPlanner     & $-0.81$  \\\hline
+Traccar             & $-0.86$  \\\hline
+XWiki               & $-0.78$  \\\hline
+
+\end{tabularx}
+\caption{Bivariate correlations ($p < 0.001$) between the \textit{Evolutionary Coupling Modularity} and the \textit{Static Coupling Modularity} objectives for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.2}
+\end{table}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|}
+\hline
+Input Project & Correlation ($R$) \\
+\hline\hline
+
+Apache OpenMeetings & $-0.84$  \\\hline
+Apache Solr         & $-0.68$  \\\hline
+BigBlueButton       & $-0.51$  \\\hline
+Google Bazel        & $-0.70$  \\\hline
+KeyCloak            & $-0.80$  \\\hline
+OpenCMS             & $-0.72$  \\\hline
+Openfire            & $-0.86$  \\\hline
+Teammates           & $-0.82$  \\\hline
+\hline\hline
+Halo                & $-0.43$  \\\hline
+Heritrix            & $-0.52$  \\\hline
+OpenTripPlanner     & $-0.67$  \\\hline
+Traccar             & $-0.50$  \\\hline
+XWiki               & $-0.38$  \\\hline
+
+\end{tabularx}
+\caption{Bivariate correlations ($p < 0.001$) between the \textit{Evolutionary Coupling Modularity} and the \textit{Semantic Coupling Modularity} objectives for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.3}
+\end{table}
+
+Coming to the input variables of our optimization problem, we see that they are
+very clustered in the search space. Figure \ref{fig:experiment-4.2} shows this
+on the example of the \textit{KeyCloak} input project once again.
+The picture is very similar again for the other eight input projects that share
+a \textit{Pareto frontier} shape, as tables \ref{table:experiment-4.4},
+\ref{table:experiment-4.5}, and \ref{table:experiment-4.6} show.
+The semantic weight variables are almost always very low. The static
+weight variables are slightly more spread out but also rarely exceed $0.5$.
+The evolutionary weight variables are often seen in higher value ranges.
+Moreover, as depicted by figure \ref{fig:experiment-4.3}, for many input
+projects, such as \textit{Teammates}, this clustering pattern is even more
+extreme as the evolutionary weight variables are either very high or very low,
+which is corroborated by the much higher variance values for these variables.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-2}
+\caption{The input variables that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\label{fig:experiment-4.2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-3}
+\caption{The input variables that lead to the \textit{Pareto frontier} of the \textit{Teammates} input}
+\label{fig:experiment-4.3}
+\end{figure}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|c|}
+\hline
+Input Project & Arithmetic Mean & Variance \\
+\hline\hline
+
+Apache OpenMeetings & $0.32$ & $0.09$ \\\hline
+Apache Solr         & $0.21$ & $0.07$ \\\hline
+BigBlueButton       & $0.54$ & $0.11$ \\\hline
+Google Bazel        & $0.20$ & $0.06$ \\\hline
+KeyCloak            & $0.18$ & $0.04$ \\\hline
+OpenCMS             & $0.29$ & $0.10$ \\\hline
+Openfire            & $0.31$ & $0.09$ \\\hline
+Teammates           & $0.34$ & $0.09$ \\\hline
+\hline\hline
+Halo                & $0.26$ & $0.08$ \\\hline
+Heritrix            & $0.66$ & $0.09$ \\\hline
+OpenTripPlanner     & $0.31$ & $0.06$ \\\hline
+Traccar             & $0.25$ & $0.07$ \\\hline
+XWiki               & $0.28$ & $0.12$ \\\hline
+
+\end{tabularx}
+\caption{The arithmetic mean and variance values regarding the static weight input variables for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.4}
+\end{table}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|c|}
+\hline
+Input Project & Arithmetic Mean & Variance \\
+\hline\hline
+
+Apache OpenMeetings & $0.30$ & $0.13$ \\\hline
+Apache Solr         & $0.09$ & $0.01$ \\\hline
+BigBlueButton       & $0.19$ & $0.05$ \\\hline
+Google Bazel        & $0.15$ & $0.05$ \\\hline
+KeyCloak            & $0.05$ & $0.02$ \\\hline
+OpenCMS             & $0.10$ & $0.02$ \\\hline
+Openfire            & $0.10$ & $0.03$ \\\hline
+Teammates           & $0.07$ & $0.00$ \\\hline
+\hline\hline
+Halo                & $0.08$ & $0.01$ \\\hline
+Heritrix            & $0.14$ & $0.03$ \\\hline
+OpenTripPlanner     & $0.21$ & $0.05$ \\\hline
+Traccar             & $0.16$ & $0.05$ \\\hline
+XWiki               & $0.09$ & $0.03$ \\\hline
+
+\end{tabularx}
+\caption{The arithmetic mean and variance values regarding the semantic weight input variables for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.5}
+\end{table}
+
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|X|c|c|}
+\hline
+Input Project & Arithmetic Mean & Variance \\
+\hline\hline
+
+Apache OpenMeetings & $0.51$ & $0.09$ \\\hline
+Apache Solr         & $0.44$ & $0.15$ \\\hline
+BigBlueButton       & $0.44$ & $0.10$ \\\hline
+Google Bazel        & $0.56$ & $0.08$ \\\hline
+KeyCloak            & $0.50$ & $0.09$ \\\hline
+OpenCMS             & $0.59$ & $0.10$ \\\hline
+Openfire            & $0.37$ & $0.10$ \\\hline
+Teammates           & $0.48$ & $0.17$ \\\hline
+\hline\hline
+Halo                & $0.39$ & $0.13$ \\\hline
+Heritrix            & $0.31$ & $0.09$ \\\hline
+OpenTripPlanner     & $0.41$ & $0.15$ \\\hline
+Traccar             & $0.44$ & $0.14$ \\\hline
+XWiki               & $0.34$ & $0.09$ \\\hline
+
+\end{tabularx}
+\caption{The arithmetic mean and variance values regarding the evolutionary weight input variables for input projects showing a similar \textit{Pareto frontier} shape, and ones showing a dissimilar \textit{Pareto frontier} shape}
+\label{table:experiment-4.6}
+\end{table}
+
+Interestingly, the semantic objective scores still reach high values even if
+its weight variable approaches $0.0$, as seen in figure \ref{fig:experiment-4.4}
+on the example of the \textit{KeyCloak} input project again.
+A similar picture can be observed for the static weight variables, shown in
+figure \ref{fig:experiment-4.5}.
+It seems to us that the semantic dimension is partly encoded in the static one,
+which can already be seen in the previous findings as they are highly
+positively correlated toward each other. For the eight input projects sharing
+the \textit{Pareto frontier} shape of a half\hyp arc, the software architectures
+seem to make the semantic measurement almost obsolete as even with small input
+weight variables of $<0.2$, high output objective scores can be reached.
+On the other hand, the evolutionary objective seems to be much more sensitive
+to its input weight variable, as the comparitive figure \ref{fig:experiment-4.6}
+confirms. This ties together the first three findings, as the static and
+semantic objectives do not seem to be too sensitive to their respective weight
+variables while still scoring high values, while also having a lot higher valued
+evolutionary weight variables compared to the other two, which is confirmed by
+the shape of most of the \textit{Pareto frontiers} that consist of a plateau
+of high evolutionary objective scores while slowly decreasing in this regard
+toward higher scores for the other two objectives.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-4}
+\caption{The semantic input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\label{fig:experiment-4.4}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-5}
+\caption{The static input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\label{fig:experiment-4.5}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\textwidth]{results/experiment_4-6}
+\caption{The evolutionary input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\label{fig:experiment-4.6}
+\end{figure}
 
 
 
