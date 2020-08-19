@@ -4474,6 +4474,36 @@ toward higher scores for the other two objectives.
 \label{fig:experiment-4.6}
 \end{figure}
 
+Finally, we decided to look into the question how the different
+Pareto\hyp optimal solutions affect the microservice candidate recommendations.
+To do this, we identified the input project that shows the highest ranges for
+all the three objective values, which turned out to be \textit{OpenCMS}.
+The results are shown in table \ref{table:experiment-4.7}.
+Clustering the weight variable combination that lead to the lowest average
+objective values resulted in a clustering conisting of double the
+\textit{Amount of Clusters} compared to the highest average solution,
+while having a third of the \textit{Ratio of Inter\hyp Cluster Edge Weights}.
+The solution that is the midpoint of the range is interestingly in the middle
+of the two others.
+
+\begin{adjustbox}{angle=90}
+\begin{table}[h!]
+\def\arraystretch{1.55}
+\begin{tabularx}{\textwidth}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Solution & Static Variable & Semantic Variable & Evolutionary Variable & Static Objective & Semantic Objective & Evolutionary Objective & Average Objective & Amount of Clusters & Ratio of Inter\hyp Cluster Edge Weights \\
+\hline\hline
+
+Lowpoint  & $0.0029583$ & $0.0000002$ & $0.6483049$ & $0.4203270$ & $0.4335106$ & $0.8548357$ & $0.5695578$ & $90$ & $10\%$ \\\hline
+Midpoint  & $0.4035683$ & $0.0144182$ & $0.9301752$ & $0.4752754$ & $0.4971534$ & $0.8439260$ & $0.6054516$ & $65$ & $22\%$ \\\hline
+Highpoint & $0.7901847$ & $0.3441048$ & $0.8325046$ & $0.5013523$ & $0.5657572$ & $0.8033364$ & $0.6234819$ & $44$ & $31\%$ \\\hline
+
+\end{tabularx}
+\caption{The results of the low, mid, and highpoint of the range of Pareto\hyp optimal solutions, on the example of the \textit{OpenCMS} input project}
+\label{table:experiment-4.7}
+\end{table}
+\end{adjustbox}
+
 
 
 \section{Performance}
