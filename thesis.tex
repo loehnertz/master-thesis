@@ -182,7 +182,7 @@ possible to tie the results and their calculated metrics back to the inputs and
 the underlying subject of decomposing monolithic software into microservices in
 the first place. This part of the research is covered in chapter \ref{chap:rationale}.
 
-Not only a theoretical methodology, but also an implemented proof-of-
+Not only a theoretical methodology, but also an implemented proof-of\hyp
 concept (PoC) are the results of this project. The latter is introduced in
 chapter \ref{chap:implementation}. The steps that this PoC needs to conduct are
 derived and tested independently via exploratory as well as confirmatory case
@@ -270,7 +270,7 @@ first place \cite{ms-fowler, newman2015building}.
 
 Microservices are essentially about building an application \textit{"as a suite
 of small services, each running in their own process and communicating with
-lightweight mechanisms, often an HTTP resource API"} \cite{ms-fowler} ---
+lightweight mechanisms, often an HTTP resource API"} \cite{ms-fowler} --\hyp
 a microservice is developed and deployed independently in a distributed manner.
 Each service should be built around one business capability following the
 \textit{single responsibility principle} \cite{newman2015building,
@@ -318,7 +318,7 @@ service knowing where and how to reach the others \cite{newman2015building}.
 
 The overhead on inter-service communication via a network is almost
 always more significant than regular function calls, especially when
-considering serialization and deserialization before and after every inter-
+considering serialization and deserialization before and after every inter\hyp
 service call \cite{knoche2016sustaining, newman2015building}.
 
 Designing microservices, similarly to a modular monolithic
@@ -594,7 +594,7 @@ two divisions involved.
 This last step is optional but
 oftentimes utilized to further improve the quality of the output of the entire
 process. \textit{Latent semantic indexing} (LSI) describes the process of
-applying \textit{singular value decomposition} (SVD) to the aforementioned term-
+applying \textit{singular value decomposition} (SVD) to the aforementioned term\hyp
 document matrix \cite{deerwester1990lsi}. The rationale in the context of the
 similarity calculation is to reduce the matrix with \(m\) rows and \(n\)
 columns to one with a set amount of \(z\) dimensions as the rows. This is
@@ -606,7 +606,7 @@ different terms describe the same idea \cite{press2011oxford} whereas
 multiple ideas \cite{press2011oxford}.
 After applying \textit{LSI}, each document vector of
 the corpus \(\vec{\mathbf d_i} \in C\) has a magnitude of the previously chosen
-\(z\) number of dimensions \(\|\vec{\mathbf d_i}\|\). Consequently, the above-
+\(z\) number of dimensions \(\|\vec{\mathbf d_i}\|\). Consequently, the above\hyp
 mentioned \textit{cosine similarity} can be calculated.
 
 
@@ -657,8 +657,8 @@ calculate \textit{evolutionary similarity}.
 
 Precisely, over the duration of a certain time period \([t_1, t_2]\) or the
 entirety of the log \([t_{min}, t_{max}]\), every revision \(r \in R\) contains
-at least one entity (i.e. file) out of the code base at that point in time \(
-\exists e \in r, e \in E\) that was modified (including creation and deletion)
+at least one entity (i.e. file) out of the code base at that point in time
+\(\exists e \in r, e \in E\) that was modified (including creation and deletion)
 as part of the revision. Over the course of all the revisions \(\forall r \in
 R\) in a given time period \([t_1, t_2]\), the revisions where an entity \(e_1
 \in E\) changed together with another entity \(e_2 \in E\) are gathered:
@@ -1497,7 +1497,7 @@ detailed in chapter \ref{chap:implementation}.
 The resulting static call graph is theoretically directed in the manner that it
 gets constructed in algorithm \ref{algo:class-walk}, the first class in the
 class pairs that are getting returned, is the vertex the edge is pointing away
-from. We construct a directed, weighted graph ---
+from. We construct a directed, weighted graph --\hyp
 although the directions are ignored in most cases, as discussed in
 more detail in section \ref{sect:implementation-database}.
 
@@ -1679,25 +1679,21 @@ of recursive packages and importing them or parts of them into the source code
 of other packages. Consequently, source code, such as the following example
 \ref{packages-and-imports}, would include package paths in the term list of the
 respective document, which would distort the result of the \textit{semantic
-coupling} analysis. Thus, every line is parsed separately, and language-
+coupling} analysis. Thus, every line is parsed separately, and language\hyp
 specific keywords such as \code{package} or \code{import} trigger that the line
 gets discarded.
 
 \begin{lstlisting}[caption=Packages and imports in Java, label=packages-and-imports, language=Java, breaklines=true]
 package codes.jakob.semanticcoupling.parsing
 
-import codes.jakob.semanticcoupling.model.Document
-import codes.jakob.semanticcoupling.model.NaturalLanguage
-import codes.jakob.semanticcoupling.model.ProgrammingLanguage
-import codes.jakob.semanticcoupling.model.Term
 import codes.jakob.semanticcoupling.normalization.Lemmatizer
 import codes.jakob.semanticcoupling.normalization.Normalizer
 import codes.jakob.semanticcoupling.normalization.Stemmer
 \end{lstlisting}
 
-Next, every line of the source code is stripped of non\hyp word characters (
-i.e., \code{W} from regular expressions), which is every character but a-z, A-
-Z, 0-9, and the underscore character \cite{ieee1992posix}. Before that step,
+Next, every line of the source code is stripped of non\hyp word characters
+(i.e., \code{W} from regular expressions), which is every character but a-z,
+A-Z, 0-9, and the underscore character \cite{ieee1992posix}. Before that step,
 explicit strings (i.e., text in double-quotes) are separately saved, so they do
 not lose their meaning when stripping the double-quotes.
 Explicit strings, as well as every other text that is still left then and
@@ -1859,7 +1855,7 @@ constructed to be sure that the final graph covers the whole application.
 
 Four graphs are constructed out of the four input dimensions that need
 to be merged into a combined one so that it can be clustered eventually.
-Primarily, this encompasses a two-step process with the first being a set-
+Primarily, this encompasses a two-step process with the first being a set\hyp
 theoretic union of the two first graph tuples \(G_i = (V, E)\) such that:
 \[
   G_{combined} = G_{static} \cup G_{dynamic}
@@ -2439,7 +2435,7 @@ code can be found on GitHub \footnote{\url{https:
 //github.com/loehnertz/Steinmetz/}}.
 
 The three parts of the application are all bundled into \textit{Docker}
-containers via \textit{Docker Compose} which allows for easy boot-up and tear-
+containers via \textit{Docker Compose} which allows for easy boot-up and tear\hyp
 down without installing any dependencies on the operation system apart from
 \textit{Docker} and \textit{Docker Compose} themselves \cite{docker, docker-compose}
 --- a big advantage when putting our implementation to use.
@@ -2455,10 +2451,10 @@ The front-end is built as a \textit{single page application} (SPA), running in
 a web browser. It is just consisting of static HTML, CSS, and JS files that are
 purely being interpreted and executed by the web browser.
 
-The back-end is written in Kotlin, runs as a server process, and exposes a REST-
+The back-end is written in Kotlin, runs as a server process, and exposes a REST\hyp
 API that the front-end will use and consume to upload and fetch information.
 
-The database is persisting data that needs to be available even when the back-
+The database is persisting data that needs to be available even when the back\hyp
 end shuts down and starts again. However, in our application, the purpose of
 the database is mainly that to cache data after it has been initially
 processed, as this needs some time. The data itself can be rebuilt with the
@@ -2655,10 +2651,10 @@ save()} method (e.g. a \textit{Node} connected to another one via a \textit{
 Relationship}, all three will be persisted). The second method can in return
 retrieve already persisted data. Its API allows for ordering, pagination,
 filtering, and other features \cite{neo4j-ogm}, although our implementation
-only makes use of the filtering features, such as \code{session.loadAll(
-Unit.class, Filter("projectName", ComparisonOperator.EQUALS, "test"))}. Once
-again, the deserialization and mapping of the data types is handled by the OGM
-by passing it a static reference to an annotated OGM entity class.
+only makes use of the filtering features, such as
+\code{session.loadAll(Unit.class, Filter("projectName", ComparisonOperator.EQUALS, "test"))}.
+Once again, the deserialization and mapping of the data types is handled
+by the OGM by passing it a static reference to an annotated OGM entity class.
 
 
 \subsection{Data models} \label{subsect:data-models}
@@ -2702,7 +2698,7 @@ are necessary to model our data as depicted in figures
 \end{figure}
 
 Precisely, the \code{Metrics} \textit{Node} persists metrics on a per\hyp
-project basis as described in section \ref{sect:input-fidelity-metrics} ---
+project basis as described in section \ref{sect:input-fidelity-metrics} --\hyp
 only the fidelity metrics are persisted in the database owing to the fact that
 their calculation is resource\hyp intensive thus the result is persisted as it
 will not change in any case. The \code{Unit} \textit{Node} is the main \textit{
@@ -2767,7 +2763,7 @@ that needs to be converted from other formats.
 Some functionalities are small in size and are used by multiple parts
 of the business logic; hence have no natural location in the application
 structure. These \textit{utility} classes are therefore residing in a directory
-called \textit{utility} in the top-level of the application structure. The top-
+called \textit{utility} in the top-level of the application structure. The top\hyp
 level structure of the application is depicted in figure
 \ref{fig:back-end-structure} while a detailed explanation of every implemented
 class can be found in the wiki of \textit{Steinmetz}
@@ -3131,7 +3127,7 @@ the CLIs are all well-defined, which makes input and output of them easy to
 encode and decode. Additionally, we added a lot of validation for the input
 such that we have not seen an error or malfunction when testing and evaluating
 our implementation so far. The only downside is that the portability of the
-Java platform is lowered a bit, as the compiled native programs are platform-
+Java platform is lowered a bit, as the compiled native programs are platform\hyp
 specific. Nevertheless, the same problem is present when using JNI.
 
 Furthermore, some graph clustering algorithms mandate multiple runs to yield
@@ -3184,9 +3180,9 @@ object within a class that can, therefore, stay stateless and static
 \cite{kotlin-companions}.
 
 Within each of the mentioned sub-packages, there is an abstract class that
-implements some general behavior necessary for the respective input dimension (
-e.g., \code{AbstractDynamicAnalysisExtractor}). The abstract class itself,
-however, implements the \code{AbstractExtractor}. Within each of the sub-
+implements some general behavior necessary for the respective input dimension
+(e.g., \code{AbstractDynamicAnalysisExtractor}). The abstract class itself,
+however, implements the \code{AbstractExtractor}. Within each of the sub\hyp
 packages, there are sub-packages for each platform available in the \code{
 Platform} enum. In this chapter, the exact implementation of all of these is
 not covered as the explanation would be very detailed. Instead, only one type
@@ -3609,7 +3605,7 @@ based architecture only makes sense for large\hyp scale, web\hyp based,
 back\hyp end applications compared to libraries, SDKs, and dedicated GUI
 software. Consequently, software that falls into said category had to be
 selected, which is far more difficult compared to the other categories as such
-software is typically found in enterprises and not overly common in the open-
+software is typically found in enterprises and not overly common in the open\hyp
 source sector.
 
 The selected applications had to be implemented with the Java
@@ -3872,8 +3868,8 @@ In the fourth and hindmost experiment, we approximated the
 \textit{Pareto frontiers} of each of the inputs regarding the coupling dimension
 weights as the variables. We maximized the counterparts of the weights in form
 of the dimensional coupling metrics. Concretely, this means that an optimal
-solution is one were each of the input dimensional objectives achieve
-Pareto\hyp optimality. We defined the input variable search space to be
+solution is one where each of the input\hyp dimensional objectives achieves
+Pareto\hyp optimality. We defined the input variable search space as
 floating\hyp numbers in the range \([0.0, 1.0]\) that are then divided by
 the sum of them to relativize them.
 
@@ -4002,7 +3998,7 @@ least possible \textit{Ratio of Inter-Cluster Edge Weights (\%)} as this
 generally will lead to a few, huge microservices. Both of the main clustering
 metrics are negatively correlated to the \textit{Ratio of Inter-Cluster Edge
 Weights (\%)}, while apparently giving an edge over that metric since the
-correlation is not perfect. There is a valley of data points in the lower left-
+correlation is not perfect. There is a valley of data points in the lower left\hyp
 hand corner of figure \ref{fig:experiment-2.3_Q}, for the preferred $Q$ metric,
 that achieves good \textit{Ratio of Inter-Cluster Edge Weights (\%)} values
 while having very low $Q$ scores at the same time.
@@ -4066,7 +4062,7 @@ as seen in figure \ref{fig:experiment-3.3}. The \textit{Infomap},
 \textit{Walktrap}, and \textit{Label Propagation} algorithms are performing not
 very consistently, achieving both very good as well as terrible results.
 
-On the other hand, it can be observed that the algorithms \textit{Clauset-
+On the other hand, it can be observed that the algorithms \textit{Clauset\hyp
 Newman-Moore} and \textit{Louvain} perform very similarly in all of the three
 recorded metrics, which is due to the fact that they are both heuristic
 algorithms optimizing toward the \textit{Modularity} metric
@@ -4176,7 +4172,7 @@ In total, we obtained the \textit{Pareto frontiers} of our 14 inputs.
 Only the input project \textit{Red5} only always yielded a single solution
 with exactly the same objective values (seven digits after the decimal point),
 even when optimized with other genetic algorithms than \textit{NSGA-II} and
-over the duration of multiple runs with different seeds.
+throughout multiple runs with different seeds.
 We conclude that this happens due to the small project
 size of \textit{Red5}, indicating that all the genetic algorithms
 likely found not only a Pareto\hyp optimal solution but the globally optimal
@@ -4189,7 +4185,7 @@ After analyzing the results, we made four major findings:
   \item The majority of input projects share a very similar \textit{Pareto frontier} shape.
   \item In these same projects, the static and semantic objectives are highly positively correlated.
         Similarly, the evolutionary objective is negatively correlated to the other two.
-  \item The majority of the variable combinations are having high evolutionary weight, while having lower static and semantic weights.
+  \item The majority of the variable combinations are having high evolutionary weight while having lower static and semantic weights.
   \item The semantic objective can still achieve high values with an extremely low respective weight variable.
         The picture is similar, albeit less pronounced, for the static objective.
         At the same time, the evolutionary objective requires higher weight variable values to achieve Pareto\hyp optimal solutions.
@@ -4204,11 +4200,11 @@ The frontier runs in a half\hyp arc curve that originates from the zero points
 of the static and semantic objectives, smoothly rising in their values with
 an increasing steepness of the curve, decreasing the evolutionary objective
 value at the same time, resulting in a sharp drop at the end.
-We have no definitive explanation why this could be as we discovered no
-measurable correlating attributes that would distinct these five input projects
-from the other eight. We can only conclude that their software architectures
-or commit strategies seem to be different which shows as well in the following
-findings.
+We have no definitive explanation of why this could be as we discovered no
+measurable correlating attributes that would distinguish these five
+input projects from the other eight. We can only conclude that their
+software architectures or commit strategies seem to be different,
+which shows as well in the following findings.
 
 \begin{figure}[htbp]
 \centering
@@ -4220,8 +4216,8 @@ findings.
 We can deduct that the static and semantic dimensions are highly positively
 correlated which is corroborated by their Pearson $R$ values, as shown by
 the top part of table \ref{table:experiment-4.1}.
-Only \textit{Apache Solr} has a greatly decreased correlation, while showing
-the same frontier shape.
+Only \textit{Apache Solr} has a significantly decreased correlation
+while showing the same frontier shape.
 At the same time, the same correlations for the other five above\hyp mentioned
 input projects are significantly lower throughout, as the bottom of table
 \ref{table:experiment-4.1} depicts.
@@ -4444,7 +4440,7 @@ the \textit{Pareto frontier} shape of a half\hyp arc, the software architectures
 seem to make the semantic measurement almost obsolete as even with small input
 weight variables of $<0.2$, high output objective scores can be reached.
 On the other hand, the evolutionary objective seems to be much more sensitive
-to its input weight variable, as the comparitive figure \ref{fig:experiment-4.6}
+to its input weight variable, as the comparative figure \ref{fig:experiment-4.6}
 confirms. This ties together the first three findings, as the static and
 semantic objectives do not seem to be too sensitive to their respective weight
 variables while still scoring high values, while also having a lot higher valued
@@ -4474,24 +4470,25 @@ toward higher scores for the other two objectives.
 \label{fig:experiment-4.6}
 \end{figure}
 
-Finally, we decided to look into the question how the different
+Finally, we decided to look into the question of how the different
 Pareto\hyp optimal solutions affect the microservice candidate recommendations.
 To do this, we identified the input project that shows the highest ranges for
 all the three objective values, which turned out to be \textit{OpenCMS}.
 The results are shown in table \ref{table:experiment-4.7}.
-Clustering the weight variable combination that lead to the lowest average
-objective values resulted in a clustering conisting of double the
-\textit{Amount of Clusters} compared to the highest average solution,
+Clustering the weight variable combination that leads to the lowest average
+objective values (i.e. the furthest away from the \textit{knee\hyp point} of the
+\textit{Pareto frontier}) resulted in a clustering consisting of double the
+\textit{Amount of Clusters} compared to the highest average solution
+(i.e. the \textit{knee\hyp point} of the \textit{Pareto frontier}),
 while having a third of the \textit{Ratio of Inter\hyp Cluster Edge Weights}.
 The solution that is the midpoint of the range is interestingly in the middle
 of the two others.
 
-\begin{adjustbox}{angle=90}
-\begin{table}[h!]
-\def\arraystretch{1.55}
-\begin{tabularx}{\textwidth}{|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{sidewaystable}[h!]
+\footnotesize
+\begin{tabularx}{\textwidth}{|c|c|c|c|c|c|c|c|c|c|}
 \hline
-Solution & Static Variable & Semantic Variable & Evolutionary Variable & Static Objective & Semantic Objective & Evolutionary Objective & Average Objective & Amount of Clusters & Ratio of Inter\hyp Cluster Edge Weights \\
+Solution & Static V & Semantic V & Evolutionary V & Static O & Semantic O & Evolutionary O & Average O & AOC & RICEW \\
 \hline\hline
 
 Lowpoint  & $0.0029583$ & $0.0000002$ & $0.6483049$ & $0.4203270$ & $0.4335106$ & $0.8548357$ & $0.5695578$ & $90$ & $10\%$ \\\hline
@@ -4500,9 +4497,17 @@ Highpoint & $0.7901847$ & $0.3441048$ & $0.8325046$ & $0.5013523$ & $0.5657572$ 
 
 \end{tabularx}
 \caption{The results of the low, mid, and highpoint of the range of Pareto\hyp optimal solutions, on the example of the \textit{OpenCMS} input project}
+\caption*{\centering
+  \begin{itemize}
+    \item V: Variable
+    \item O: Objective
+    \item AOC: \textit{Amount of Clusters}
+    \item RICEW: \textit{Ratio of Inter\hyp Cluster Edge Weights}
+  \end{itemize}
+}
 \label{table:experiment-4.7}
-\end{table}
-\end{adjustbox}
+\normalsize
+\end{sidewaystable}
 
 
 
