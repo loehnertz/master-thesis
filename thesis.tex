@@ -1474,7 +1474,7 @@ added to the implementation.
 
 As discussed in more detail in Chapter \ref{sect:software-as-weighted-graph},
 we opt for also constructing a full static call graph which is covered in
- Subsection \ref{subsubsect:call-graph-static}.
+Subsection \ref{subsubsect:call-graph-static}.
 
 
 \subsection{Walk\hyp based approach}
@@ -1648,7 +1648,7 @@ extraction only needs the source code itself. Importantly, human-readable, not
 yet compiled source code is necessary as the semantics are lost in compiled
 code since it does not contain natural language anymore. We implemented an
 approach from scratch that conducts the steps regarding the semantic similarity
-calculation from  Subsection \ref{subsect:semantic-similarity}:
+calculation from Subsection \ref{subsect:semantic-similarity}:
 \begin{enumerate}[noitemsep]
   \item Tokenization
   \item Stop word filtering
@@ -1767,7 +1767,7 @@ However, this is not covered by our work as we focus on Java applications for
 our initial implementation.
 
 After parsing the input log file, differing based on the utilized VCS, the
-process described in  Subsection \ref{subsect:evolutionary-similarity} generates
+process described in Subsection \ref{subsect:evolutionary-similarity} generates
 the weighted \textit{evolutionary coupling} graph with the same structure as
 the other ones such that the vertices \(v_i \in V\) are the classes extracted
 from the VCS log file while the edges \(e_i \in E\) are resembling that two
@@ -1778,7 +1778,7 @@ edges is a percentage that indicates how much the life cycles overlap
 as seen in Figure \ref{fig:vcs-log-timeline}, we take the average of these
 two values if this is the case.
 
-Finally, as discussed in  Subsection \ref{subsect:evolutionary-similarity}, we
+Finally, as discussed in Subsection \ref{subsect:evolutionary-similarity}, we
 use a threshold for this extraction step to filter out noise. The values are
 constants that can be changed while the defaults that we employ are:
 \begin{itemize}[noitemsep]
@@ -2134,7 +2134,7 @@ recommendations are finally unidirectional in any case.
 After serializing the input graph, the chosen algorithm clusters the graph and
 returns the clustering as its output. The inner workings of the chosen
 algorithm are assumed as a black-box function at this point since this was
-already discussed in  Subsection \ref{subsect:renowned-graph-clustering-algorithms}
+already discussed in Subsection \ref{subsect:renowned-graph-clustering-algorithms}
 and as it is not essential for the understanding of this section.
 
 Similarly to the input, the output of the selected algorithms also shares a
@@ -2962,7 +2962,7 @@ multiple times for every request to resource 4.
 \subsubsection{Resource 5}
 The last resource is used to optionally optimize the
 hyper\hyp parameters of our methodology. This is explained in more detail in
- Subsection \ref{subsubsect:hyper-parameter-optimization}.
+Subsection \ref{subsubsect:hyper-parameter-optimization}.
 
 
 \subsection{Logic controllers}
@@ -3735,7 +3735,7 @@ An advanced open source enterprise wiki \\\hline
 As discussed in the previous section, the selected applications have to fulfill
 a set of requirements for each of the four input dimensions. Furthermore, the
 \textit{dynamic coupling} involves another difficulty, which was already
-discussed in  Subsection \ref{subsect:background-dynamic-analysis} --- owing to
+discussed in Subsection \ref{subsect:background-dynamic-analysis} --- owing to
 the fact that the software has to be executed in order to conduct \textit{
 dynamic program analysis}, this input dimension involves a lot more work than
 any of the others.
@@ -4642,7 +4642,7 @@ this area of research in multiple aspects such as:
 
 \paragraph{Missing dynamic coupling}
 The main threat to validity was exhibited
-in  Subsection \ref{subsect:difficulties}, which is that the input dimension
+in Subsection \ref{subsect:difficulties}, which is that the input dimension
 regarding the \textit{dynamic coupling} cannot be analyzed very well in an
 experimental environment which decreased the significance of our evaluation. On
 the other hand, using this input dimension would have expectedly resulted in
