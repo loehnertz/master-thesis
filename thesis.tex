@@ -88,7 +88,7 @@ made to move to a microservices\hyp based architecture, one of the first
 challenges, the decomposition, is already difficult to begin with:
 
 Defining where within the existing application, one service should end, and the
-next one should begin --- i.e. detecting latent boundaries that partition the
+next one should begin --- i.e., detecting latent boundaries that partition the
 monolith into many smaller pieces, is a very manual and tedious task.
 
 Thus, this thesis develops an algorithmic methodology that can assist a human
@@ -148,7 +148,7 @@ software into microservice candidates \cite{fritzsch2018monolith}.
 Additionally, we are certain that the actual decisions should still be made by
 seasoned engineers and architects which is why a semi-automated solution was
 determined as the best option to support them in their decision making while
-not taking the decision making away from them (i.e. compared to an automated
+not taking the decision making away from them (i.e., compared to an automated
 decomposition approach). As a consequence, everything mentioned in this section
 reflects itself in the following research questions of this thesis.
 
@@ -180,13 +180,13 @@ a mapping of the inputs into the methodology to their graph theoretic
 representation as well as the final output. Otherwise, no logic reasoning is
 possible to tie the results and their calculated metrics back to the inputs and
 the underlying subject of decomposing monolithic software into microservices in
-the first place. This part of the research is covered in chapter \ref{chap:rationale}.
+the first place. This part of the research is covered in Chapter \ref{chap:rationale}.
 
 Not only a theoretical methodology, but also an implemented proof-of\hyp
 concept (PoC) are the results of this project. The latter is introduced in
-chapter \ref{chap:implementation}. The steps that this PoC needs to conduct are
+Chapter \ref{chap:implementation}. The steps that this PoC needs to conduct are
 derived and tested independently via exploratory as well as confirmatory case
-studies in chapter \ref{chap:evaluation} to receive substantive, numeric, and
+studies in Chapter \ref{chap:evaluation} to receive substantive, numeric, and
 results \cite{easterbrook2008selecting}. Moreover, controlled
 experiments are not feasible as control results with their dependent variables
 for the outcomes are rare and difficult to find and measure
@@ -195,8 +195,8 @@ for the outcomes are rare and difficult to find and measure
 Finally, the research is validated with real-world monolithic applications. A
 large-scale code base provided by the company hosting this thesis as well as
 large open source software projects were candidates for this. The evaluation as
-part of section \ref{chap:evaluation} is conducted using a custom set of
-metrics devised in chapter \ref{chap:metrics}.
+part of Section \ref{chap:evaluation} is conducted using a custom set of
+metrics devised in Chapter \ref{chap:metrics}.
 
 
 
@@ -229,7 +229,7 @@ describes software that is built, deployed, and executed as a single logical
 unit \cite{ms-fowler}. Furthermore, a monolithic application can perform every
 task of the given functionality within the domain of its business logic from
 beginning to end \cite{monolith}. Usually this is implemented in a layered
-(e.g. UI, business logic, data access) and modular manner \cite{ms-fowler, monolith}.
+(e.g., UI, business logic, data access) and modular manner \cite{ms-fowler, monolith}.
 
 
 \subsubsection{Advantages}
@@ -394,7 +394,7 @@ edge \(\forall x_i \in E\) connecting two such vertices \(x_i = (r_1, r_2),
 We utilize static program analysis without \textit{execution counts}, which
 does not yield a weighted graph, allows us, however, to have a holistic
 weighted call graph when merging two or more non\hyp holistic call graphs,
-weighted or not (e.g. when another was constructed with dynamic program analysis).
+weighted or not (e.g., when another was constructed with dynamic program analysis).
 This is discussed in the chapter \textit{\nameref{chap:extracting-coupling}}.
 
 
@@ -417,7 +417,7 @@ To discover where the most data flows within the monitored
 application is a main application of this process \cite{graham1982gprof}. The
 common approach is to build a weighted and optionally directed graph to
 represent the call graph. The optional directions as the directions the
-routines invoke each other and e.g. \textit{execution counts} or average
+routines invoke each other and e.g., \textit{execution counts} or average
 \textit{execution times} as the weighted edges \cite{graham1982gprof}.
 Specifically the latter can only be recorded during the runtime of the
 application, however for our work only \textit{execution counts} are used as
@@ -435,7 +435,7 @@ Calculating the semantic similarity between two documents is a traditional
 discipline in the domain of natural language processing (NLP). The similarity
 value usually ranges from \([0.0, 1.0]\) --- a percentage \cite{singhal2001ir}.
 
-As anthropogenic source code largely consists of natural language, e.g. in
+As anthropogenic source code largely consists of natural language, e.g., in
 the form of identifiers, variable names, and comments, it can be semantically
 analyzed as well.
 
@@ -470,7 +470,7 @@ angle \(\theta\) between two input document vectors that are part of the corpus
 
 \subsubsection{Tokenization}
 The goal of the first step is to retrieve a list
-of terms (i.e. words) of a given document in the corpus
+of terms (i.e., words) of a given document in the corpus
 \(\forall t_i \in D_i, \enskip D_i \in C\).
 Importantly, each document \(D_i\) is a sequence, not a
 set (i.e., allows the repetition of elements). Otherwise, the 5th step would
@@ -632,7 +632,7 @@ filter those out as part of the \textit{stop word filtering}.
 \subsection{Evolutionary similarity calculation} \label{subsect:evolutionary-similarity}
 
 Similarly to the \textit{semantic similarity}, it can be measured how much the
-software development life cycles of two entities (e.g. classes) do overlap.
+software development life cycles of two entities (e.g., classes) do overlap.
 Precisely, every entity in an application has a life cycle regarding its
 creation, modifications (i.e., maintenance), and eventual deletion. For
 instance, entities that fulfill a similar functionality or have some interfaces
@@ -657,7 +657,7 @@ calculate \textit{evolutionary similarity}.
 
 Precisely, over the duration of a certain time period \([t_1, t_2]\) or the
 entirety of the log \([t_{min}, t_{max}]\), every revision \(r \in R\) contains
-at least one entity (i.e. file) out of the code base at that point in time
+at least one entity (i.e., file) out of the code base at that point in time
 \(\exists e \in r, e \in E\) that was modified (including creation and deletion)
 as part of the revision. Over the course of all the revisions \(\forall r \in
 R\) in a given time period \([t_1, t_2]\), the revisions where an entity \(e_1
@@ -712,8 +712,8 @@ densely interconnected via their \textit{intra-cluster edges} while being only
 sparsely connected to vertices outside of their own cluster via \textit{
 inter-cluster edges} \cite{lancichinetti2009community, newman2004fast}.
 
-\paragraph{Modularity}
-The metric of \textit{Modularity} measures the quality
+\paragraph{Network Modularity}
+The metric of \textit{Network Modularity} measures the quality
 of a graph clustering by comparing the interconnectedness of intra-cluster
 vertices to their inter-cluster edges. It works on unweighted as well as
 weighted graphs \cite{clauset2004modularity, blondel2008modularity} and was
@@ -730,7 +730,7 @@ where
   \item \(k_i\) and \(k_j\) is the sum of the edge weights attached to the vertices \(i\) and \(j\),
   \item \(m\) is the sum of all edge weights,
   \item \(c_i\) and \(c_j\) represent the clusters of the vertices \(i\) and \(j\),
-  \item \(\delta\) is a delta function
+  \item \(\delta\) is a \textit{Kronecker delta} function
 \end{itemize}
 The metric ranges on a scale of \([0.0, 1.0]\), from no clustering structure at
 all to a perfect clustering. Any given graph has a theoretic maximum in terms
@@ -743,8 +743,8 @@ values over \(0.4\) already resemble a strong clustering structure
 \paragraph{Mean Cluster Factor}
 The \textit{Cluster Factor} (CF) metric
 calculates how good the cohesion within a cluster is compared to the coupling
-from within that cluster toward the other clusters \cite{mitchell2006automatic}
-. This factor is a number on a scale from \([0.0, 1.0]\) with higher values
+from within that cluster toward the other clusters \cite{mitchell2006automatic}.
+This factor is a number on a scale from \([0.0, 1.0]\) with higher values
 being better. It bears the same proposition as the \textit{Modularity} metric
 although just the value for one cluster at a time is calculated:
 \[
@@ -762,7 +762,7 @@ and are considered to be state-of-the-art \cite{lancichinetti2009community,
 fortunato2010community, danon2005comparing}. In this subsection,
 we discuss renowned graph clustering algorithms. The way that we
 utilize the exhibited graph clustering algorithms as part of this work is
-discussed further in chapter \ref{chap:creating-service-recommendations}.
+discussed further in Chapter \ref{chap:creating-service-recommendations}.
 
 \paragraph{Girvan-Newman \cite{girvan2002community}}
 The \textit{Girvan-Newman}
@@ -819,7 +819,7 @@ clustering over time.
 The strength of the \textit{inflation} can be set via an input parameter that
 affects the granularity of the clustering and has, therefore, a similar problem
 as the \textit{Girvan-Newman} algorithm. A solution to this issue is discussed
-in chapter \ref{chap:creating-service-recommendations}.
+in Chapter \ref{chap:creating-service-recommendations}.
 
 \paragraph{Walktrap \cite{pons2005computing}}
 The \textit{Walktrap} algorithm
@@ -888,7 +888,7 @@ leveraging the aforementioned self-loops \cite{blondel2008modularity}.
 \paragraph{Label Propagation \cite{raghavan2007lpa}}
 The \textit{Label Propagation} was devised in 2007 by Raghavan et al.
 as a graph clustering algorithm that works based on similar ideas to \textit{MCL}.
-Just as \textit{MCL} and in contrast to, e.g. the \textit{Louvain} algorithm,
+Just as \textit{MCL} and in contrast to, e.g., the \textit{Louvain} algorithm,
 it does not use a pre\hyp defined fitness function.
 It instead works by having some labeled
 vertices or alternatively having all the vertices with their own label which is
@@ -924,14 +924,14 @@ the graph clustering is minimized \cite{rosvall2008infomap}.
 The \textit{Chinese Whispers} algorithm was released in 2005 by Biemann
 \cite{biemann2006chinese}.
 It mainly consists of an endless loop that is terminated once no better
-clustering can be found anymore (i.e. a local or global optimum is reached) or
+clustering can be found anymore (i.e., a local or global optimum is reached) or
 a predefined number of iterations has passed \cite{biemann2006chinese}. At
 first, every vertex of the given graph is put into its own cluster. Next, the
 vertices are iterated over in random order. Each vertex is moved to the cluster
 that it shares the most edges with \cite{biemann2006chinese}.
 
 Owing to the fact that this algorithm is incorporating randomness, it is
-non\hyp deterministic. Moreover, it yields a flat clustering (i.e. non\hyp
+non\hyp deterministic. Moreover, it yields a flat clustering (i.e., non\hyp
 hierarchical) \cite{biemann2006chinese}.
 
 
@@ -988,7 +988,6 @@ same domain as ours. They conclude their research with:
 \end{displayquote}
 This underlines the relevance and importance of this area of research
 and the notion that there is still room for improvement.
-\newpage
 
 
 
@@ -1382,7 +1381,7 @@ Precisely, the four types of coupling above are subcategories of the notion of
 \textit{principles of microservices}, are showcased in figure
 \ref{fig:principles-of-microservices} and the subsections below.
 The details of the utilization of this mapping as part of
-our methodology are discussed in chapter \ref{chap:extracting-coupling}.
+our methodology are discussed in Chapter \ref{chap:extracting-coupling}.
 
 \begin{figure}[htbp]
 \centering
@@ -1452,7 +1451,7 @@ which would otherwise violate the third principle.
 \chapter{Extracting coupling information from software} \label{chap:extracting-coupling}
 
 An important argument of our approach is that the coupling information
-exhibited in chapter \ref{chap:rationale} are extracted out of the input
+exhibited in Chapter \ref{chap:rationale} are extracted out of the input
 monolithic application automatically without any further user input. In this
 chapter, it is detailed which inputs need to be supplied and how the four
 types of coupling are extracted out of them. Additionally, static program
@@ -1473,9 +1472,9 @@ added to the implementation.
 
 \section{Static coupling extraction} \label{sect:static-coupling-extraction}
 
-As discussed in more detail in chapter \ref{sect:software-as-weighted-graph},
+As discussed in more detail in Chapter \ref{sect:software-as-weighted-graph},
 we opt for also constructing a full static call graph which is covered in
-subsection \ref{subsubsect:call-graph-static}.
+ Subsection \ref{subsubsect:call-graph-static}.
 
 
 \subsection{Walk\hyp based approach}
@@ -1492,14 +1491,14 @@ this process.
 For Java applications, both source code, as well as compiled bytecode, can be
 utilized as the input to algorithm \ref{algo:class-walk}. For both approaches,
 libraries exist that can access and iterate over the classes and methods as
-detailed in chapter \ref{chap:implementation}.
+detailed in Chapter \ref{chap:implementation}.
 
 The resulting static call graph is theoretically directed in the manner that it
 gets constructed in algorithm \ref{algo:class-walk}, the first class in the
 class pairs that are getting returned, is the vertex the edge is pointing away
 from. We construct a directed, weighted graph ---
 although the directions are ignored in most cases, as discussed in
-more detail in section \ref{sect:implementation-database}.
+more detail in Section \ref{sect:implementation-database}.
 
 Compared to other types of program analysis, static coupling does not bear an
 intuitive notion of strength.
@@ -1649,13 +1648,13 @@ extraction only needs the source code itself. Importantly, human-readable, not
 yet compiled source code is necessary as the semantics are lost in compiled
 code since it does not contain natural language anymore. We implemented an
 approach from scratch that conducts the steps regarding the semantic similarity
-calculation from subsection \ref{subsect:semantic-similarity}:
+calculation from  Subsection \ref{subsect:semantic-similarity}:
 \begin{enumerate}[noitemsep]
   \item Tokenization
   \item Stop word filtering
   \item Normalization
   \item Vectorization
-  \item Relevance weighted via \textit{tf-idf}
+  \item Relevance weighting via \textit{tf-idf}
   \item Latent semantic indexing (LSI)
 \end{enumerate}
 As detailed in subsection
@@ -1744,7 +1743,7 @@ Theoretically, every VCS that has the notion of revisions that include files
 and that is able to generate a log file which details past revisions together
 with the files involved, can be used to extract \textit{evolutionary coupling}
 information. Common VCS that we also support as part of our implemented
-methodology detailed in chapter \ref{chap:implementation} are:
+methodology detailed in Chapter \ref{chap:implementation} are:
 \begin{itemize}[noitemsep]
   \item \textit{Git}
   \item \textit{Subversion}
@@ -1768,7 +1767,7 @@ However, this is not covered by our work as we focus on Java applications for
 our initial implementation.
 
 After parsing the input log file, differing based on the utilized VCS, the
-process described in subsection \ref{subsect:evolutionary-similarity} generates
+process described in  Subsection \ref{subsect:evolutionary-similarity} generates
 the weighted \textit{evolutionary coupling} graph with the same structure as
 the other ones such that the vertices \(v_i \in V\) are the classes extracted
 from the VCS log file while the edges \(e_i \in E\) are resembling that two
@@ -1776,17 +1775,17 @@ classes have overlapping software development life cycles. The weight of the
 edges is a percentage that indicates how much the life cycles overlap
 \(W(e_i) \in [0.0, 1.0]\). Because two classes can have different
 \textit{evolutionary coupling} values depending on which direction is calculated,
-as seen in figure \ref{fig:vcs-log-timeline}, we take the average of these
+as seen in Figure \ref{fig:vcs-log-timeline}, we take the average of these
 two values if this is the case.
 
-Finally, as discussed in subsection \ref{subsect:evolutionary-similarity}, we
+Finally, as discussed in  Subsection \ref{subsect:evolutionary-similarity}, we
 use a threshold for this extraction step to filter out noise. The values are
 constants that can be changed while the defaults that we employ are:
 \begin{itemize}[noitemsep]
   \item Minimum shared revisions between entities: 1
   \item Time period \([t_1, t_2]\): Every day from \([00:00, \ 23:59]\)
 \end{itemize}
-For clarification, figure \ref{fig:vcs-log-timeline} depicts an example
+For clarification, Figure \ref{fig:vcs-log-timeline} depicts an example
 timeline to show how the \textit{evolutionary coupling} is calculated via a
 given VCS log while the direction of the coupling relationship is taken that
 was extracted out of the static analysis into a directed graph.
@@ -1826,7 +1825,7 @@ was extracted out of the static analysis into a directed graph.
 \section{Representing software as weighted graphs} \label{sect:software-as-weighted-graph}
 
 Our methodology works by clustering a weighted graph; hence we need to
-construct it first. As discussed in chapter \ref{chap:rationale}, four general
+construct it first. As discussed in Chapter \ref{chap:rationale}, four general
 coupling types were chosen to be leveraged for devising the microservice
 candidates' recommendations. Precisely, the input monolithic application gets
 analyzed from the view of each of these coupling types, called dimensions from
@@ -1980,7 +1979,7 @@ The citation numbers in the table are also referenced there.
  \rot{Citations~} & \rot{Runtime complexity~} & \rot{Implementation available~} & \rot{Does not require number of clusters~} & \rot{Deterministic~} & \rot{Considers weighted edges~} & \rot{Hard clustering~} & \rot{Hierarchical~} \\
  \hline\hline
  \cite{girvan2002community}     & \(\mathcal{O}(n^3)\)          & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
- \cite{vandongen2000graph}      & \(\mathcal{O}(nk^2)\)         & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
+ \cite{vandongen2000graph}      & \(\mathcal{O}(nk^2)\)         & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\oplus$  & $\ominus$ \\\hline
  \cite{pons2005computing}       & \(\mathcal{O}(mn)\)           & $\oplus$  & $\ominus$  & $\oplus$   & $\oplus$  & $\ominus$ & $\ominus$ \\\hline
  \cite{clauset2004modularity}   & \(\mathcal{O}(md \log{n})\)   & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
  \cite{blondel2008modularity}   & \(\mathcal{O}(n)\)            & $\oplus$  & $\oplus$   & $\oplus$   & $\oplus$  & $\oplus$  & $\oplus$ \\\hline
@@ -2004,6 +2003,15 @@ The citation numbers in the table are also referenced there.
   \end{itemize}
   The way that classifications are negated was chosen so that $\oplus$
   is a positive feature regarding the utilization as part of our work.
+  \newline
+  \scriptsize
+  \begin{itemize}[noitemsep]
+      \item n $=$ number of vertices
+      \item m $=$ number of edges
+      \item k $=$ threshold for the number of resources allocated per vertex
+      \item d $=$ depth of the resulting dendrogram
+  \end{itemize}
+  \normalsize
 %   The citation numbers stand for the following algorithms:
 %   \begin{itemize}[noitemsep]
 %   \item \cite{girvan2002community}: Girvan-Newman
@@ -2077,7 +2085,7 @@ requires \textit{hard clustering} (i.e., partitioning).
 \paragraph{Hierarchical}
 The last characteristic is not directly crucial for
 our methodology as we are only interested in the final output of the clusters
-as partitions. Nevertheless, as discussed in section \ref{sect:future-work},
+as partitions. Nevertheless, as discussed in Section \ref{sect:future-work},
 this property of graph clustering algorithms could be leveraged for future
 features. \newline
 
@@ -2096,7 +2104,7 @@ same at their core. Although the exact input and output formats differ between
 the algorithms, it always boils down to passing a list of edges to the
 algorithm --- listing \ref{graph-clustering-algorithm-input} depicts this kind
 of input format. In this example input, the format follows a tuple of three
-items (i.e. a triple), namely a vertex, another vertex it is connected to, and
+items (i.e., a triple), namely a vertex, another vertex it is connected to, and
 the edge weight of the edge connecting them:
 \[
   I_i = (v_1, \ v_2, \ W(e_{(1,2)}))
@@ -2116,9 +2124,9 @@ In this format, the entire input graph is serialized, while each line resembles
 a single edge. The integers used for the vertices are their identifiers, some
 algorithms require identifiers from \([1, n] \in \mathbb{Z}\) where \(n\) is
 the number of edges, others also work with arbitrary strings as identifiers.
-This fact is discussed in more detail in chapter \ref{chap:implementation}.
+This fact is discussed in more detail in Chapter \ref{chap:implementation}.
 
-As mentioned in section \ref{sect:background-graph-clustering}, many graph
+As mentioned in Section \ref{sect:background-graph-clustering}, many graph
 clustering algorithms discard directions in the input graph, which is no
 problem for our methodology as the resulting microservice candidate
 recommendations are finally unidirectional in any case.
@@ -2126,7 +2134,7 @@ recommendations are finally unidirectional in any case.
 After serializing the input graph, the chosen algorithm clusters the graph and
 returns the clustering as its output. The inner workings of the chosen
 algorithm are assumed as a black-box function at this point since this was
-already discussed in subsection \ref{subsect:renowned-graph-clustering-algorithms}
+already discussed in  Subsection \ref{subsect:renowned-graph-clustering-algorithms}
 and as it is not essential for the understanding of this section.
 
 Similarly to the input, the output of the selected algorithms also shares a
@@ -2160,7 +2168,7 @@ calculate metrics and render the clustered weighted graph for the user.
 
 \chapter{Calculating metrics on microservice recommendations} \label{chap:metrics}
 
-As laid out in chapter \ref{chap:rationale}, we aimed for an objective mapping
+As laid out in Chapter \ref{chap:rationale}, we aimed for an objective mapping
 of the input monolithic application to its graph-theoretic representation and
 the clustered output, respectively. Thus, it was necessary for us to also
 devise objective metrics, numeric in nature, to be able to evaluate the results
@@ -2169,8 +2177,11 @@ of our methodology and to answer \textit{RQ2}.
 In total, we devised a total of 18 metrics that can be sorted into three
 sets --- some of them being more general and overarching while others are more
 specific to the problem at hand by offering a direct order of magnitude
-regarding the quality of the produced output. The three sets of metrics are
-covered in the following sections while the devised metrics are the following:
+regarding the quality of the produced output.
+Some of these metrics are adapted out of literature, others are defined by ourselves.
+This is indicated in the explanation of each metric below.
+The three sets of metrics are covered in the following sections
+while the devised metrics are the following:
 \begin{itemize}
   \item Dynamic analysis input fidelity
   \item Semantic analysis input fidelity
@@ -2199,7 +2210,7 @@ covered in the following sections while the devised metrics are the following:
 The first set of metrics is not directly answering \textit{RQ2} but is
 interesting to look at nevertheless as the \textit{input fidelity} bears
 implications regarding the eventual quality of the clustering. The term \textit{
-input fidelity}, that we devised, describes how many percent of the classes of
+input fidelity}, that we defined, describes how many percent of the classes of
 the entire application a given input covers which gives us three different
 \textit{input fidelity} metrics:
 \begin{itemize}[noitemsep]
@@ -2261,10 +2272,10 @@ lower the \textit{input fidelity} as a result.
 
 \section{General clustering quality}
 
-The second set of metrics now answers \textit{RQ2} but was given its own set
-because for all four metrics in this set; it can not be strictly defined if low
-values are better or worse. This reason becomes apparent when looking at the
-actual metrics:
+The second set of metrics was likewise defined solely by us, it now answers
+\textit{RQ2} but was given its own set because for all four metrics in this set;
+it can not be strictly defined if low values are better or worse.
+This reason becomes apparent when looking at the actual metrics:
 \begin{itemize}[noitemsep]
   \item Amount of clusters
   \item Amount of inter-cluster edges
@@ -2314,7 +2325,7 @@ The rationale here is the same as for the \textit{amount of inter-cluster edges}
 \paragraph{Mean cluster size}
 Regarding the last metric of the second set, it
 is important to know that as part of the implementation of our methodology
-detailed in chapter \ref{chap:implementation}, the size in bytes is calculated
+detailed in Chapter \ref{chap:implementation}, the size in bytes is calculated
 for every class of the input monolithic application during the initial analysis
 step. In the case of Java applications, the compiled JVM byte-code is used for
 this calculation as it is more standardized and misses arbitrary characters
@@ -2342,6 +2353,7 @@ compared to the second set, it answers not only \textit{RQ2} but also directly
 measures the quality of the resulting clustering. In contrast to the second
 set, for the third set is always holds that higher values are better.
 
+\paragraph{Cluster Factor}
 There are no metrics directly measuring the modularity of a microservice
 decomposition. Thus, we looked into related domains and found a certain paper
 over and over again in the reference lists of others \cite{
@@ -2381,6 +2393,13 @@ this way, the final metric value ranges on the scale of \([0.0, 1.0]\) again
 instead of having no scale. We propose the name \textit{Mean Cluster Factor}
 ($mCF$) for this metric.
 
+\paragraph{Network Modularity}
+The other important metric in this category is the \textit{Network Modularity $Q$},
+which was discussed in greater detail in Section \ref{sect:background-graph-clustering}.
+We use the exact formula that Newman devised in 2004 under the name
+\textit{Coupling Modularity} \cite{newman2004fast}.
+
+\paragraph{Adapted modularity metrics}
 Thus, as this set of metrics consists of ten metrics based on the and \textit{
 Mean Cluster Factor} and \textit{Modularity} metrics, introduced in section
 \ref{sect:background-graph-clustering}:
@@ -2400,12 +2419,12 @@ Mean Cluster Factor} and \textit{Modularity} metrics, introduced in section
 \end{itemize}
 Both kinds of metrics are specifically
 interesting when combined, as high scores in both are a sign of a good
-partition and graph clustering algorithm in general. Precisely, the first three
+partition and graph clustering algorithm in general. Precisely, the first four
 of each kind of the above share the same underlying equation of calculating the
 \textit{Mean Cluster Factor} or \textit{Modularity} of their respective
 coupling graph (e.g., \(G_{semantic}\)). The \textit{Average Mean Cluster
 Factor} and the \textit{Average Coupling Modularity} are the arithmetic means
-of the set of the first three metrics of their kind. Lastly, the \textit{Total
+of the set of the first four metrics of their kind. Lastly, the \textit{Total
 Mean Cluster Factor} and \textit{Total Coupling Modularity} are the
 calculations performed on the combined graph \(G_{combined}\).
 
@@ -2416,7 +2435,7 @@ qualitative the generated microservice candidate recommendations are.
 
 
 
-\chapter{Implementation} \label{chap:implementation}
+\chapter{Steinmetz: A proof-of-concept implementation} \label{chap:implementation}
 
 In the last chapters, we described the methodology that we devised to answer
 \textit{RQ1} as well as the metrics we created to answer \textit{RQ2} --- both
@@ -2466,7 +2485,7 @@ designed the back-end of our application in a monolith manner.
 
 The implemented application has two significant functionalities that can be
 used via RESTful endpoints, which are detailed in section
-\ref{sect:implementation-back-end} and depicted in figure \ref{fig:architecture-overview}.
+\ref{sect:implementation-back-end} and depicted in Figure \ref{fig:architecture-overview}.
 These functionalities are to analyze and persist an input monolithic
 application as well as clustering and retrieving it again as a separate step.
 
@@ -2587,7 +2606,7 @@ creating and subsequently inserting a completely new entity. One can
 add an arbitrary amount of additional data properties to the class via the
 \code{@Property} annotation since \textit{Neo4j} can persist any data together
 with any \textit{Relationship}. In our use case, these are the coupling scores
-discussed in section \ref{sect:software-quality-metrics}. The entirety of the
+discussed in Section \ref{sect:software-quality-metrics}. The entirety of the
 modeled data is covered at the end of this section in \ref{subsect:data-models}.
 
 
@@ -2647,7 +2666,7 @@ and subsequent mapping of native JVM data types into data types supported by
 \textit{Neo4j} is completely automatic and handled by the OGM \cite{neo4j-ogm}
 although both can be configured manually if wished. Furthermore, the OGM will
 recursively persist the data attached to the object passed into the \code{
-save()} method (e.g. a \textit{Node} connected to another one via a \textit{
+save()} method (e.g., a \textit{Node} connected to another one via a \textit{
 Relationship}, all three will be persisted). The second method can in return
 retrieve already persisted data. Its API allows for ordering, pagination,
 filtering, and other features \cite{neo4j-ogm}, although our implementation
@@ -2682,7 +2701,7 @@ are necessary to model our data as depicted in figures
 \caption{Relationships data models}
 \caption*{\centering
   One \textit{Relationship} model is necessary. Its sole usage is to link
-  two \code{Unit} \textit{Nodes} together as seen in figure \ref{fig:data-models-nodes}.
+  two \code{Unit} \textit{Nodes} together as seen in Figure \ref{fig:data-models-nodes}.
 }
 \label{fig:data-models-relationships}
 \end{figure}
@@ -2698,7 +2717,7 @@ are necessary to model our data as depicted in figures
 \end{figure}
 
 Precisely, the \code{Metrics} \textit{Node} persists metrics on a per\hyp
-project basis as described in section \ref{sect:input-fidelity-metrics} ---
+project basis as described in Section \ref{sect:input-fidelity-metrics} ---
 only the fidelity metrics are persisted in the database owing to the fact that
 their calculation is resource\hyp intensive thus the result is persisted as it
 will not change in any case. The \code{Unit} \textit{Node} is the main \textit{
@@ -2707,7 +2726,7 @@ out of the input monolithic application as exhibited in chapter
 \ref{chap:extracting-coupling}. The \code{CALLS} \textit{Relationship}
 is used to persist which \code{Unit} \textit{Nodes} are linked to each other.
 Figure \ref{fig:data-models-example} depicts how the modeled \textit{Nodes}
-and \textit{Relationships} behave while figure \ref{fig:class-diagram-graph-entity}
+and \textit{Relationships} behave while Figure \ref{fig:class-diagram-graph-entity}
 depicts a class diagram of the involved classes within the back-end.
 
 \begin{figure}[htbp]
@@ -2943,7 +2962,7 @@ multiple times for every request to resource 4.
 \subsubsection{Resource 5}
 The last resource is used to optionally optimize the
 hyper\hyp parameters of our methodology. This is explained in more detail in
-subsection \ref{subsubsect:hyper-parameter-optimization}.
+ Subsection \ref{subsubsect:hyper-parameter-optimization}.
 
 
 \subsection{Logic controllers}
@@ -3094,7 +3113,7 @@ implements the \code{ClusteringAlgorithmManager} interface. In these classes,
 the actual reference implementation of each algorithm is wrapped. Consequently,
 the implementations in those classes differ vastly from one to the other. A
 class diagram has been created to depict the classes involved in this step (see
-figure \ref{fig:class-diagram-clustering-algorithm-manager}).
+Figure \ref{fig:class-diagram-clustering-algorithm-manager}).
 
 \begin{figure}[htbp]
 \centering
@@ -3139,11 +3158,11 @@ coroutine} feature of the Kotlin programming language.
 
 \subsubsection{Extraction}
 The sub-packages within the package \code{extraction.coupling}
-in figure \ref{fig:top-level-logic-structure} are each
+in Figure \ref{fig:top-level-logic-structure} are each
 implementing one input dimension of the ones highlighted in chapter
 \ref{chap:extracting-coupling}.
 A class diagram of the involved classes can be seen in
-figure \ref{fig:class-diagram-abstract-extractor}.
+Figure \ref{fig:class-diagram-abstract-extractor}.
 
 \begin{figure}[htbp]
 \centering
@@ -3298,9 +3317,9 @@ calculation can be run concurrently.
 \subsubsection{Metrics}
 This package contains two sub-packages, which each
 contain classes that implement the calculation of the metrics for the input and
-the clustering, respectively, as detailed in chapter \ref{chap:metrics}. The
+the clustering, respectively, as detailed in Chapter \ref{chap:metrics}. The
 distinct implementations are not covered in more detail as they are very close
-to the mathematical formulae in chapter \ref{chap:metrics}.
+to the mathematical formulae in Chapter \ref{chap:metrics}.
 
 
 \subsubsection{Hyper-parameter optimization} \label{subsubsect:hyper-parameter-optimization}
@@ -3329,7 +3348,7 @@ available ones.
 
 It was a conscious design decision in the engineering of the implementation
 that its core is agnostic of any programming language or platform that it
-analyzes. As seen in figure \ref{fig:coupling-extraction-structure}, the \code{
+analyzes. As seen in Figure \ref{fig:coupling-extraction-structure}, the \code{
 extraction.coupling} package contains sub\hyp packages for every coupling
 dimension and then another sub\hyp package for the platforms that are
 supported. As described earlier, we exemplarily implemented every step of the
@@ -3469,7 +3488,7 @@ connections, while green lines are inter-cluster connections. These have
 different thicknesses depending on their edge weight, which can be displayed by
 hovering over the edge. Moreover, the inter-cluster edges have arrowheads
 depicting in which directions the microservices would invoke each other, which
-can be seen in detail in figure \ref{fig:node-graph-view}. Finally, every unit
+can be seen in detail in Figure \ref{fig:node-graph-view}. Finally, every unit
 of each service has its name printed inside of the node as well as the fully
 qualified name and the byte size when hovering over it, as seen in figure
 \ref{fig:node-graph-view}.
@@ -3492,7 +3511,7 @@ a service are connected to each other as well as how they are connected to
 other services and their units. Moreover, units in a square shape are solely
 accessed within their own service, while units in a diamond shape are
 communicating with units from other microservices. This mode can be seen in
-figure \ref{fig:detailed-graph-view} and is activated by toggling the \textit{
+Figure \ref{fig:detailed-graph-view} and is activated by toggling the \textit{
 Hide Inter-Cluster Edges} option.
 
 \begin{figure}[htbp]
@@ -3511,7 +3530,7 @@ A last, additional graph view mode renders the graph
 in a more natural form without artificial changes to the way that the clusters
 are rendered. This mode is mainly interesting to examine the structure or
 architecture of the input monolithic application. The mode can be seen in
-figure \ref{fig:natural-graph-view} and is activated by toggling the \textit{
+Figure \ref{fig:natural-graph-view} and is activated by toggling the \textit{
 Clustered View} option which also disables the \textit{Hide Inter-Cluster
 Edges} as well.
 
@@ -3535,7 +3554,7 @@ hindered. However, primarily when the microservice recommendations should be
 implemented, a textual view is preferred as the graphical nature of the \textit{
 graph view} is expected not to provide enough of an overview regarding the
 resulting microservice candidate recommendations. This view can be seen in
-further detail in figure \ref{fig:textual-view-ui}.
+further detail in Figure \ref{fig:textual-view-ui}.
 
 \begin{figure}[htbp]
 \centering
@@ -3580,7 +3599,7 @@ in the third tile, next to the selected algorithm, is highlighted in green.
 
 \chapter{Experiment design} \label{chap:experiment-design}
 
-Our full implementation exhibited in chapter \ref{chap:implementation} allowed
+Our full implementation exhibited in Chapter \ref{chap:implementation} allowed
 us to evaluate our methodology using actual software, which was selected via
 the definition of a multitude of criteria followed by extensive research to
 identify possible candidates for the experiments.
@@ -3600,7 +3619,7 @@ Additionally, the performance of the PoC that we implemented was analyzed.
 
 \subsection{Subjects}
 
-As shown in section \ref{sect:background-architecture}, a microservices\hyp
+As shown in Section \ref{sect:background-architecture}, a microservices\hyp
 based architecture only makes sense for large\hyp scale, web\hyp based,
 back\hyp end applications compared to libraries, SDKs, and dedicated GUI
 software. Consequently, software that falls into said category had to be
@@ -3716,7 +3735,7 @@ An advanced open source enterprise wiki \\\hline
 As discussed in the previous section, the selected applications have to fulfill
 a set of requirements for each of the four input dimensions. Furthermore, the
 \textit{dynamic coupling} involves another difficulty, which was already
-discussed in subsection \ref{subsect:background-dynamic-analysis} --- owing to
+discussed in  Subsection \ref{subsect:background-dynamic-analysis} --- owing to
 the fact that the software has to be executed in order to conduct \textit{
 dynamic program analysis}, this input dimension involves a lot more work than
 any of the others.
@@ -3757,7 +3776,7 @@ Finally, to test that the entirety of our implemented methodology was working
 as designed, we conducted the first experiment by analyzing one of the projects
 with all the available dimensions, thus including the \textit{dynamic coupling}.
 The details of this first, as well as the other experiments, are discussed in
-more detail in the following section \ref{sect:experiment-execution}.
+more detail in the following Section \ref{sect:experiment-execution}.
 
 
 
@@ -3774,15 +3793,15 @@ five selected criteria that each of the following experiments sets.
 Criterion & Explanation \\
 \hline\hline
 
-Coupling dimensions            & The coupling dimensions that were used for the analysis (see \ref{sect:software-quality-metrics}) \\\hline
+Coupling dimensions            & The coupling dimensions that were used for the analysis (see Section \ref{sect:software-quality-metrics}) \\\hline
 
-Coupling dimension weights     & The weights that were assigned to each of the utilized dimensions (see \ref{sect:merging-graphs}) \\\hline
+Coupling dimension weights     & The weights that were assigned to each of the utilized dimensions (see Section \ref{sect:merging-graphs}) \\\hline
 
-Graph clustering algorithms    & The graph clustering algorithms that were used for the experiment (see \ref{sect:background-graph-clustering}) \\\hline
+Graph clustering algorithms    & The graph clustering algorithms that were used for the experiment (see Section \ref{sect:background-graph-clustering}) \\\hline
 
-Maximum number of iterations   & The maximum number of iterations used for algorithms that require an input parameter (see \ref{graph-clustering-algorithm-survey-amount-of-clusters}) \\\hline
+Maximum number of iterations   & The maximum number of iterations used for algorithms that require an input parameter (see Paragraph \ref{graph-clustering-algorithm-survey-amount-of-clusters}) \\\hline
 
-Recorded metrics               & The metrics that were recorded as part of the experiment (see \ref{chap:metrics}) \\\hline
+Recorded metrics               & The metrics that were recorded as part of the experiment (see Chapter \ref{chap:metrics}) \\\hline
 
 \end{tabularx}
 \caption{Explanations of the criteria of the experiments}
@@ -3830,7 +3849,7 @@ For the second experiment, we analyzed all of the
 aforementioned test subjects with our implementation. In essence, the criteria
 of this experiment are the same as the one of the first one, while the \textit{
 dynamic coupling} dimension is left out due to the reasons described in
-subsection \ref{subsect:difficulties}. The goal of this experiment is to
+Subsection \ref{subsect:difficulties}. The goal of this experiment is to
 determine if the $mCF$ or the $Q$ metric generally performs better:
 \begin{itemize}[noitemsep]
     \item Coupling dimensions: static, semantic, evolutionary
@@ -3911,13 +3930,13 @@ four dimensions resulting in a four\hyp dimensional optimization problem.
 
 \section{Experiments}
 
-In the following three subsections, the results of the three experiments that
+In the following four subsections, the results of the four experiments that
 we conducted are presented and discussed.
 
 
 \subsection{Experiment Nº 1}
 
-The results of experiment Nº 1 can be found in figures \ref{fig:experiment-1.1}
+The results of experiment Nº 1 can be found in Figures \ref{fig:experiment-1.1}
 and \ref{fig:experiment-1.2}.
 
 Generally, all available graph clustering algorithms perform well, although
@@ -3934,7 +3953,7 @@ which classes can reach others.
 In both clustering metrics, the \textit{Clauset-Newman-Moore} algorithm
 performs the best. It also achieves the second-lowest
 \textit{Ratio of Inter- Cluster Edge Weights (\%)}.
-The resulting clustering is rendered in figure \ref{fig:experiment-1.2},
+The resulting clustering is rendered in Figure \ref{fig:experiment-1.2},
 which also looks reasonable in the visual and textual view.
 
 We can conclude that \textit{Steinmetz} works as expected. It correctly
@@ -3965,7 +3984,7 @@ answers RQ1 and presents our solution as a working methodology.
 
 \subsection{Experiment Nº 2}
 
-The results of experiment Nº 3 can be found in figures \ref{fig:experiment-2.1_mCF},
+The results of experiment Nº 3 can be found in Figures \ref{fig:experiment-2.1_mCF},
 \ref{fig:experiment-2.1_Q}, \ref{fig:experiment-2.2}, \ref{fig:experiment-2.3_mCF},
 and \ref{fig:experiment-2.3_Q}.
 
@@ -3987,7 +4006,7 @@ micro}\hyp aspect of microservices is not satisfied.
 
 Thus, we can deduct that the $Q$ metric is more suitable for assessing the
 output quality of microservice decomposition methodologies than the $mCF$,
-which directly answers RQ2. Additionally, as figures \ref{fig:experiment-2.3_mCF}
+which directly answers RQ2. Additionally, as Figures \ref{fig:experiment-2.3_mCF}
 and \ref{fig:experiment-2.3_Q} depict, the $mCF$ metric is more highly
 correlated with the \textit{Ratio of Inter-Cluster Edge Weights (\%)}, a metric
 that should neither be very high, nor very low. Comparatively, the $Q$ metric
@@ -3999,7 +4018,7 @@ generally will lead to a few, huge microservices. Both of the main clustering
 metrics are negatively correlated to the \textit{Ratio of Inter-Cluster Edge
 Weights (\%)}, while apparently giving an edge over that metric since the
 correlation is not perfect. There is a valley of data points in the lower left\hyp
-hand corner of figure \ref{fig:experiment-2.3_Q}, for the preferred $Q$ metric,
+hand corner of Figure \ref{fig:experiment-2.3_Q}, for the preferred $Q$ metric,
 that achieves good \textit{Ratio of Inter-Cluster Edge Weights (\%)} values
 while having very low $Q$ scores at the same time.
 
@@ -4058,7 +4077,7 @@ Furthermore, some algorithms perform better or worse on different projects,
 while the \textit{Chinese Whispers} algorithm is consistently underperforming.
 In the same vein, the \textit{Chinese Whispers} algorithm stands out with
 yielding a grotesque amount of clusters, going over the threshold of $1,000$,
-as seen in figure \ref{fig:experiment-3.3}. The \textit{Infomap},
+as seen in Figure \ref{fig:experiment-3.3}. The \textit{Infomap},
 \textit{Walktrap}, and \textit{Label Propagation} algorithms are performing not
 very consistently, achieving both very good as well as terrible results.
 
@@ -4077,7 +4096,7 @@ but not badly. All of these results can be found in figures
 Thus, we can deduct that both the \textit{Clauset-Newman-Moore}, as well as the
 \textit{Louvain} algorithm, are the most suitable for generating microservice
 recommendations, which directly answers RQ3. This notion can still be supported
-when looking at the additional figures \ref{fig:experiment-3.2} and
+when looking at the additional Figures \ref{fig:experiment-3.2} and
 \ref{fig:experiment-3.4}. Both of the best performing algorithms have high bivariate
 correlations between their scores in the two main clustering metrics with \(R =
 0.90\) and \(R = 0.89\) for \textit{Clauset-Newman-Moore} and \textit{Louvain}
@@ -4195,7 +4214,7 @@ Firstly, the frontiers of all the input projects are very similar in shape.
 Apart from \textit{Halo}, \textit{Heritrix}, \textit{OpenTripPlanner},
 \textit{Traccar}, and \textit{XWiki}, the other eight input projects retain
 frontiers that look very similar to the example of \textit{KeyCloak},
-the largest input, as seen in figure \ref{fig:experiment-4.1}.
+the largest input, as seen in Figure \ref{fig:experiment-4.1}.
 The frontier runs in a half\hyp arc curve that originates from the zero points
 of the static and semantic objectives, smoothly rising in their values with
 an increasing steepness of the curve, decreasing the evolutionary objective
@@ -4328,7 +4347,7 @@ a \textit{Pareto frontier} shape, as tables \ref{table:experiment-4.4},
 The semantic weight variables are almost always very low. The static
 weight variables are slightly more spread out but also rarely exceed $0.5$.
 The evolutionary weight variables are often seen in higher value ranges.
-Moreover, as depicted by figure \ref{fig:experiment-4.3}, for many input
+Moreover, as depicted by Figure \ref{fig:experiment-4.3}, for many input
 projects, such as \textit{Teammates}, this clustering pattern is even more
 extreme as the evolutionary weight variables are either very high or very low,
 which is corroborated by the much higher variance values for these variables.
@@ -4336,7 +4355,7 @@ which is corroborated by the much higher variance values for these variables.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.96\textwidth]{results/experiment_4-2}
-\caption{The input variables that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\caption{The input variables that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in Figure \ref{fig:experiment-4.1}}
 \label{fig:experiment-4.2}
 \end{figure}
 
@@ -4429,10 +4448,10 @@ XWiki               & $0.34$ & $0.09$ \\\hline
 \end{table}
 
 Interestingly, the semantic objective scores still reach high values even if
-its weight variable approaches $0.0$, as seen in figure \ref{fig:experiment-4.4}
+its weight variable approaches $0.0$, as seen in Figure \ref{fig:experiment-4.4}
 on the example of the \textit{KeyCloak} input project again.
 A similar picture can be observed for the static weight variables, shown in
-figure \ref{fig:experiment-4.5}.
+Figure \ref{fig:experiment-4.5}.
 It seems to us that the semantic dimension is partly encoded in the static one,
 which can already be seen in the previous findings as they are highly
 positively correlated toward each other. For the eight input projects sharing
@@ -4440,7 +4459,7 @@ the \textit{Pareto frontier} shape of a half\hyp arc, the software architectures
 seem to make the semantic measurement almost obsolete as even with small input
 weight variables of $<0.2$, high output objective scores can be reached.
 On the other hand, the evolutionary objective seems to be much more sensitive
-to its input weight variable, as the comparative figure \ref{fig:experiment-4.6}
+to its input weight variable, as the comparative Figure \ref{fig:experiment-4.6}
 confirms. This ties together the first three findings, as the static and
 semantic objectives do not seem to be too sensitive to their respective weight
 variables while still scoring high values, while also having a lot higher valued
@@ -4452,21 +4471,21 @@ toward higher scores for the other two objectives.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.96\textwidth]{results/experiment_4-4}
-\caption{The semantic input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\caption{The semantic input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in Figure \ref{fig:experiment-4.1}}
 \label{fig:experiment-4.4}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.96\textwidth]{results/experiment_4-5}
-\caption{The static input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\caption{The static input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in Figure \ref{fig:experiment-4.1}}
 \label{fig:experiment-4.5}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.96\textwidth]{results/experiment_4-6}
-\caption{The evolutionary input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in figure \ref{fig:experiment-4.1}}
+\caption{The evolutionary input variables and output objective values that lead to the \textit{Pareto frontier} of the \textit{KeyCloak} input, as seen in Figure \ref{fig:experiment-4.1}}
 \label{fig:experiment-4.6}
 \end{figure}
 
@@ -4476,44 +4495,40 @@ To do this, we identified the input project that shows the highest ranges for
 all the three objective values, which turned out to be \textit{OpenCMS}.
 The results are shown in table \ref{table:experiment-4.7}.
 Clustering the weight variable combination that leads to the lowest average
-objective values (i.e. the furthest away from the \textit{knee\hyp point} of the
+objective values (i.e., the furthest away from the \textit{knee\hyp point} of the
 \textit{Pareto frontier}) resulted in a clustering consisting of double the
 \textit{Amount of Clusters} compared to the highest average solution
-(i.e. the \textit{knee\hyp point} of the \textit{Pareto frontier}),
+(i.e., the \textit{knee\hyp point} of the \textit{Pareto frontier}),
 while having a third of the \textit{Ratio of Inter\hyp Cluster Edge Weights}.
 The solution that is the midpoint of the range is interestingly in the middle
 of the two others.
 
-\begin{sidewaystable}[h!]
-\footnotesize
-\begin{tabularx}{\textwidth}{|c|c|c|c|c|c|c|c|c|c|}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|X|c|c|c|}
 \hline
-Solution & Static V & Semantic V & Evolutionary V & Static O & Semantic O & Evolutionary O & Average O & AOC & RICEW \\
+Value & Low-point & Mid-point & High-point \\
 \hline\hline
 
-Lowpoint  & $0.0029583$ & $0.0000002$ & $0.6483049$ & $0.4203270$ & $0.4335106$ & $0.8548357$ & $0.5695578$ & $90$ & $10\%$ \\\hline
-Midpoint  & $0.4035683$ & $0.0144182$ & $0.9301752$ & $0.4752754$ & $0.4971534$ & $0.8439260$ & $0.6054516$ & $65$ & $22\%$ \\\hline
-Highpoint & $0.7901847$ & $0.3441048$ & $0.8325046$ & $0.5013523$ & $0.5657572$ & $0.8033364$ & $0.6234819$ & $44$ & $31\%$ \\\hline
+Static Variable                     & $0.0029583$   & $0.4035683$   & $0.7901847$   \\\hline
+Semantic Variable                   & $0.0000002$   & $0.0144182$   & $0.3441048$   \\\hline
+Evolutionary Variable               & $0.6483049$   & $0.9301752$   & $0.8325046$   \\\hline
+Static Objective                    & $0.4203270$   & $0.4752754$   & $0.5013523$   \\\hline
+Semantic Objective                  & $0.4335106$   & $0.4971534$   & $0.5657572$   \\\hline
+Evolutionary Objective              & $0.8548357$   & $0.8439260$   & $0.8033364$   \\\hline
+Average Objective                   & $0.5695578$   & $0.6054516$   & $0.6234819$   \\\hline
+Amount of clusters                  & $90$          & $65$          & $44$          \\\hline
+Ratio of inter-cluster edge weight  & $10\%$        & $22\%$        & $31\%$        \\\hline
 
 \end{tabularx}
-\caption{The results of the low, mid, and highpoint of the range of Pareto\hyp optimal solutions, on the example of the \textit{OpenCMS} input project}
-\caption*{\centering
-  \begin{itemize}
-    \item V: Variable
-    \item O: Objective
-    \item AOC: \textit{Amount of Clusters}
-    \item RICEW: \textit{Ratio of Inter\hyp Cluster Edge Weights}
-  \end{itemize}
-}
+\caption{The results of the low, mid, and high-point of the range of Pareto\hyp optimal solutions, on the example of the \textit{OpenCMS} input project}
 \label{table:experiment-4.7}
-\normalsize
-\end{sidewaystable}
+\end{table}
 
 
 
 \section{Performance}
 
-The performance results can be found in figures \ref{fig:performance-static},
+The performance results can be found in Figures \ref{fig:performance-static},
 \ref{fig:performance-semantic}, \ref{fig:performance-evolutionary}, and
 \ref{fig:performance-total}. On purpose, the same scales are used in all of the
 plots such that the results and the runtime complexity can be compared.
@@ -4533,14 +4548,14 @@ analysis of the first experiment took 64 seconds for a profiler recording of
 influence it since solely the runtime complexity of each of the graph
 clustering algorithms determines that.
 
-As figures \ref{fig:performance-semantic} and \ref{fig:performance-evolutionary}
+As Figures \ref{fig:performance-semantic} and \ref{fig:performance-evolutionary}
 show, the semantic and evolutionary analysis have a less than
 linear runtime complexity. The static analysis in \ref{fig:performance-static}
 is what drives the total runtime the most. Nevertheless, the total runtime of
 the PoC is predictable, with a bivariate correlation between input size and
 runtime being a very high \(R = 0.92\). Due to this, the small confidence
 interval, and the slope of the regression line, the runtime complexity of the
-PoC seems to be \(\mathcal{O}(N)\), as figure \ref{fig:performance-total}
+PoC seems to be \(\mathcal{O}(N)\), as Figure \ref{fig:performance-total}
 depicts.
 
 \begin{figure}[htbp]
@@ -4627,7 +4642,7 @@ this area of research in multiple aspects such as:
 
 \paragraph{Missing dynamic coupling}
 The main threat to validity was exhibited
-in subsection \ref{subsect:difficulties}, which is that the input dimension
+in  Subsection \ref{subsect:difficulties}, which is that the input dimension
 regarding the \textit{dynamic coupling} cannot be analyzed very well in an
 experimental environment which decreased the significance of our evaluation. On
 the other hand, using this input dimension would have expectedly resulted in
@@ -4648,7 +4663,7 @@ transfer it to an internally used library that all the microservices depend on
 
 \paragraph{Quality assessment}
 Just as the other existing methodologies in this
-area of research such as the ones covered in chapter \ref{chap:related}, the
+area of research such as the ones covered in Chapter \ref{chap:related}, the
 inherent weakness of our methodology is to assess the quality of the generated
 results. Although we devised objective metrics numeric in nature, the decision
 if a set of created microservice recommendations is good is still subjective
