@@ -14,7 +14,7 @@ Conception of a methodology and its exemplary implementation
 \newcommand{\thesisdate}{26/08/2020}
 \newcommand{\thesislocation}{Amsterdam}
 \newcommand{\firstmarker}{Dr.\ Ana Maria Oprescu}
-\newcommand{\secondmarker}{MSc.\ Stephan Schroevers}
+\newcommand{\secondmarker}{Stephan Schroevers, MSc.}
 \newcommand{\hostorganization}{Picnic B.V.}
 
 \begin{document}
@@ -935,11 +935,12 @@ non\hyp deterministic. Moreover, it yields a flat clustering (i.e., non\hyp
 hierarchical) \cite{biemann2006chinese}.
 
 
+
 \section{Multi-objective optimization}
 
-As part of our \textit{\nameref{chap:evaluation}}, we conduct
-multi\hyp objective optimization to generate optimal input settings for our
-methodology as well as to find interesting patterns in the experiment results.
+As part of our evaluation, we conducted multi\hyp objective optimization to
+generate optimal input settings for our methodology as well as to find
+interesting patterns in the experiment results.
 
 Multi-objective optimization, also known as Pareto optimization, is an area
 out of the domain of mathematical optimization problems, summarized as:
@@ -3926,7 +3927,7 @@ four dimensions resulting in a four\hyp dimensional optimization problem.
 
 
 
-\chapter{Evaluation} \label{chap:evaluation}
+\chapter{Experiment results and discussion} \label{chap:evaluation}
 
 \section{Experiments}
 
@@ -3963,7 +3964,7 @@ answers RQ1 and presents our solution as a working methodology.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.96\textwidth]{results/experiment_1-1}
+\includegraphics[width=\textwidth]{results/experiment_1-1}
 \caption{The overview over all the results of the first experiment}
 \caption*{\centering
   Each of the first seven boxes depicts all the metrics for each of graph clustering algorithms for the \textit{Heritrix} project with all the four input dimensions.
@@ -3984,7 +3985,7 @@ answers RQ1 and presents our solution as a working methodology.
 
 \subsection{Experiment Nº 2}
 
-The results of experiment Nº 3 can be found in Figures \ref{fig:experiment-2.1_mCF},
+The results of experiment Nº 2 can be found in Figures \ref{fig:experiment-2.1_mCF},
 \ref{fig:experiment-2.1_Q}, \ref{fig:experiment-2.2}, \ref{fig:experiment-2.3_mCF},
 and \ref{fig:experiment-2.3_Q}.
 
@@ -4067,7 +4068,7 @@ while having very low $Q$ scores at the same time.
 
 \subsection{Experiment Nº 3}
 
-The results of experiment Nº 3 can be found in figures and tables
+The results of experiment Nº 3 can be found in Figures and Tables
 \ref{fig:experiment-3.1_mCF}, \ref{fig:experiment-3.1_Q}, \ref{fig:experiment-3.2},
 \ref{fig:experiment-3.3}, \ref{fig:experiment-3.4}, and \ref{fig:experiment-3.3}.
 
@@ -4180,6 +4181,13 @@ Walktrap              & $-0.78$ & $0.0$   \\\hline
 
 
 \subsection{Experiment Nº 4}
+
+The results of experiment Nº 4 can be found in Figures and Tables
+\ref{fig:experiment-4.1}, \ref{table:experiment-4.1},  \ref{table:experiment-4.2},
+\ref{table:experiment-4.3}, \ref{fig:experiment-4.2}, \ref{fig:experiment-4.3},
+\ref{table:experiment-4.4}, \ref{table:experiment-4.5}, \ref{table:experiment-4.6},
+\ref{fig:experiment-4.4}, \ref{fig:experiment-4.5}, \ref{fig:experiment-4.6},
+and \ref{table:experiment-4.7}.
 
 We conducted this last experiment utilizing the \textit{Clauset-Newman-Moore}
 algorithm as the fitness function, as well as the dimensional $Q$ metrics
@@ -4454,7 +4462,9 @@ A similar picture can be observed for the static weight variables, shown in
 Figure \ref{fig:experiment-4.5}.
 It seems to us that the semantic dimension is partly encoded in the static one,
 which can already be seen in the previous findings as they are highly
-positively correlated toward each other. For the eight input projects sharing
+positively correlated toward each other. For many inputs, one could theoretically
+leave the semantic input dimension out of the analysis, while still achieving high
+semantic objective scores. For the eight input projects sharing
 the \textit{Pareto frontier} shape of a half\hyp arc, the software architectures
 seem to make the semantic measurement almost obsolete as even with small input
 weight variables of $<0.2$, high output objective scores can be reached.
@@ -4605,9 +4615,29 @@ depicts.
 
 
 
-\chapter{Discussion} \label{chap:discussion}
+\chapter{Conclusion} \label{chap:conclusion}
 
-\section{Results}
+The microservices paradigm is getting more and more traction, while many
+companies are stuck with monolithic legacy systems that could benefit from
+being renovated by decomposing them into microservices. However, legacy
+software is typically difficult to grasp with increasing size. While this
+process is tedious and very manual for a human, for a computer, it is much
+easier to oversee the entirety of the application. The area of research of
+this thesis is still young compared to others in the domain of computer
+science, as Fritzsch et al. showed in their study on the current situation in
+this exact area of research. They also concluded that more research is desired
+to further improve upon existing approaches.
+
+To conclude, we devised a working methodology that generates results in just a
+few minutes without any manual input, which would have taken hours if done by a
+human software engineer. Additionally, we fully implemented the devised
+methodology with a modern graphical user interface that allows for fast
+analysis runs that yield microservice candidate recommendations in a variety of
+formats that can be used to assist software engineers with the posed task.
+
+
+
+\section{Contributions}
 
 Coming back to the introduction of this thesis and the posed research
 questions, we devised a full methodology that improves upon similar ones in
@@ -4717,42 +4747,6 @@ them by slightly shifting the boundaries between the units, utilizing an
 algorithm, to offer a more holistic set of microservice candidate
 recommendations that can be validated from an additional perspective --- the
 quality of the interfaces between the services.
-
-
-
-
-\chapter{Conclusion} \label{chap:conclusion}
-
-The microservices paradigm is getting more and more traction, while many
-companies are stuck with monolithic legacy systems that could benefit from
-being renovated by decomposing them into microservices. However, legacy
-software is typically difficult to grasp with increasing size. While this
-process is tedious and very manual for a human, for a computer, it is much
-easier to oversee the entirety of the application. This area of research of
-this thesis is still young compared to others in the domain of computer
-science, as Fritzsch et al. showed in their study on the current situation in
-this exact area of research. They also concluded that more research is desired
-to further improve upon existing approaches.
-
-Thus, we showed how a rationale can tie the input to the output, to be able to
-assert that the final microservice recommendations were generated via the means
-of an input that leads to \textit{good} microservice boundaries which were
-extracted out of the input --- the four dimensions of coupling in the case of
-our methodology. Furthermore, it became apparent that a multitude of graph
-clustering algorithms is available to be utilized for creating microservice
-recommendations which offered more in-depth insights into which are feasible
-for this purpose by leveraging the metrics that were incorporated into our
-methodology which enables a user to easily compare different graph clustering
-algorithms quickly to choose the one that works the best for their input.
-However, we also saw that some graph clustering algorithms consistently perform
-better than others.
-
-To conclude, we devised a working methodology that generates results in just a
-few minutes without any manual input, which would have taken hours if done by a
-human software engineer. Additionally, we fully implemented the devised
-methodology with a modern graphical user interface that allows for fast
-analysis runs that yield microservice candidate recommendations in a variety of
-formats that can be used to assist human software engineers with the posed task.
 
 
 
